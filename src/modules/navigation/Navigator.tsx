@@ -19,6 +19,8 @@ import OtpView from '../auth/Otp';
 import PaymentView from '../cart/Payment';
 import OrderPlacedView from '../cart/OrderPlaced';
 
+import { useSelector } from "react-redux";
+
 
 export type StackParamList = {
   Home: undefined;
@@ -49,7 +51,7 @@ const RootStack = createStackNavigator();
 
 // function HomeScreen({ navigation }: ScreenProps) {
 //   return (
-    
+
 //     <View style={{ flex: 1, paddingTop: 50, alignItems: 'center' }}>
 //       {samples.map((sample) => (
 //         <Text
@@ -69,53 +71,57 @@ const Stack = createStackNavigator();
 
 
 function Navigator() {
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
   return (
- 
-      <Stack.Navigator  initialRouteName="Home"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: colors.white,
-          },
-        }}>
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="Home"
-          component={HomeView}
+
+    <Stack.Navigator initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.white,
+        },
+      }}>
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={HomeView}
           // options={{ title: 'react-navigation-collapsible',}}
-        />
-        
-        <Stack.Screen
-          name="Delivery Location"
-          component={DeliveryLocationView}
-          options={{
+          />
+
+          <Stack.Screen
+            name="Delivery Location"
+            component={DeliveryLocationView}
+            options={{
               headerStyle: {
                 backgroundColor: colors.white,
               },
               headerTintColor: '#5D6275',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Search Delivery Location',
-            // headerRight: () => (
-            //   <IconButton
-            //     white noBorder 
-            //     icon={
-            //       <Image
-            //         style={{ width:14, height:14 }}
-            //         source={require('../../../assets/images/icons/close.png')}
-            //       />
-            //     }
-            //   />
-            // ),
-            
-          }}
-        />
-        
-        <Stack.Screen
-          name="Cart"
-          component={CartView}
-          options={{
+              title: 'Search Delivery Location',
+              // headerRight: () => (
+              //   <IconButton
+              //     white noBorder 
+              //     icon={
+              //       <Image
+              //         style={{ width:14, height:14 }}
+              //         source={require('../../../assets/images/icons/close.png')}
+              //       />
+              //     }
+              //   />
+              // ),
+
+            }}
+          />
+
+          <Stack.Screen
+            name="Cart"
+            component={CartView}
+            options={{
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.white,
@@ -123,42 +129,42 @@ function Navigator() {
               headerTintColor: '#5D6275',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Cart',            
-          }}
-        />
-        
-        <Stack.Screen
-          name="Payment"
-          component={PaymentView}
-          options={{
-            headerStyle: {
-              backgroundColor: colors.primary,
-              elevation:0
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize:14,
-            },
-          title: 'Payment',            
-        }}
-        />
-        
-        <Stack.Screen
-          name="Order Summary"
-          component={OrderPlacedView}
-          options={{
-            headerShown: false,
-          }}
-        />
-        
-        <Stack.Screen
-          name="Category"
-          component={CategoryView}
-          options={{
-            
+              title: 'Cart',
+            }}
+          />
+
+          <Stack.Screen
+            name="Payment"
+            component={PaymentView}
+            options={{
+              headerStyle: {
+                backgroundColor: colors.primary,
+                elevation: 0
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 14,
+              },
+              title: 'Payment',
+            }}
+          />
+
+          <Stack.Screen
+            name="Order Summary"
+            component={OrderPlacedView}
+            options={{
+              headerShown: false,
+            }}
+          />
+
+          <Stack.Screen
+            name="Category"
+            component={CategoryView}
+            options={{
+
               headerShown: false,
               headerStyle: {
                 backgroundColor: colors.white,
@@ -166,98 +172,102 @@ function Navigator() {
               headerTintColor: '#5D6275',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Category',            
-          }}
-        />
-        
-        <Stack.Screen
-          name="My Account"
-          component={AccountView}
-          options={{
+              title: 'Category',
+            }}
+          />
+
+          <Stack.Screen
+            name="My Account"
+            component={AccountView}
+            options={{
               headerStyle: {
                 backgroundColor: colors.primary,
-                elevation:0
+                elevation: 0
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: '',            
-          }}
-        />
-        
-        <Stack.Screen
-          name="Order List"
-          component={OrderListView}
-          options={{
+              title: '',
+            }}
+          />
+
+          <Stack.Screen
+            name="Order List"
+            component={OrderListView}
+            options={{
               headerStyle: {
                 backgroundColor: colors.primary,
-                elevation:0
+                elevation: 0
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Orders',            
-          }}
-        />
-        
-        <Stack.Screen
-          name="Order Detail"
-          component={OrderDetailView}
-          options={{
+              title: 'Orders',
+            }}
+          />
+
+          <Stack.Screen
+            name="Order Detail"
+            component={OrderDetailView}
+            options={{
               headerStyle: {
                 backgroundColor: colors.primary,
-                elevation:0
+                elevation: 0
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Summary',            
-          }}
-        />
+              title: 'Summary',
+            }}
+          />
 
-        <Stack.Screen
-          name="Manage Address"
-          component={ManageAddressView}
-          options={{
+          <Stack.Screen
+            name="Manage Address"
+            component={ManageAddressView}
+            options={{
               headerStyle: {
                 backgroundColor: colors.primary,
-                elevation:0
+                elevation: 0
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
                 fontWeight: 'bold',
-                fontSize:14,
+                fontSize: 14,
               },
-            title: 'Manage Address',            
-          }}
-        />
+              title: 'Manage Address',
+            }}
+          />
+        </>
+      ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false
+              }}
+            />
 
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-              headerShown: false            
-          }}
-        />
+            <Stack.Screen
+              name="Otp"
+              component={OtpView}
+              options={{
+                headerShown: false,
+                title: 'Manage Address',
+              }}
+            />
+          </>
+        )}
 
-        <Stack.Screen
-          name="Otp"
-          component={OtpView}
-          options={{
-              headerShown: false,
-              title: 'Manage Address',            
-          }}
-        />
-
-      </Stack.Navigator>
+    </Stack.Navigator>
   );
 }
 
