@@ -6,10 +6,13 @@ import MainContainer from '../../components/Containers/Main';
 import { IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import { colors } from '../../styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, updateField } from '../../redux/actions/auth';
 
 
 export default function Login({ navigation }) {
-  const [mobileNum, onChangeNumber] = useState('');
+  const mobile = useSelector(state => state.auth.mobile);
+  const dispatch = useDispatch();
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.white }}>
@@ -45,8 +48,8 @@ export default function Login({ navigation }) {
 
                   <TextInput
                     style={{ paddingHorizontal: 0, fontSize: 16 }}
-                    onChangeText={onChangeNumber}
-                    value={mobileNum}
+                    onChangeText={text => dispatch(updateField('mobile', text))}
+                    value={mobile}
                     placeholder="Your Number"
                     keyboardType="numeric"
                   />
@@ -54,9 +57,10 @@ export default function Login({ navigation }) {
               </View>
               <View>
 
-                {mobileNum.length == 10 ? (
+                {mobile.length == 10 ? (
                   <IconButton
                     onPress={() => {
+                      dispatch(login(mobile));
                       navigation.navigate('Otp');
                     }}
                     primary lgR raised

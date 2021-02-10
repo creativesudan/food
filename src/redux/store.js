@@ -1,18 +1,44 @@
 import { createStore, applyMiddleware } from 'redux';
-
-// Import the `thunk` middleware
-import thunk from 'redux-thunk';
-
-// Import your existing root reducer here.
-// Change this path to fit your setup!
+import {
+    ASYNC_START,
+    ASYNC_END,
+} from './actions/types';
 import rootReducer from './reducers/index';
 
-// The last argument to createStore is the "store enhancer".
-// Here we use applyMiddleware to create that based on
-// the thunk middleware.
+const promiseMiddleware = store => next => action => {
+    console.log(action)
+    if (isPromise(action.payload)) {
+        store.dispatch({ type: ASYNC_START, subtype: action.type });
+
+        action.payload.then(
+            res => {
+                console.log('RESULT', res);
+                action.payload = res;
+                store.dispatch({ type: ASYNC_END, promise: action.payload });
+                store.dispatch(action);
+            },
+            error => {
+
+                console.log('ERROR', error);
+                action.error = true;
+                action.payload = error.response.body;
+                store.dispatch(action);
+            }
+        );
+
+        return;
+    }
+
+    next(action);
+};
+
+function isPromise(v) {
+    return v && typeof v.then === 'function';
+}
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    applyMiddleware(promiseMiddleware)
 );
+
 
 export default store;
