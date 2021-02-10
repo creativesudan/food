@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { View, Image, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import MainContainer from '../../components/Containers/Main';
-import { Button, IconButton } from '../../components/StyledButton';
+import { Button } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import { colors } from '../../styles';
+
+import OTPInputView from '@twotalltotems/react-native-otp-input'
 
 import { useDispatch, useSelector } from "react-redux";
 import { verify, login } from "../../redux/actions/auth";
@@ -14,11 +15,11 @@ export default function OtpView({ navigation }) {
   const mobile = useSelector(state => state.auth.mobile);
   const inProgress = useSelector(state => state.auth.inProgress);
   const dispatch = useDispatch();
-  const [otp, changeOtp] = useState(['', '', '', '']);
+  const [otp, changeOtp] = useState();
 
-  const updateOtp = (place, val) => {
-    let new_otp = [...otp]
-    new_otp[place] = val;
+  const updateOtp = (val) => {
+    let new_otp = otp
+    new_otp = val;
     changeOtp(new_otp);
   }
 
@@ -33,53 +34,20 @@ export default function OtpView({ navigation }) {
               <Text h1 color={colors.primary}>OTP Verification </Text>
               <Text caption style={{ marginTop: 5 }}>Verify your mobile number {mobile}</Text>
             </View>
-
             <View style={styles.OTPContainer}>
-              <View style={styles.OTPBar}>
-                <View style={styles.numbers}>
-                  <TextInput
-                    style={{ paddingHorizontal: 0, fontSize: 20, color: '#9196A9', textAlign: 'center', }}
-                    onChangeText={text => updateOtp(0, text)}
-                    value={otp[0]}
-                    // editable={false}
-                    placeholder="X"
-                    keyboardType="numeric"
-                  />
-                </View>
-                <View style={styles.numbers}>
-                  <TextInput
-                    style={{ paddingHorizontal: 0, fontSize: 20, color: '#9196A9', textAlign: 'center', }}
-                    onChangeText={text => updateOtp(1, text)}
-                    value={otp[1]}
-                    // editable={false}
-                    placeholder="X"
-                    keyboardType="numeric"
-                  />
-                </View>
-                <View style={styles.numbers}>
-                  <TextInput
-                    style={{ paddingHorizontal: 0, fontSize: 20, color: '#9196A9', textAlign: 'center', }}
-                    onChangeText={text => updateOtp(2, text)}
-                    value={otp[2]}
-                    // editable={false}
-                    placeholder="X"
-                    keyboardType="numeric"
-                  />
-                </View>
-                <View style={styles.numbers}>
-                  <TextInput
-                    style={{ paddingHorizontal: 0, fontSize: 20, color: '#9196A9', textAlign: 'center', }}
-                    onChangeText={text => updateOtp(3, text)}
-                    value={otp[3]}
-                    // editable={false}
-                    placeholder="X"
-                    keyboardType="numeric"
-                  />
-                </View>
-              </View>
+
+            <OTPInputView style={{width: 250, height: 50}}
+              pinCount={4}
+              autoFocusOnLoad
+              codeInputFieldStyle={styles.underlineStyleBase}
+              codeInputHighlightStyle={styles.underlineStyleHighLighted}
+              placeholderTextColor={'#f00'}
+              onCodeChanged={text => updateOtp(text)}
+
+              />
             </View>
 
-            <View>
+            <View style={{marginBottom:10}}>
               <View style={{ marginBottom: 40, marginTop: 30, flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
                 <Text hCenter>Didn't received the OTP ? </Text>
                 <Button title="Resend" link white onPress={() => dispatch(login(mobile))} />
@@ -87,7 +55,7 @@ export default function OtpView({ navigation }) {
 
               <View style={{ flexDirection: 'column', alignItems: 'center', }}>
                 <View style={{ width: 150 }}>
-                  <Button lg primary raised title="Verify" onPress={() => { dispatch(verify(mobile, otp.join(""))); if (!inProgress) navigation.navigate('Home') }} />
+                  <Button lg primary raised title="Verify" onPress={() => { dispatch(verify(mobile, otp)); if (!inProgress) navigation.navigate('Home') }} />
                 </View>
               </View>
             </View>
@@ -103,38 +71,22 @@ export default function OtpView({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  abstract: {
-    position: 'absolute',
-    top: -100,
-    left: -100,
+
+  borderStyleHighLighted: {
+    borderColor: '#F3E6E6',
   },
-  banner: {
-    marginTop: 110
+  underlineStyleBase: {
+    borderRadius:100, 
+    color:colors.black,
+    fontSize: 20,
+  },
+  underlineStyleHighLighted: {
+    borderColor: colors.primary,
   },
   content: {
     alignItems: 'center',
     marginTop: 110,
     marginBottom: 50
-  },
-  NumberArea: {
-    padding: 6,
-    borderColor: '#F3E6E6',
-    borderWidth: 1,
-    borderRadius: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  OTPBar: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  numbers: {
-    marginHorizontal: 6,
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    borderColor: '#F3E6E6',
-    borderWidth: 1
   },
   OTPContainer: {
     alignItems: 'center',
