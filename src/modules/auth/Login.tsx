@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Image, StyleSheet, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -7,12 +7,20 @@ import { IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import { colors } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, updateField } from '../../redux/actions/auth';
-
+import { login, updateField, initAuth } from '../../redux/actions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ navigation }) {
   const mobile = useSelector(state => state.auth.mobile);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    AsyncStorage.getItem('token')
+      .then((result) => {
+        console.log(result);
+        if (result !== null) dispatch(initAuth(result))
+      });
+  }, []);
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.white }}>

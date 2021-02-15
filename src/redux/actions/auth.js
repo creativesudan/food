@@ -1,4 +1,4 @@
-import { LOGIN, UPDATE_AUTH_FIELD } from "./types";
+import { INIT_AUTH, LOGIN, UPDATE_AUTH_FIELD } from "./types";
 import agent from "../../agent";
 
 export const login = (mobile) => {
@@ -20,5 +20,12 @@ export const updateField = (key, value) => {
         type: UPDATE_AUTH_FIELD,
         key,
         value
+    }
+}
+
+export const initAuth = (token) => {
+    return {
+        type: INIT_AUTH,
+        payload: { token, isAuthenticated: true }
     }
 }
