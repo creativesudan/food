@@ -268,6 +268,7 @@ export default function HomeView({ navigation }) {
           /> */}
               </View>
 
+
               <View style={styles.flexContainer}>
                 {categories.map(item => (
                   <View style={styles.flexList}>
@@ -276,8 +277,10 @@ export default function HomeView({ navigation }) {
                         <Paper style={{ flex: 1 }}>
                           <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category')}>
                             <View style={{ marginTop: 7, marginBottom: 12, alignItems: 'center' }}>
-                              <View style={{ width: 50, alignItems: 'center', }}><Image source={{
-                                uri: item.image,
+                              <View style={{ width: 50, alignItems: 'center', }}><Image 
+                              style={{height:54, width:54}}
+                              source={{
+                                uri: 'https://reactnative.dev/img/tiny_logo.png',
                               }} /></View>
                               <Text caption hCenter style={styles.label}>{item.name}</Text>
                             </View>

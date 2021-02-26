@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import Login from './auth/Login';
 import OtpView from './auth/Otp';
 import CartView from './cart/Cart';
@@ -55,8 +55,19 @@ export default function AppView() {
       {/* <ManageAddressView/> */}
       {/* <OrderDetailView/> */}
       {/* <OrderListView/> */}
-      {inProgress > 0 && !showInitScreen && <Text style={{ fontSize: 20 }}>Loading...</Text>}
-      {showInitScreen ? <Text style={{ fontSize: 40 }}>Bobby Sweets</Text> : <Navigator />}
+      {inProgress > 0 && !showInitScreen && 
+      <Image
+      style={{height:'100%'}}
+      source={require('../../assets/images/mock_data/flash-screen.png')}
+    />
+      }
+      {showInitScreen ? 
+      
+      <Image
+        style={{height:'100%'}}
+        source={require('../../assets/images/mock_data/flash-screen.png')}
+      />
+      : <Navigator />}
 
 
     </>
