@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Modal, Image } from 'react-native';
-import { Icon , Divider, Avatar} from 'react-native-elements';
+import { Icon, Divider, Avatar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Ripple from 'react-native-material-ripple';
 
@@ -13,87 +13,99 @@ import Paper from '../../components/Paper';
 import FloatingInput from '../../components/FloatingInput';
 import FormGroup from '../../components/FormGroup';
 
+import { useDispatch, useSelector } from "react-redux";
+import { updateField, updateUser as updateUserAction } from "../../redux/actions/auth";
+
+
+
 
 export const EditAccount = ({
   setEditAccount,
 }: {
   setEditAccount: (state: boolean) => void;
-}) => (
 
+}) => {
+
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const [updatedUser, updateUser] = useState(user);
 
   // const navigation = useNavigation();
 
-  // return (
-  <Modal animationType="slide" transparent>
-    <View style={styles.overlay}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <MainContainer>
-            <Paper>
-              <View style={styles.modalData}>
+  return (
+    <Modal animationType="slide" transparent>
+      <View style={styles.overlay}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <MainContainer>
+              <Paper>
+                <View style={styles.modalData}>
 
-                <Text hCenter style={{paddingHorizontal: 10, marginBottom:20}} subtitle2 >
-                  Edit Account
+                  <Text hCenter style={{ paddingHorizontal: 10, marginBottom: 20 }} subtitle2 >
+                    Edit Account
                 </Text>
 
-                
-                <View style={{marginVertical:2}}>
-                  <FloatingInput
-                    attrName="personalName"
-                    title="Name"
-                    value={"Jhon Doe"}
-                    // onChange={setName}
-                  />
-                </View>
-                
-                <View style={{marginVertical:2}}>
-                  <FloatingInput
-                    attrName="personalName"
-                    title="Mobile"
-                    value={"9876543210"}
-                    // onChange={setName}
-                  />
-                </View>
-                
-                <View style={{marginVertical:2}}>
-                  <FloatingInput
-                    attrName="personalName"
-                    title="Email"
-                    value={"ashubisht.931@gmail.com"}
-                    // onChange={setName}
-                  />
-                </View>
-                
 
-                <View style={{flexDirection: 'row', marginTop:20, alignSelf: 'center', alignItems: 'center'}}>
-                  
-                <View style={{width:100, marginHorizontal:5}}>
-                  <Button title="Cancel" grey lg 
-                      onPress={() => {
-                        setEditAccount(false);
-                      }}
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
+                      title="Name"
+                      value={updatedUser.name}
+                      onChange={(val) => updateUser({ ...updatedUser, name: val })}
                     />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
+                      title="Mobile"
+                      value={updatedUser.mobile}
+                      onChange={(val) => updateUser({ ...updatedUser, mobile: val })}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
+                      title="Email"
+                      value={updatedUser.email}
+                      onChange={(val) => updateUser({ ...updatedUser, email: val })}
+                    />
+                  </View>
+
+
+                  <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'center', alignItems: 'center' }}>
+
+                    <View style={{ width: 100, marginHorizontal: 5 }}>
+                      <Button title="Cancel" grey lg
+                        onPress={() => {
+                          setEditAccount(false);
+                        }}
+                      />
+                    </View>
+                    <View style={{ width: 100, marginHorizontal: 5 }}>
+                      <Button title="Update" primary lg raised
+                        onPress={async () => {
+                          await dispatch(updateUserAction(updatedUser.id, updatedUser.name, updatedUser.email, updatedUser.mobile));
+                          dispatch(updateField("user", updatedUser));
+                          setEditAccount(false);
+                        }}
+                      />
+                    </View>
+
+
+
+                  </View>
+
                 </View>
-                <View style={{width:100, marginHorizontal:5}}>
-                  <Button title="Update" primary lg raised
-                    onPress={() => {
-                      setEditAccount(false);
-                    }}
-                  />
-                </View>
-
-
-
-                </View>
-
-              </View>
-            </Paper>
-          </MainContainer>
+              </Paper>
+            </MainContainer>
+          </View>
         </View>
       </View>
-    </View>
-  </Modal>
-);
+    </Modal>
+  )
+};
 
 const styles = StyleSheet.create({
   closeIcon: {
@@ -124,5 +136,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
   },
-  
+
 });

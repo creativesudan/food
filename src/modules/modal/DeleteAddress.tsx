@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Modal, Image } from 'react-native';
-import { Icon , Divider, Avatar} from 'react-native-elements';
+import { Icon, Divider, Avatar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Ripple from 'react-native-material-ripple';
 
 import { colors } from '../../styles';
 import MainContainer from '../../components/Containers/Main';
-import { Button,IconButton } from '../../components/StyledButton';
+import { Button, IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 
@@ -15,70 +15,73 @@ import FormGroup from '../../components/FormGroup';
 
 
 export const DeleteAddressConfirm = ({
-  setDeleteAddressConfirm,
+  setDeleteAddressConfirm, id
 }: {
-  setDeleteAddressConfirm: (state: boolean) => void;
-}) => (
+  setDeleteAddressConfirm: (state: object) => void;
+  id: string
+}) => {
 
 
   // const navigation = useNavigation();
+  console.log(id);
 
-  // return (
-  <Modal animationType="slide" transparent>
-    <View style={styles.overlay}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <MainContainer>
-            <Paper>
-              <View style={styles.modalData}>
+  return (
+    <Modal animationType="slide" transparent>
+      <View style={styles.overlay}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <MainContainer>
+              <Paper>
+                <View style={styles.modalData}>
 
 
-              <View style={{position: 'absolute', top:10, zIndex:1, right:10}}>
-                <IconButton
-                  white noBorder mdR
-                  onPress={() => {
-                    setDeleteAddressConfirm(false);
-                  }}
-                  icon={
-                    <Image style={{width:14}} source={require('../../../assets/images/icons/close.png')}/>
-                  }
-                />
-                </View>
+                  <View style={{ position: 'absolute', top: 10, zIndex: 1, right: 10 }}>
+                    <IconButton
+                      white noBorder mdR
+                      onPress={() => {
+                        setDeleteAddressConfirm({ show: false, confirm: false });
+                      }}
+                      icon={
+                        <Image style={{ width: 14 }} source={require('../../../assets/images/icons/close.png')} />
+                      }
+                    />
+                  </View>
 
-                <Text hCenter style={{paddingHorizontal: 10, marginVertical:20}} subtitle2 >
-                Are You Sure Want to detele Address
+                  <Text hCenter style={{ paddingHorizontal: 10, marginVertical: 20 }} subtitle2 >
+                    Are You Sure Want to detele Address
                 </Text>
 
 
-                <View style={{flexDirection: 'row', alignSelf: 'center', alignItems: 'center'}}>
-                  
-                {/* <View style={{width:100, marginHorizontal:5}}>
+                  <View style={{ flexDirection: 'row', alignSelf: 'center', alignItems: 'center' }}>
+
+                    {/* <View style={{width:100, marginHorizontal:5}}>
                   <Button title="Cancel" grey lg 
                       onPress={() => {
                         setDeleteAddressConfirm(false);
                       }}
                     />
                 </View> */}
-                <View style={{width:100, marginHorizontal:5}}>
-                  <Button title="Delete" primary lg raised
-                    onPress={() => {
-                      setDeleteAddressConfirm(false);
-                    }}
-                  />
+                    <View style={{ width: 100, marginHorizontal: 5 }}>
+                      <Button title="Delete" primary lg raised
+                        onPress={() => {
+                          setDeleteAddressConfirm({ show: false, confirm: true, "id": id });
+                        }}
+                      />
+                    </View>
+
+
+
+                  </View>
+
                 </View>
-
-
-
-                </View>
-
-              </View>
-            </Paper>
-          </MainContainer>
+              </Paper>
+            </MainContainer>
+          </View>
         </View>
       </View>
-    </View>
-  </Modal>
-);
+    </Modal>
+  )
+};
 
 const styles = StyleSheet.create({
   closeIcon: {
@@ -109,5 +112,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
   },
-  
+
 });
