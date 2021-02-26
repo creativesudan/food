@@ -8,19 +8,13 @@ import { Text } from '../../components/StyledText';
 import { colors } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, updateField, initAuth } from '../../redux/actions/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Login({ navigation }) {
   const mobile = useSelector(state => state.auth.mobile);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    AsyncStorage.getItem('token')
-      .then((result) => {
-        console.log(result);
-        if (result !== null) dispatch(initAuth(result))
-      });
-  }, []);
+
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.white }}>
