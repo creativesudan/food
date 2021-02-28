@@ -45,7 +45,8 @@ const Auth = {
 
 
 const Category = {
-    all: () => requests.post('?type=catlist')
+    all: () => requests.post('?type=catlist'),
+    products: (categoryId) => requests.post(`?type=productlist&cat_id=${categoryId}`)
 }
 
 const Address = {

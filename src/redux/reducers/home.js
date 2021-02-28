@@ -1,7 +1,7 @@
 import {
-    CATEGORY_LOADED
+    CATEGORY_LOADED,
+    PRODUCTS_LOADED
 } from "../actions/types";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function (state = {}, action) {
@@ -10,6 +10,11 @@ export default function (state = {}, action) {
             return {
                 ...state,
                 categories: action.payload.response.data
+            }
+        case PRODUCTS_LOADED:
+            return {
+                ...state,
+                products: action.payload.response.data
             }
         default:
             return state;
