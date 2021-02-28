@@ -18,6 +18,7 @@ import OrderListView from './order/OrderList';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, initAuth } from "../redux/actions/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fetchAddressList, deleteAddress } from "../redux/actions/address";
 
 export default function AppView() {
   const dispatch = useDispatch();
@@ -26,18 +27,15 @@ export default function AppView() {
   const user = useSelector(state => state.auth.user)
   const showInitScreen = useSelector(state => state.app.showInitScreen || false);
   const inProgress = useSelector(state => state.app.inProgress || 0);
-
-  // useEffect(() => {
-  //   AsyncStorage.getItem('user_id')
-  //     .then((result) => {
-  //       console.log(result);
-  //       if (result !== null) dispatch(initAuth(result))
-  //     });
-  // });
+  const addressesSynced = useSelector(state => state.address.addressesSynced || false);
 
   useEffect(() => {
     dispatch({ type: "APP_LOADING" })
   }, []);
+
+  useEffect(() => {
+    if (!addressesSynced) dispatch(fetchAddressList())
+  }, [addressesSynced]);
 
 
   return (
@@ -55,19 +53,19 @@ export default function AppView() {
       {/* <ManageAddressView/> */}
       {/* <OrderDetailView/> */}
       {/* <OrderListView/> */}
-      {inProgress > 0 && !showInitScreen && 
-      <Image
-      style={{height:'100%'}}
-      source={require('../../assets/images/mock_data/flash-screen.png')}
-    />
+      {inProgress > 0 && !showInitScreen &&
+        <Image
+          style={{ height: '100%' }}
+          source={require('../../assets/images/mock_data/flash-screen.png')}
+        />
       }
-      {showInitScreen ? 
-      
-      <Image
-        style={{height:'100%'}}
-        source={require('../../assets/images/mock_data/flash-screen.png')}
-      />
-      : <Navigator />}
+      {showInitScreen ?
+
+        <Image
+          style={{ height: '100%' }}
+          source={require('../../assets/images/mock_data/flash-screen.png')}
+        />
+        : <Navigator />}
 
 
     </>

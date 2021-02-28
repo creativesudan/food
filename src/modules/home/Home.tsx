@@ -18,7 +18,7 @@ import { ReviewRate } from "../modal/ReviewRate";
 import Slider from "./Slider";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetch_categories } from "../../redux/actions/home";
+import { fetchCategories } from "../../redux/actions/home";
 
 
 const data = [
@@ -52,9 +52,10 @@ export default function HomeView({ navigation }) {
 
   const dispatch = useDispatch();
   const categories = useSelector(state => state.home.categories || []);
+  const deliveryAddress = useSelector(state => state.app.address || {});
 
   useEffect(() => {
-    dispatch(fetch_categories());
+    dispatch(fetchCategories());
   }, []);
 
   return (
@@ -213,7 +214,7 @@ export default function HomeView({ navigation }) {
                   <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
                     <Text color={colors.white}>Deliver to :</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text bold color={colors.white}>11th Ave, Gaur City 2, Ghaziabad</Text>
+                      <Text bold color={colors.white}>{deliveryAddress.name || "Select Address"}</Text>
                       <Image style={{ tintColor: colors.white, marginLeft: 5 }}
                         source={require('../../../assets/images/icons/expand_more.png')}
                       />
@@ -275,13 +276,13 @@ export default function HomeView({ navigation }) {
                     <View style={{ width: '100%' }}>
                       <View style={{ flexDirection: 'row', }}>
                         <Paper style={{ flex: 1 }}>
-                          <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category')}>
+                          <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category', { "category": item })}>
                             <View style={{ marginTop: 7, marginBottom: 12, alignItems: 'center' }}>
-                              <View style={{ width: 50, alignItems: 'center', }}><Image 
-                              style={{height:54, width:54}}
-                              source={{
-                                uri: 'https://reactnative.dev/img/tiny_logo.png',
-                              }} /></View>
+                              <View style={{ width: 50, alignItems: 'center', }}><Image
+                                style={{ height: 54, width: 54 }}
+                                source={{
+                                  uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                }} /></View>
                               <Text caption hCenter style={styles.label}>{item.name}</Text>
                             </View>
                           </Ripple>

@@ -15,6 +15,8 @@ import { EditAddress } from "../modal/EditAddress";
 import { DeleteAddressConfirm } from "../modal/DeleteAddress";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAddressList, deleteAddress } from "../../redux/actions/address";
+import { add } from "react-native-reanimated";
+import { selectDeliveryAddress } from "../../redux/actions/app";
 
 const data = [
   { id: 'a', label: 'Snacks', image: require('../../../assets/images/server_icons/snack.png') },
@@ -34,12 +36,9 @@ export default function AddressList() {
   const [editAddress, setEditAddress] = useState({ "show": false });
   const [deleteAddressConfirm, setDeleteAddressConfirm] = useState({ show: false });
   const addresses = useSelector(state => state.address.addresses || []);
-  const addressesSynced = useSelector(state => state.address.addressesSynced || false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!addressesSynced) dispatch(fetchAddressList())
-  }, [addressesSynced]);
+
 
   useEffect(() => {
     if (deleteAddressConfirm.confirm) {
@@ -55,6 +54,8 @@ export default function AddressList() {
     else return "Other";
   }
 
+  const selectedDeliveryAddress = useSelector(state => state.app.address || {});
+
   return (
     <>
       {addAddress && <AddAddress setAddAddress={setAddAddress} />}
@@ -66,10 +67,10 @@ export default function AddressList() {
           <View style={{ padding: 10 }}>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ripple style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 10, flex: 1 }}>
+              <Ripple style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 10, flex: 1 }} onPress={() => dispatch(selectDeliveryAddress(address))}>
                 <View style={{ width: 32 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', width: 22, height: 22, borderWidth: 1, borderColor: '#F9C5C5', borderRadius: 100 }}>
-                    <View style={{ marginLeft: 6, flexDirection: 'row', width: 8, height: 8, backgroundColor: colors.primary, borderRadius: 10 }}></View>
+                    <View style={{ marginLeft: 6, flexDirection: 'row', width: 8, height: 8, backgroundColor: selectedDeliveryAddress.id == address.id ? colors.primary : colors.white, borderRadius: 10 }}></View>
                   </View>
                 </View>
                 <View>
