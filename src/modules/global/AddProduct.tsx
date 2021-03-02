@@ -17,39 +17,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
 
 
-export default function AddProduct() {
-
+export default function AddProduct({
+    AssetsDrawer, 
+  }: {
+    AssetsDrawer: (state: boolean) => void;
+  }) {
+    
+    const [qty, setQty] = useState(0);
+    
     return (
-        <RBSheet
-            ref={AssetsDrawer}
-            animationType="slide"
-            dragFromTopOnly
-            closeOnDragDown
-            closeOnPressMask
-            openDuration={100}
-            customStyles={{
-                wrapper: {},
-                container: {
-                    backgroundColor: colors.white,
-                    borderTopLeftRadius: 16,
-                    borderTopRightRadius: 16,
-                    height: 'auto',
-                    // maxHeight: 420,
-                },
-                draggableIcon: {},
-            }}
-        >
-            <View style={{ position: 'absolute', top: 10, zIndex: 1, right: 10 }}>
-                <IconButton
-                    white noBorder mdR
-                    onPress={() => {
-                        AssetsDrawer.current?.close()
-                    }}
-                    icon={
-                        <Image style={{ width: 14 }} source={require('../../../assets/images/icons/close.png')} />
-                    }
-                />
-            </View>
+
             <MainContainer>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ flex: 1 }}>
@@ -137,7 +114,6 @@ export default function AddProduct() {
                                 white noBorder mdR
                                 onPress={() => {
                                     setQty(qty + 1);
-                                    AssetsDrawer.current?.open();
                                 }}
                                 icon={
                                     <Image source={require('../../../assets/images/icons/plus.png')} />
@@ -148,7 +124,7 @@ export default function AddProduct() {
                     <View style={{ flex: 1, paddingLeft: 10 }}>
                         <Button title="Add 133" md primary
                             onPress={() => {
-                                AssetsDrawer.current?.close();
+                                // AssetsDrawer.current?.close();
                             }}
                         />
                     </View>
@@ -156,6 +132,5 @@ export default function AddProduct() {
 
             </MainContainer>
 
-        </RBSheet>
     );
 }
