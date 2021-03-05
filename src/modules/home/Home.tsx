@@ -54,6 +54,7 @@ export default function HomeView({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.home.categories || []);
   const deliveryAddress = useSelector(state => state.app.address || {});
+  const cartItemsCount = useSelector(state => state.cart.items.length);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -92,7 +93,7 @@ export default function HomeView({ navigation }) {
             }
           />
         </View>
-        <AddProduct/>
+        <AddProduct />
 
       </RBSheet>
 
@@ -127,7 +128,7 @@ export default function HomeView({ navigation }) {
                     backgroundColor: colors.secondary,
                     borderRadius: 20, width: 20, height: 20,
                     lineHeight: 20, fontSize: 10
-                  }} hCenter>02</Text>
+                  }} hCenter>{cartItemsCount}</Text>
                   <Image style={{}}
                     source={require('../../../assets/images/icons/cart.png')}
                   />

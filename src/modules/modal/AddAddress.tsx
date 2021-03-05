@@ -123,6 +123,33 @@ export const AddAddress = ({
                   <View style={{ marginVertical: 2 }}>
                     <FloatingInput
                       attrName="personalName"
+                      title="City"
+                      value={address.city}
+                      onChange={changeAddressField("city")}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
+                      title="State"
+                      value={address.state}
+                      onChange={changeAddressField("state")}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
+                      title="Country"
+                      value={address.country}
+                      onChange={changeAddressField("country")}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
                       title="Pin"
                       value={address.pincode}
                       onChange={changeAddressField("pincode")}
