@@ -49,6 +49,12 @@ const Category = {
     products: (categoryId) => requests.post(`?type=productlist&cat_id=${categoryId}`)
 }
 
+const Cart = {
+    coupons: () => requests.post('?type=couponlist'),
+    tax: () => requests.post('?type=taxlist')
+}
+
+
 const Address = {
     all: () => requests.post(`?type=addresslist&user_id=${userId}`, {}),
     save: (address) =>
@@ -74,5 +80,6 @@ export default {
     Auth,
     Category,
     Address,
+    Cart,
     setUserId: _userId => { userId = _userId; }
 };

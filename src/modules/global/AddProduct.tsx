@@ -18,119 +18,127 @@ import { fetchProducts } from "../../redux/actions/home";
 
 
 export default function AddProduct({
-    AssetsDrawer, 
-  }: {
+    AssetsDrawer, product, setProduct, InitialCartItem
+}: {
     AssetsDrawer: (state: boolean) => void;
-  }) {
-    
-    const [qty, setQty] = useState(0);
-    
+    product: object;
+    setProduct: (cartItem: object) => void;
+    InitialCartItem: object;
+}) {
+
+    const [cartItem, setCartItem] = useState(InitialCartItem);
+    console.log(product);
+
     return (
 
-            <MainContainer>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ flex: 1 }}>
-                        <Text h3>Special Laddoo</Text>
-                        <Text p color={colors.grey2}>Special Laddoo</Text>
-                    </View>
+        <MainContainer>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                    <Text h3>{product.name}</Text>
+                    <Text p color={colors.grey2}>{product.description}</Text>
                 </View>
-                <Divider style={{ marginVertical: 10 }} />
-                <View>
-                    <Text h3>Select Your Quantity</Text>
-                    <Text p color={colors.grey2}>Please select any one option</Text>
-                </View>
-
+            </View>
+            <Divider style={{ marginVertical: 10 }} />
+            <View>
+                <Text h3>Select Your Quantity</Text>
+                <Text p color={colors.grey2}>Please select any one option</Text>
+            </View>
+            {product.price_weight && product.price_weight.map(item =>
                 <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
                     <ListItem.Content>
-                        <Text >250 Gram</Text>
-                    </ListItem.Content>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <CheckBox
-                            containerStyle={{ marginRight: 0, marginVertical: 0, padding: 0, }}
-                            iconRight
-                            checkedIcon='dot-circle-o'
-                            uncheckedIcon='circle-o'
-                            checkedColor={colors.primary}
-                            checked={true}
-                        />
-                    </View>
-
-                </ListItem>
-
-                <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                    <ListItem.Content>
-                        <Text>250 Gram</Text>
+                        <Text >{item.weight}</Text>
                     </ListItem.Content>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image style={{ height: 10, marginRight: 4 }}
                             source={require('../../../assets/images/icons/rupee.png')}
                         />
-                        <Text >500.00</Text>
+                        <Text>{item.price}</Text>
                         <CheckBox
                             containerStyle={{ marginRight: 0, marginVertical: 0, padding: 0, }}
                             iconRight
                             checkedIcon='dot-circle-o'
                             uncheckedIcon='circle-o'
                             checkedColor={colors.primary}
-                        // checked={this.state.checked}
+                            checked={cartItem.variant.id == item.id}
+                            onPress={() => setCartItem({ ...cartItem, variant: item })}
                         />
                     </View>
+
                 </ListItem>
+            )}
 
-                <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                    <ListItem.Content>
-                        <Text >1 Kg</Text>
-                    </ListItem.Content>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={{ height: 10, marginRight: 4 }}
-                            source={require('../../../assets/images/icons/rupee.png')}
+            {/* <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                <ListItem.Content>
+                    <Text>250 Gram</Text>
+                </ListItem.Content>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                        source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text >500.00</Text>
+                    <CheckBox
+                        containerStyle={{ marginRight: 0, marginVertical: 0, padding: 0, }}
+                        iconRight
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checkedColor={colors.primary}
+                    // checked={this.state.checked}
+                    />
+                </View>
+            </ListItem>
+
+            <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                <ListItem.Content>
+                    <Text >1 Kg</Text>
+                </ListItem.Content>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                        source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text >397.00</Text>
+                    <CheckBox
+                        containerStyle={{ marginRight: 0, marginVertical: 0, padding: 0, }}
+                        iconRight
+                        checkedIcon='dot-circle-o'
+                        uncheckedIcon='circle-o'
+                        checkedColor={colors.primary}
+                    // checked={this.state.checked}
+                    />
+                </View>
+            </ListItem> */}
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
+
+                <View>
+                    <View style={{ width: 100, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                        <IconButton
+                            white noBorder mdR
+                            onPress={() => setCartItem({ ...cartItem, qty: cartItem.qty <= 0 ? 0 : cartItem.qty - 1 })}
+                            icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                         />
-                        <Text >397.00</Text>
-                        <CheckBox
-                            containerStyle={{ marginRight: 0, marginVertical: 0, padding: 0, }}
-                            iconRight
-                            checkedIcon='dot-circle-o'
-                            uncheckedIcon='circle-o'
-                            checkedColor={colors.primary}
-                        // checked={this.state.checked}
-                        />
-                    </View>
-                </ListItem>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-
-                    <View>
-                        <View style={{ width: 100, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
-                            <IconButton
-                                white noBorder mdR
-                                onPress={() => {
-                                    setQty(qty <= 0 ? 0 : qty - 1);
-                                }}
-                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
-                            />
-
-                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{qty <= 0 ? 'Add' : qty}</Text>
-                            <IconButton
-                                white noBorder mdR
-                                onPress={() => {
-                                    setQty(qty + 1);
-                                }}
-                                icon={
-                                    <Image source={require('../../../assets/images/icons/plus.png')} />
-                                }
-                            />
-                        </View>
-                    </View>
-                    <View style={{ flex: 1, paddingLeft: 10 }}>
-                        <Button title="Add 133" md primary
-                            onPress={() => {
-                                // AssetsDrawer.current?.close();
-                            }}
+                        <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cartItem.qty <= 0 ? 'Add' : cartItem.qty}</Text>
+                        <IconButton
+                            white noBorder mdR
+                            onPress={() => setCartItem({ ...cartItem, qty: cartItem.qty + 1 })}
+                            icon={
+                                <Image source={require('../../../assets/images/icons/plus.png')} />
+                            }
                         />
                     </View>
                 </View>
+                <View style={{ flex: 1, paddingLeft: 10 }}>
+                    <Button title="Add" md primary
+                        onPress={() => {
+                            AssetsDrawer.current?.close();
+                            if (cartItem.qty == 0) cartItem.qty = 1;
+                            setProduct(cartItem);
+                        }}
+                    />
+                </View>
+            </View>
 
-            </MainContainer>
+        </MainContainer>
 
     );
 }

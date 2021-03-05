@@ -16,6 +16,7 @@ import { MenuModal } from "../modal/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
+import cart from "../../redux/reducers/cart";
 
 
 const item = [
@@ -42,12 +43,37 @@ const data = [
 export default function CategoryView({ route, navigation }) {
 
   const [qty, setQty] = useState(0);
+  const [addProduct, setAddProduct] = useState({});
   const AssetsDrawer = useRef<RBSheet>(null);
   const { category } = route.params;
   const dispatch = useDispatch();
   const products = useSelector(state => state.home.products || []);
   const categories = useSelector(state => state.home.categories || []);
   const deliveryAddress = useSelector(state => state.app.address || {});
+  const cartItems = useSelector(state => state.cart.items);
+  const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
+
+  const getProductById = (id) => {
+    if (!products) return {};
+    return products.find(item => item.pro_id == id) || {};
+  }
+
+  const getCartItemById = (id) => {
+    const product = getProductById(id);
+    let initialCartItem = {}
+    if (product && product.price_weight) {
+      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id };
+    }
+
+    if (!cartItems) return initialCartItem;
+    const items = cartItems.find(item => item.id == id) || initialCartItem;
+
+    return items;
+  }
+
+  const updateCart = (item) => {
+    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+  }
 
   useEffect(() => {
     dispatch(fetchProducts(category.id));
@@ -85,7 +111,7 @@ export default function CategoryView({ route, navigation }) {
             }
           />
         </View>
-        <AddProduct/>
+        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 
@@ -117,7 +143,7 @@ export default function CategoryView({ route, navigation }) {
                 backgroundColor: colors.secondary,
                 borderRadius: 20, width: 20, height: 20,
                 lineHeight: 20, fontSize: 10
-              }} hCenter>02</Text>
+              }} hCenter>{cartItemsCount}</Text>
               <Image style={{}}
                 source={require('../../../assets/images/icons/cart.png')}
               />
@@ -223,25 +249,33 @@ export default function CategoryView({ route, navigation }) {
                         <View style={{ width: 100 }}>
 
                           <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty <= 0 ? 0 : qty - 1);
-                              }}
-                              icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
-                            />
+                            {getCartItemById(product.pro_id).qty <= 0 && <Text onPress={() => {
+                              setAddProduct({ ...addProduct, id: product.pro_id });
+                              AssetsDrawer.current?.open();
+                            }} hCenter style={{ flex: 1, fontSize: 14 }}>Add</Text>}
+                            {(getCartItemById(product.pro_id).qty > 0) && <>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
+                                  const cartItem = getCartItemById(product.pro_id);
+                                  updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                }}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                              />
 
-                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{qty <= 0 ? 'Add' : qty}</Text>
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty == 0 ? 0 : qty);
-                                AssetsDrawer.current?.open();
-                              }}
-                              icon={
-                                <Image source={require('../../../assets/images/icons/plus.png')} />
-                              }
-                            />
+                              <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(product.pro_id).qty <= 0 ? 0 : getCartItemById(product.pro_id).qty}</Text>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  setAddProduct({ ...addProduct, id: product.pro_id });
+                                  AssetsDrawer.current?.open();
+                                }}
+                                icon={
+                                  <Image source={require('../../../assets/images/icons/plus.png')} />
+                                }
+                              />
+                            </>}
                           </View>
 
                         </View>
@@ -259,7 +293,7 @@ export default function CategoryView({ route, navigation }) {
       <View style={styles.footerMenu}>
         <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 20, }}>
           <Button
-            title="3 Items"
+            title={cartItemsCount + " Items"}
             primary lg raised
             iconRight
             onPress={() => navigation.navigate('Cart')}

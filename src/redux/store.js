@@ -5,9 +5,16 @@ import {
     APP_LOADING,
     APP_LOADED,
     LOGOUT,
-    LOGIN
+    LOGIN,
+    CART_PRODUCT_UPDATED,
+    CART_COUPON_APPLIED,
+    CART_TAX_APPLIED,
+    CART_PRODUCT_REMOVED,
+
 } from './actions/types';
 import { initAuth, fetchUser } from "../redux/actions/auth";
+import { fetchAddressList } from "../redux/actions/address";
+import { evaluateCart } from "../redux/actions/cart";
 import rootReducer from './reducers/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import agent from "../agent";
@@ -50,6 +57,7 @@ const appInitMiddleware = store => next => action => {
                     store.dispatch(initAuth(userId));
                     store.dispatch(fetchUser(userId));
                     agent.setUserId(userId);
+                    store.dispatch(fetchAddressList())
                     store.dispatch({ type: APP_LOADED });
                 } else {
                     store.dispatch({ type: APP_LOADED })
@@ -83,12 +91,30 @@ const loginMiddleware = store => next => action => {
     next(action);
 };
 
+const cartMiddleware = store => next => action => {
+    if (action.type && !isPromise(action.payload) && (action.type == CART_COUPON_APPLIED ||
+        action.type == CART_PRODUCT_REMOVED ||
+        action.type == CART_PRODUCT_UPDATED ||
+        action.type == CART_TAX_APPLIED)) {
+        next(action);
+
+        const cart = store.getState().cart;
+        console.log(cart);
+
+        store.dispatch(evaluateCart(cart));
+
+    }
+    else {
+        next(action);
+    }
+};
+
 function isPromise(v) {
     return v && typeof v.then === 'function';
 }
 const store = createStore(
     rootReducer,
-    applyMiddleware(promiseMiddleware, appInitMiddleware, loginMiddleware)
+    applyMiddleware(promiseMiddleware, appInitMiddleware, loginMiddleware, cartMiddleware)
 );
 
 

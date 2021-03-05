@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, StyleSheet, Image, Dimensions, SafeAreaView, TextInput } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -14,8 +14,9 @@ import Carousel from 'react-native-snap-carousel';
 import { ScrollView } from "react-native-gesture-handler";
 import { AddAddress } from "../modal/AddAddress";
 import { EditAddress } from "../modal/EditAddress";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import AddProduct from "../global/AddProduct";
+import { fetchCoupons, addCouponToCart, fetchTax } from "../../redux/actions/cart";
 
 
 const item = [
@@ -56,7 +57,41 @@ export default function CartView({ navigation }) {
   };
   const AssetsDrawer = useRef<RBSheet>(null);
 
-  const deliveryAddress = useSelector(state => state.address.addresses.find(address => address.id == state.app.address.id) || {});
+  const deliveryAddress = useSelector(state => {
+    if (!state.address.addresses) return null;
+    return state.address.addresses.find(address => {
+      if (state.app.address) return address.id == state.app.address.id;
+      return false;
+    })
+  });
+  const cartItems = useSelector(state => state.cart.items);
+  const cart = useSelector(state => state.cart);
+  const products = useSelector(state => state.home.products || []);
+  const dispatch = useDispatch();
+  const [addProduct, setAddProduct] = useState({});
+  const [coupon, setCoupon] = useState(cart.appliedCoupon ? cart.appliedCoupon.name : "");
+
+  const getProductById = (id) => {
+    if (!products) return {};
+    return products.find(item => item.pro_id == id) || {};
+  }
+
+  const getCartItemById = (id) => {
+    const product = getProductById(id);
+    let initialCartItem = {}
+    if (product && product.price_weight) {
+      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id };
+    }
+
+    if (!cartItems) return initialCartItem;
+    const items = cartItems.find(item => item.id == id) || initialCartItem;
+
+    return items;
+  }
+
+  const updateCart = (item) => {
+    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+  }
 
   const getAddressType = (id) => {
     if (id == 1) return "Work";
@@ -64,10 +99,22 @@ export default function CartView({ navigation }) {
     else return "Other";
   }
 
+  useEffect(() => {
+    if (!cart.coupons) dispatch(fetchCoupons());
+    if (!cart.tax) dispatch(fetchTax());
+  }, []);
+
+  const applyCoupon = () => {
+    if (!cart.coupons) return;
+    const verifiedCoupon = cart.coupons.find(item => item.name.toLowerCase().trim() == coupon.toLowerCase().trim());
+    if (!verifiedCoupon) return;
+    dispatch(addCouponToCart(verifiedCoupon));
+  }
+
   return (
     <>
 
-<RBSheet
+      <RBSheet
         ref={AssetsDrawer}
         animationType="slide"
         dragFromTopOnly
@@ -97,7 +144,7 @@ export default function CartView({ navigation }) {
             }
           />
         </View>
-        <AddProduct/>
+        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 
@@ -174,42 +221,44 @@ export default function CartView({ navigation }) {
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{ flex: 1, paddingLeft: 20 }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ flex: 1 }}>
-                    <Text color={colors.primary}>{getAddressType(deliveryAddress.address_type)}</Text>
+                {deliveryAddress && <>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 1 }}>
+                      <Text color={colors.primary}>{getAddressType(deliveryAddress.address_type)}</Text>
 
-                    <View style={{ flexDirection: 'row', marginLeft: -16, alignItems: 'center' }}>
-                      <Image
-                        style={{ tintColor: colors.primary }}
-                        source={require('../../../assets/images/icons/tick.png')}
+                      <View style={{ flexDirection: 'row', marginLeft: -16, alignItems: 'center' }}>
+                        <Image
+                          style={{ tintColor: colors.primary }}
+                          source={require('../../../assets/images/icons/tick.png')}
+                        />
+                        <Text subtitle2 style={{ marginLeft: 5 }}>{deliveryAddress.name}</Text>
+                      </View>
+
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -5 }}>
+                      {deliveryAddress.default == "1" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Default" />}
+
+                      <IconButton transparent noBorder md
+                        onPress={() => {
+                          setEditAddress({ show: true });
+                        }}
+
+                        icon={
+                          <Image
+                            style={{ tintColor: '#5D6275' }}
+                            source={require('../../../assets/images/icons/edit.png')}
+                          />
+                        }
                       />
-                      <Text subtitle2 style={{ marginLeft: 5 }}>{deliveryAddress.name}</Text>
                     </View>
 
                   </View>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -5 }}>
-                    {deliveryAddress.default == "1" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Default" />}
-
-                    <IconButton transparent noBorder md
-                      onPress={() => {
-                        setEditAddress({ show: true });
-                      }}
-
-                      icon={
-                        <Image
-                          style={{ tintColor: '#5D6275' }}
-                          source={require('../../../assets/images/icons/edit.png')}
-                        />
-                      }
-                    />
-                  </View>
-
-                </View>
-
-                <Text>{deliveryAddress.house_no || ""} {deliveryAddress.address || ""} {deliveryAddress.landmark}</Text>
-                <Text>{deliveryAddress.city || ""}, {deliveryAddress.state}-{deliveryAddress.pincode}</Text>
-                <Text>{deliveryAddress.mobile}</Text>
+                  <Text>{deliveryAddress.house_no || ""} {deliveryAddress.address || ""} {deliveryAddress.landmark}</Text>
+                  <Text>{deliveryAddress.city || ""}, {deliveryAddress.state}-{deliveryAddress.pincode}</Text>
+                  <Text>{deliveryAddress.mobile}</Text>
+                </>}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: -5 }}>
                   <View style={{ flex: 1 }}>
@@ -254,64 +303,70 @@ export default function CartView({ navigation }) {
             </View>
 
           </View>
+
         </MainContainer>
 
 
         <MainContainer>
           <View style={{ marginBottom: 90 }}>
-            {item.map(item => (
-              <View style={{ marginVertical: 5 }}>
-                <Paper>
-                  <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image style={{ width: 78, height: 78, borderRadius: 5 }}
-                      source={require('../../../assets/images/mock_data/banner_1.png')}
-                    />
-                    <View style={{ flex: 1, paddingLeft: 16 }}>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={{ width: 12, height: 12, }}
-                          source={require('../../../assets/images/icons/veg.png')}
-                        />
-                        <Text style={{ marginLeft: 6 }}>Nut Butter Dream Bars</Text>
-                      </View>
-
-                      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                          <Image style={{ height: 10, marginRight: 4 }}
-                            source={require('../../../assets/images/icons/rupee.png')}
+            {cartItems.map(item => {
+              const product = getProductById(item.id);
+              return (
+                <View style={{ marginVertical: 5 }}>
+                  <Paper>
+                    <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
+                      <Image style={{ width: 78, height: 78, borderRadius: 5 }}
+                        source={require('../../../assets/images/mock_data/banner_1.png')}
+                      />
+                      <View style={{ flex: 1, paddingLeft: 16 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image style={{ width: 12, height: 12, }}
+                            source={require('../../../assets/images/icons/veg.png')}
                           />
-                          <Text color={colors.primary}>270 Kg</Text>
-                          <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>295 Kg</Text>
+                          <Text style={{ marginLeft: 6 }}>{product.name}</Text>
                         </View>
-                        <View style={{ width: 100 }}>
-                          <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty <= 0 ? 0 : qty - 1);
-                              }}
-                              icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
-                            />
 
-                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{qty <= 0 ? 'Add' : qty}</Text>
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty == 0 ? 0 : qty);
-                                AssetsDrawer.current?.open()
-                              }}
-                              icon={
-                                <Image source={require('../../../assets/images/icons/plus.png')} />
-                              }
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+                          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                            <Image style={{ height: 10, marginRight: 4 }}
+                              source={require('../../../assets/images/icons/rupee.png')}
                             />
+                            <Text color={colors.primary}>{item.variant.price} / {item.variant.weight}</Text>
+                            <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{item.variant.mrp}</Text>
+                          </View>
+                          <View style={{ width: 100 }}>
+                            <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
+
+                                  updateCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) })
+                                }}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                              />
+
+                              <Text hCenter style={{ flex: 1, fontSize: 14 }}>{item.qty <= 0 ? 'Add' : item.qty}</Text>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  setAddProduct({ ...addProduct, id: item.id });
+                                  AssetsDrawer.current?.open()
+                                }}
+                                icon={
+                                  <Image source={require('../../../assets/images/icons/plus.png')} />
+                                }
+                              />
+                            </View>
                           </View>
                         </View>
-                      </View>
 
+                      </View>
                     </View>
-                  </View>
-                </Paper>
-              </View>
-            ))}
+                  </Paper>
+                </View>
+              )
+            })}
 
             <View style={{
               shadowColor: '#000',
@@ -324,12 +379,11 @@ export default function CartView({ navigation }) {
               <View style={{ flex: 1, paddingLeft: 10, }}>
                 <TextInput
                   style={{ height: 37 }}
-                  onChangeText={onChangeNumber}
-                  value={number}
+                  onChangeText={setCoupon}
+                  value={coupon}
                   placeholder="Promo Code"
-                  keyboardType="numeric"
                 /></View>
-              <View style={{ width: 100 }}><Button title="Apply" md disable /></View>
+              <View style={{ width: 100 }}><Button title="Apply" md disable={coupon == ""} onPress={applyCoupon} /></View>
             </View>
 
             <View style={{ marginTop: 20 }}>
@@ -337,13 +391,13 @@ export default function CartView({ navigation }) {
 
               <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
-                  <Text caption>Sub Total</Text>
+                  <Text caption>Total MRP</Text>
                 </ListItem.Content>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Image style={{ height: 10, marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text >750.00</Text>
+                  <Text>{cart.subTotal}</Text>
                 </View>
               </ListItem>
 
@@ -355,7 +409,19 @@ export default function CartView({ navigation }) {
                   <Image style={{ height: 10, marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text >80.00</Text>
+                  <Text>{cart.discount}</Text>
+                </View>
+              </ListItem>
+
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+                <ListItem.Content>
+                  <Text caption>Sub Total</Text>
+                </ListItem.Content>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image style={{ height: 10, marginRight: 4 }}
+                    source={require('../../../assets/images/icons/rupee.png')}
+                  />
+                  <Text>{cart.priceTotal}</Text>
                 </View>
               </ListItem>
 
@@ -370,9 +436,22 @@ export default function CartView({ navigation }) {
                 <ListItem.Content>
                   <Text caption>Coupon</Text>
                 </ListItem.Content>
-                <Text >Happy50</Text>
+                {cart.appliedCoupon && <Text >{cart.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
+                  source={require('../../../assets/images/icons/rupee.png')}
+                />{cart.couponDiscount})</Text>}
               </ListItem>
-
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+                <ListItem.Content>
+                  <Text subtitle2>Total Tax</Text>
+                  {cart.tax && cart.tax.map(t => <Text caption>{t.name} : {t.percantage} %</Text>)}
+                </ListItem.Content>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image style={{ height: 10, marginRight: 4 }}
+                    source={require('../../../assets/images/icons/rupee.png')}
+                  />
+                  <Text subtitle2>{cart.totalTax}</Text>
+                </View>
+              </ListItem>
               <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text subtitle2>Total Amount</Text>
@@ -381,7 +460,7 @@ export default function CartView({ navigation }) {
                   <Image style={{ height: 10, marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text subtitle2>620.00</Text>
+                  <Text subtitle2>{cart.total}</Text>
                 </View>
               </ListItem>
 
@@ -411,7 +490,7 @@ export default function CartView({ navigation }) {
                   <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text h3 style={{ textAlign: 'right' }}>450</Text>
+                  <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text>
                 </View>
               </View>
               <View>
