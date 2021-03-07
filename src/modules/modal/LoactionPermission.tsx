@@ -1,8 +1,6 @@
-import React from 'react';
-import { StyleSheet, View, Modal, Image } from 'react-native';
-import { Icon , Divider, Avatar} from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-import Ripple from 'react-native-material-ripple';
+import React , {useState} from 'react';
+import { StyleSheet, View, Modal, Image  } from 'react-native';
+import GetLocation from 'react-native-get-location'
 
 import { colors } from '../../styles';
 import MainContainer from '../../components/Containers/Main';
@@ -10,20 +8,39 @@ import { Button } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 
-import FloatingInput from '../../components/FloatingInput';
-import FormGroup from '../../components/FormGroup';
-
 
 export const LoactionPermission = ({
   setLoactionPermission,
 }: {
   setLoactionPermission: (state: boolean) => void;
-}) => (
+}) => {
 
+  
+  const NewAddress = GetLocation.getCurrentPosition({
+    enableHighAccuracy: true,
+      timeout: 15000,
+  })
+  const [locationPick, setLocationPick] = useState("test")
 
-  // const navigation = useNavigation();
+  const requestLocation = () => {
 
-  // return (
+    
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+          timeout: 15000,
+      })
+      .then(location => {
+        setLocationPick(location)
+        // setLocationPick('new')
+          console.log(location + 'vinay');
+      })
+      .catch(error => {
+          const { code, message } = error;
+          console.warn(code, message);
+      })
+    }
+
+  return (
   <Modal animationType="slide" transparent>
     <View style={styles.overlay}>
       <View style={styles.centeredView}>
@@ -33,7 +50,7 @@ export const LoactionPermission = ({
               <View style={styles.modalData}>
 
                 <Text hCenter style={{paddingHorizontal: 10, marginBottom:20}} h3 >
-                  Location Permission 
+                  Location Permission
                 </Text>
 
                 <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom:10}}>
@@ -42,6 +59,12 @@ export const LoactionPermission = ({
                   />
                 </View>
                 <Text caption hCenter>Please allow to use your location to show nearby restaurant on the map.</Text>
+
+                    <Text >
+                    {JSON.stringify(NewAddress,0,2)}
+                      {/* {locationPick} */}
+                        {/* {JSON.stringify(location, 0, 2)} */}
+                    </Text>
                         
 
                 <View style={{flexDirection: 'row', marginTop:20, alignSelf: 'center', alignItems: 'center'}}>
@@ -53,11 +76,16 @@ export const LoactionPermission = ({
                       }}
                     />
                 </View>
+
+
                 <View style={{flex:1, marginHorizontal:5}}>
-                  <Button title="Enable" primary lg raised
+                  {/* <Button title="Enable" primary lg raised
                     onPress={() => {
                       setLoactionPermission(false);
                     }}
+                  /> */}
+                  <Button title="Enable" primary lg raised
+                    onPress={requestLocation}
                   />
                 </View>
 
@@ -72,7 +100,7 @@ export const LoactionPermission = ({
       </View>
     </View>
   </Modal>
-);
+  )};
 
 const styles = StyleSheet.create({
   closeIcon: {
