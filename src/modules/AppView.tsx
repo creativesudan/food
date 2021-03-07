@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { View, Text, Image } from 'react-native';
+import {ActivityIndicator, View, Text, Image } from 'react-native';
 import Login from './auth/Login';
 import OtpView from './auth/Otp';
 import CartView from './cart/Cart';
@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, initAuth } from "../redux/actions/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchAddressList, deleteAddress } from "../redux/actions/address";
+import { colors } from '../styles';
 
 export default function AppView() {
   const dispatch = useDispatch();
@@ -40,24 +41,14 @@ export default function AppView() {
 
   return (
     <>
-      {/* <Login/> */}
-      {/* <OtpView/> */}
-      {/* <HomeView/> */}
-      {/* <AccountView/> */}
-      {/* <CategoryView/> */}
-      {/* <CartView/> */}
-      {/* <PaymentView/> */}
-      {/* <DeliveryLocationView/> */}
-      {/* <OrderPlacedView/> */}
-      {/* <Navigator/> */}
-      {/* <ManageAddressView/> */}
-      {/* <OrderDetailView/> */}
-      {/* <OrderListView/> */}
       {inProgress > 0 && !showInitScreen &&
-        <Image
-          style={{ height: '100%' }}
-          source={require('../../assets/images/mock_data/flash-screen.png')}
-        />
+          <View style={{height:'100%', flexDirection:'row',alignItems:'center', alignSelf:'center'}}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        // <Image
+        //   style={{ height: '100%' }}
+        //   source={require('../../assets/images/mock_data/flash-screen.png')}
+        // />
       }
       {showInitScreen ?
 
@@ -66,8 +57,6 @@ export default function AppView() {
           source={require('../../assets/images/mock_data/flash-screen.png')}
         />
         : <Navigator />}
-
-
     </>
   )
 }
