@@ -14,10 +14,25 @@ import { AddAddress } from "../modal/AddAddress";
 import { EditAddress } from "../modal/EditAddress";
 import { color } from "react-native-reanimated";
 
+import {useSelector, useDispatch} from "react-redux";
+import {clearCart} from "../../redux/actions/cart";
 
 
-export default function OrderDetailView({navigation}) {
+export default function OrderDetailView({navigation, route}) {
   const [number, onChangeNumber] = React.useState(null);
+  const { order, deliveryAddress } = route.params;
+  const products = useSelector(state => state.home.allProducts || []);
+  const dispatch = useDispatch();
+  
+  const getProductById = (id) => {
+    if (!products) return {};
+    return products.find(item => item.pro_id == id) || {};
+  }
+
+  const updateCart = (item) => {
+    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+  }
+  
 
   return (
     <>
@@ -30,7 +45,9 @@ export default function OrderDetailView({navigation}) {
 
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom:5}}>
           <Text h4 bold style={{flex:1}}>Order Details</Text>
-          <Badge badgeStyle={{backgroundColor: '#63D8A5'}} value="Delivered"/>
+          {order.order_status=="2" && <Badge badgeStyle={{ backgroundColor: '#63D8A5' }} value="Delivered" />}
+                      {order.order_status=="1" && <Badge badgeStyle={{ backgroundColor: '#5D6275' }} value="Processing" />}
+                      {order.order_status=="3" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />}
         </View>
 
         <Paper style={{marginVertical:5}}>
@@ -39,32 +56,35 @@ export default function OrderDetailView({navigation}) {
               <ListItem.Content>
                 <Text caption>Delivery to :</Text>
               </ListItem.Content>
-              <Text>11th Ave, Gaur City 2</Text>
+              <Text>{deliveryAddress.house_no}, {deliveryAddress.address}, {deliveryAddress.city}</Text>
             </ListItem>
             <ListItem containerStyle={{paddingHorizontal:0, paddingVertical:4, backgroundColor: 'transparent'}}>
               <ListItem.Content>
                 <Text caption>Date & time :</Text>
               </ListItem.Content>
-              <Text>12 Sep, 2020, 08:32 PM</Text>
+              <Text>{order.datetime}</Text>
             </ListItem>
             <ListItem containerStyle={{paddingHorizontal:0, paddingVertical:4, backgroundColor: 'transparent'}}>
               <ListItem.Content>
                 <Text caption>Payment Mode :</Text>
               </ListItem.Content>
-              <Text>Credit Card</Text>
+              <Text>{order.payment_type}</Text>
             </ListItem>
           </View>
         </Paper>
 
         <Paper style={{marginVertical:5}}>
           <View style={{padding:10}}>
+            {order.order_pro && order.order_pro.map(pro=>{
+            const product = getProductById(pro.pro_id);
+            return (
             <ListItem containerStyle={{paddingHorizontal:0, paddingVertical:4, backgroundColor: 'transparent'}}>
               <ListItem.Content>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Image style={{width: 12, height:12,}}
                     source={require('../../../assets/images/icons/veg.png')}
                   />
-                  <Text style={{marginLeft:10}} >Nut Butter Dream Bars X2</Text>
+                  <Text style={{marginLeft:10}} >{product.name}</Text>
                 </View>
               </ListItem.Content>        
 
@@ -72,26 +92,10 @@ export default function OrderDetailView({navigation}) {
               <Image style={{ marginRight:4}}
                 source={require('../../../assets/images/icons/rupee.png')}
               />
-              <Text style={{marginLeft:2}}color={colors.primary}>270 Kg</Text>
+              <Text style={{marginLeft:2}}color={colors.primary}>{pro.price} / {pro.weight}</Text>
             </View>
-            </ListItem>
-            <ListItem containerStyle={{paddingHorizontal:0, paddingVertical:4, backgroundColor: 'transparent'}}>
-              <ListItem.Content>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Image style={{width: 12, height:12,}}
-                    source={require('../../../assets/images/icons/veg.png')}
-                  />
-                  <Text style={{marginLeft:10}} >Low-Sugar Snacks X1</Text>
-                </View>
-              </ListItem.Content>             
-
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{ marginRight:4}}
-                  source={require('../../../assets/images/icons/rupee.png')}
-                />
-                <Text style={{marginLeft:2}}color={colors.primary}>130 Kg</Text>
-              </View>
-            </ListItem>
+            </ListItem>)})}
+            
           </View>
         </Paper>
 
@@ -105,7 +109,7 @@ export default function OrderDetailView({navigation}) {
                 <Image style={{ marginRight:4}}
                   source={require('../../../assets/images/icons/rupee.png')}
                 />
-                <Text style={{marginLeft:2, width:50}}>750.00</Text>
+                <Text style={{marginLeft:2, width:50}}>{order.sub_total}</Text>
               </View>
             </ListItem>
             <ListItem containerStyle={{paddingHorizontal:0, paddingVertical:4, backgroundColor: 'transparent'}}>
@@ -117,7 +121,7 @@ export default function OrderDetailView({navigation}) {
                 <Image style={{ marginRight:4}}
                   source={require('../../../assets/images/icons/rupee.png')}
                 />
-                <Text style={{marginLeft:2, width:50}}>80.00</Text>
+                <Text style={{marginLeft:2, width:50}}>{order.discount_price}</Text>
               </View>
 
             </ListItem>
@@ -129,7 +133,7 @@ export default function OrderDetailView({navigation}) {
                 <Image style={{ marginRight:4}}
                   source={require('../../../assets/images/icons/rupee.png')}
                 />
-                <Text style={{marginLeft:2, width:50}} bold color={'#404355'}>620.00</Text>
+                <Text style={{marginLeft:2, width:50}} bold color={'#404355'}>{order.total_amount}</Text>
               </View>
             </ListItem>
           </View>
@@ -146,7 +150,20 @@ export default function OrderDetailView({navigation}) {
       <MainContainer>
         <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginHorizontal:-10}}>
           <View style={{flex:1, marginHorizontal:10}}><Button title="Contact" raised lg secondary/></View>
-          <View style={{flex:1, marginHorizontal:10}}><Button  onPress={() => navigation.navigate('Cart')} title="Repeat" raised lg primary/></View>
+          <View style={{flex:1, marginHorizontal:10}}><Button  onPress={() => {
+            dispatch(clearCart());
+            order.order_pro.map(pro=>{
+              const product = getProductById(pro.pro_id);
+              if(!product) return;
+            updateCart({
+                qty: parseInt(pro.qty),
+                id: pro.pro_id,
+                variant: product.price_weight.find(item=>item.weight == pro.weight),
+                product: product
+            });
+          })
+            navigation.navigate('Cart');
+            }} title="Repeat" raised lg primary/></View>
         </View>
       </MainContainer>
     </View>  

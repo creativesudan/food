@@ -36,6 +36,13 @@ export const codOrder = (orderId) => {
     }
 }
 
+export const onlineOrder = (orderId, txnid, type="ONLINE") => {
+    return {
+        type: ORDER_SUCCESS,
+        payload: agent.Order.onlineOrder(orderId, txnid, type)
+    }
+}
+
 export const clearCart = () => {
     return {
         type: CART_CLEARED

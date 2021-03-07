@@ -51,7 +51,7 @@ const Category = {
 }
 
 const Product = {
-    all: () => requests.post('?type=productlist&cat_id=1'),
+    all: () => requests.post('?type=productlist&cat_id='),
 }
 
 const Cart = {
@@ -73,7 +73,8 @@ const Order = {
     discount_price=${orderDetails.discount_price}&
     promo_per=${orderDetails.promo_per}`),
     codOrder: (orderId) => requests.post(`?type=codorder&order_id=${orderId}`),
-    onlineOrder: (orderId, txnid) => requests.post(`?type=paymentorder&order_id=${orderId}&txnid=${txnid}`)
+    onlineOrder: (orderId, txnid, type) => requests.post(`?type=paymentorder&order_id=${orderId}&txnid=${txnid}&payment_type=${type}`),
+    cancel: (orderId, cancelReason) => requests.post(`?type=cancelorder&user_id=${userId}&order_id=${orderId}&cancel_reason=${cancelReason}`)
 }
 
 const Address = {
