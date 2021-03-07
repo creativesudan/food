@@ -1,6 +1,7 @@
 import {
     CATEGORY_LOADED,
-    PRODUCTS_LOADED
+    PRODUCTS_LOADED,
+    ALL_PRODUCTS_LOADED
 } from "../actions/types";
 
 
@@ -15,6 +16,11 @@ export default function (state = {}, action) {
             return {
                 ...state,
                 products: action.payload.response.data
+            }
+        case ALL_PRODUCTS_LOADED:
+            return {
+                ...state,
+                allProducts: action.payload.response.data
             }
         default:
             return state;

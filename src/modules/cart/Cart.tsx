@@ -66,7 +66,7 @@ export default function CartView({ navigation }) {
   });
   const cartItems = useSelector(state => state.cart.items);
   const cart = useSelector(state => state.cart);
-  const products = useSelector(state => state.home.products || []);
+  const products = useSelector(state => state.home.allProducts || []);
   const dispatch = useDispatch();
   const [addProduct, setAddProduct] = useState({});
   const [coupon, setCoupon] = useState(cart.appliedCoupon ? cart.appliedCoupon.name : "");
@@ -80,7 +80,7 @@ export default function CartView({ navigation }) {
     const product = getProductById(id);
     let initialCartItem = {}
     if (product && product.price_weight) {
-      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id };
+      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id, product: product };
     }
 
     if (!cartItems) return initialCartItem;
@@ -470,35 +470,35 @@ export default function CartView({ navigation }) {
         </MainContainer>
       </ScrollView>
 
-
-      <View style={styles.footerMenu}>
-        <MainContainer>
-          <Ripple onPress={() => navigation.navigate('Payment')} style={{
-            borderRadius: 100, overflow: 'hidden', shadowColor: '#FBD490',
-            shadowOffset: { width: 4, height: 1 },
-            shadowOpacity: 0.2,
-            shadowRadius: 15,
-            elevation: 2,
-          }}>
-            <View style={{
-              height: 50, flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20, backgroundColor: colors.secondary,
+      {cartItems.length > 0 && deliveryAddress && (
+        <View style={styles.footerMenu}>
+          <MainContainer>
+            <Ripple onPress={() => navigation.navigate('Payment')} style={{
+              borderRadius: 100, overflow: 'hidden', shadowColor: '#FBD490',
+              shadowOffset: { width: 4, height: 1 },
+              shadowOpacity: 0.2,
+              shadowRadius: 15,
+              elevation: 2,
             }}>
-              <Text p style={{ flex: 1 }}>See Breakup</Text>
-              <View style={{}}>
-                <Text p>Make Payment</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text>
+              <View style={{
+                height: 50, flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20, backgroundColor: colors.secondary,
+              }}>
+                <Text p style={{ flex: 1 }}>See Breakup</Text>
+                <View style={{}}>
+                  <Text p>Make Payment</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text>
+                  </View>
                 </View>
-              </View>
-              <View>
-                <Image style={{ height: 14, width: 10, tintColor: '#404355', marginLeft: 4 }}
-                  source={require('../../../assets/images/icons/right.png')}
-                />
-              </View>
-              {/* <Button 
+                <View>
+                  <Image style={{ height: 14, width: 10, tintColor: '#404355', marginLeft: 4 }}
+                    source={require('../../../assets/images/icons/right.png')}
+                  />
+                </View>
+                {/* <Button 
               title="3 Items" 
               primary lg raised
               iconRight
@@ -509,10 +509,10 @@ export default function CartView({ navigation }) {
                 />
               }
             /> */}
-            </View>
-          </Ripple>
-        </MainContainer>
-      </View>
+              </View>
+            </Ripple>
+          </MainContainer>
+        </View>)}
 
     </>
   )

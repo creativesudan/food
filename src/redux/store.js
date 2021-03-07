@@ -10,6 +10,7 @@ import {
     CART_COUPON_APPLIED,
     CART_TAX_APPLIED,
     CART_PRODUCT_REMOVED,
+    CART_CLEARED
 
 } from './actions/types';
 import { initAuth, fetchUser } from "../redux/actions/auth";
@@ -36,6 +37,8 @@ const promiseMiddleware = store => next => action => {
                 console.log('ERROR', error);
                 action.error = true;
                 action.payload = error.response.body;
+                console.log(error.response.body);
+                store.dispatch({ type: ASYNC_END, promise: action.payload });
                 store.dispatch(action);
             }
         );
@@ -57,7 +60,7 @@ const appInitMiddleware = store => next => action => {
                     store.dispatch(initAuth(userId));
                     store.dispatch(fetchUser(userId));
                     agent.setUserId(userId);
-                    store.dispatch(fetchAddressList())
+                    store.dispatch(fetchAddressList());
                     store.dispatch({ type: APP_LOADED });
                 } else {
                     store.dispatch({ type: APP_LOADED })
@@ -75,6 +78,7 @@ const loginMiddleware = store => next => action => {
                 AsyncStorage.setItem('user_id', action.payload.response.data.id);
                 store.dispatch(fetchUser(action.payload.response.data.id));
                 agent.setUserId(action.payload.response.data.id);
+                store.dispatch(fetchAddressList());
             } catch (e) {
                 console.log(e);
             }
@@ -95,7 +99,8 @@ const cartMiddleware = store => next => action => {
     if (action.type && !isPromise(action.payload) && (action.type == CART_COUPON_APPLIED ||
         action.type == CART_PRODUCT_REMOVED ||
         action.type == CART_PRODUCT_UPDATED ||
-        action.type == CART_TAX_APPLIED)) {
+        action.type == CART_TAX_APPLIED ||
+        action.type == CART_CLEARED)) {
         next(action);
 
         const cart = store.getState().cart;
