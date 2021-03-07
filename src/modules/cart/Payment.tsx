@@ -16,7 +16,7 @@ import { color } from "react-native-reanimated";
 
 import { useSelector, useDispatch } from "react-redux";
 import agent from "../../agent";
-import { codOrder } from "../../redux/actions/cart";
+import { codOrder, onlineOrder } from "../../redux/actions/cart";
 
 
 const item = [
@@ -38,6 +38,7 @@ export default function PaymentView({ navigation }) {
   const [number, onChangeNumber] = React.useState(null);
   const [addAddress, setAddAddress] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
+  const [orderInProgress, setOrderInProgress] = useState(false);
   const PAYMENT_TYPE_COD = "PAYMENT_TYPE_COD";
   const PAYMENT_TYPE_ONLINE = "PAYMENT_TYPE_ONLINE";
   const [paymentType, setPaymentType] = useState(PAYMENT_TYPE_COD);
@@ -77,23 +78,34 @@ export default function PaymentView({ navigation }) {
   const order = () => {
     const orderDetails = prepareOrder();
     console.log(orderDetails);
+    if(orderInProgress) return;
+    setOrderInProgress(true);
 
-    agent.Order.addOrder(orderDetails).then(
+    return agent.Order.addOrder(orderDetails).then(
       res => {
         if (res.response.status == "1") {
           console.log(res);
           const orderId = res.response.data.order_id;
-          if (paymentType == PAYMENT_TYPE_COD)
+          if (paymentType == PAYMENT_TYPE_COD){
             dispatch(codOrder(orderId));
+            navigation.navigate('Order Summary');
+          }
           else if (paymentType == PAYMENT_TYPE_ONLINE) {
 
+            dispatch(onlineOrder(orderId,"TEST"));
+            navigation.navigate('Order Summary');
+
           }
+          setOrderInProgress(false);
+          
         } else {
           console.log("Error Placing Order!");
+          setOrderInProgress(false);
         }
       },
       error => {
         console.log("Error Placing Order!" + error);
+        setOrderInProgress(false);
       });
   }
 
@@ -290,9 +302,8 @@ export default function PaymentView({ navigation }) {
       <View style={styles.footerMenu}>
         <MainContainer>
           <Ripple onPress={() => {
-            order();
-            navigation.navigate('Order Summary');
-          }} style={{ borderRadius: 100, overflow: 'hidden' }}>
+            if(!orderInProgress) order();
+          }} style={{ borderRadius: 100, overflow: 'hidden' }} disabled={orderInProgress}>
             <View style={{ position: 'relative', backgroundColor: colors.secondary }}>
               <View style={{
                 flexDirection: 'row', alignItems: 'center', alignSelf: 'center',
@@ -300,11 +311,11 @@ export default function PaymentView({ navigation }) {
               }}>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text title style={{ marginRight: 10 }}>Pay</Text>
+                  {(paymentType == PAYMENT_TYPE_ONLINE) ? (<><Text title style={{ marginRight: 10 }}>Pay</Text>
                   <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text>
+                  <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text></>) : (<Text title style={{ marginRight: 10 }}>Place Order</Text>)}
                 </View>
 
               </View>

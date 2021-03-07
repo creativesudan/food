@@ -1,4 +1,4 @@
-import { ORDERS_LOADED } from "./types";
+import { ORDERS_LOADED, ORDER_CANCELLED } from "./types";
 import agent from "../../agent";
 
 export const fetchOrders = () => {
@@ -7,3 +7,11 @@ export const fetchOrders = () => {
         payload: agent.Order.all()
     }
 }
+
+export const cancelOrder = (orderId, cancelReason="") => {
+    return {
+        type: ORDER_CANCELLED,
+        payload: agent.Order.cancel(orderId, cancelReason)
+    }
+}
+

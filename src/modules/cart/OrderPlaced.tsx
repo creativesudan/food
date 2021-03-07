@@ -117,6 +117,7 @@ export default function OrderPlacedView({ navigation }) {
               <View style={{ padding: 10 }}>
                 {orderDetails.order_pro && orderDetails.order_pro[0].map(pro => {
                   const product = getProductById(pro.pro_id);
+                  console.log(pro);
                   return (
                     <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
                       <ListItem.Content>
