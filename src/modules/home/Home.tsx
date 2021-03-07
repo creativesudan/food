@@ -18,8 +18,9 @@ import { ReviewRate } from "../modal/ReviewRate";
 import Slider from "./Slider";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCategories } from "../../redux/actions/home";
+import { fetchCategories, fetchAllProducts } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
+import agent from "../../agent";
 
 
 const data = [
@@ -54,10 +55,36 @@ export default function HomeView({ navigation }) {
   const dispatch = useDispatch();
   const categories = useSelector(state => state.home.categories || []);
   const deliveryAddress = useSelector(state => state.app.address || {});
-  const cartItemsCount = useSelector(state => state.cart.items.length);
+  const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
+  const allProducts = useSelector(state => state.home.allProducts || []);
+  const cartItems = useSelector(state => state.cart.items);
+  const [addProduct, setAddProduct] = useState({});
+
+  const getProductById = (id) => {
+    if (!allProducts || allProducts.length == 0) return {};
+    return allProducts.find(item => item.pro_id == id) || {};
+  }
+
+  const getCartItemById = (id) => {
+    const product = getProductById(id);
+    let initialCartItem = {}
+    if (product && product.price_weight) {
+      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id, product: product };
+    }
+
+    if (!cartItems) return initialCartItem;
+    const items = cartItems.find(item => item.id == id) || initialCartItem;
+
+    return items;
+  }
+
+  const updateCart = (item) => {
+    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+  }
 
   useEffect(() => {
     dispatch(fetchCategories());
+    if (!allProducts || allProducts.length == 0) dispatch(fetchAllProducts());
   }, []);
 
   return (
@@ -93,13 +120,13 @@ export default function HomeView({ navigation }) {
             }
           />
         </View>
-        <AddProduct />
+        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 
       {menuModalVisible && <MenuModal setMenuModalVisible={setMenuModalVisible} />}
       {loactionPermission && <LoactionPermission setLoactionPermission={setLoactionPermission} />}
-      {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} />}
+      {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} navigation={navigation} />}
       {reviewRate && <ReviewRate setReviewRate={setReviewRate} />}
       <View style={{ flexDirection: 'column', flexGrow: 1, backgroundColor: colors.bodyBase }}>
         <View style={{ backgroundColor: colors.bodyBase }}>
@@ -179,7 +206,7 @@ export default function HomeView({ navigation }) {
                               <View style={{ width: 50, alignItems: 'center', }}><Image
                                 style={{ height: 54, width: 54 }}
                                 source={{
-                                  uri: 'https://reactnative.dev/img/tiny_logo.png',
+                                  uri: agent.MEDIA_ROOT + '/category/' + item.icon
                                 }} /></View>
                               <Text caption hCenter style={styles.label}>{item.name}</Text>
                             </View>
@@ -198,44 +225,54 @@ export default function HomeView({ navigation }) {
 
               <View style={{ marginLeft: -5, marginRight: -15 }}>
                 <ScrollView horizontal={true}>
-                  {exclusive.map(item => (
+                  {allProducts.filter(item => item.showhome == "0").map(item => (
                     <View style={{ marginBottom: 10, width: 140, marginHorizontal: 5 }}>
                       <Paper>
                         <Image style={{ width: '100%', height: 60, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-                          source={require('../../../assets/images/mock_data/banner_1.png')}
+                          source={{
+                            uri: item.image,
+                          }}
                         />
 
                         <View style={{ padding: 10 }}>
-                          <Text>{item.label}</Text>
+                          <Text>{item.name}</Text>
                           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image style={{ height: 10, marginRight: 4 }}
                               source={require('../../../assets/images/icons/rupee.png')}
                             />
-                            <Text p color={colors.primary}>{item.saleP} {item.unit}</Text>
-                            <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.oldP} {item.unit}</Text>
+                            <Text p color={colors.primary}>{item.price_weight.length != 0 ? item.price_weight[0].price : "NA"} / {item.price_weight.length != 0 ? item.price_weight[0].weight : "NA"}</Text>
+                            <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
                           </View>
 
                           <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
 
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty <= 0 ? 0 : qty - 1);
-                              }}
-                              icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
-                            />
+                            {getCartItemById(item.pro_id).qty <= 0 && <Text onPress={() => {
+                              setAddProduct({ ...addProduct, id: item.pro_id });
+                              AssetsDrawer.current?.open();
+                            }} hCenter style={{ flex: 1, fontSize: 14 }}>Add</Text>}
+                            {(getCartItemById(item.pro_id).qty > 0) && <>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
+                                  const cartItem = getCartItemById(item.pro_id);
+                                  updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                }}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                              />
 
-                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{qty <= 0 ? 'Add' : qty}</Text>
-                            <IconButton
-                              white noBorder mdR
-                              onPress={() => {
-                                setQty(qty + 1);
-                                AssetsDrawer.current?.open();
-                              }}
-                              icon={
-                                <Image source={require('../../../assets/images/icons/plus.png')} />
-                              }
-                            />
+                              <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(item.pro_id).qty <= 0 ? 0 : getCartItemById(item.pro_id).qty}</Text>
+                              <IconButton
+                                white noBorder mdR
+                                onPress={() => {
+                                  setAddProduct({ ...addProduct, id: item.pro_id });
+                                  AssetsDrawer.current?.open();
+                                }}
+                                icon={
+                                  <Image source={require('../../../assets/images/icons/plus.png')} />
+                                }
+                              />
+                            </>}
                           </View>
 
                         </View>

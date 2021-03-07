@@ -5,7 +5,8 @@ import {
     CART_COUPONS_LOADED,
     CART_COUPON_APPLIED,
     CART_TAX_APPLIED,
-    CART_EVALUATED
+    CART_EVALUATED,
+    CART_CLEARED
 } from "../actions/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,6 +22,10 @@ export default function (state = { items: [] }, action) {
             return {
                 ...state,
                 items: state.items.filter(item => item.id !== action.payload.id)
+            }
+        case CART_CLEARED:
+            return {
+                items: []
             }
 
         case CART_PRODUCT_UPDATED:

@@ -6,6 +6,7 @@ import { add } from 'react-native-reanimated';
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const API_ROOT = 'http://bsadmin.techpex.com/api/';
+const MEDIA_ROOT = 'http://bsadmin.techpex.com/masterbabysweet/uploads';
 
 const encode = encodeURIComponent;
 const responseBody = res => JSON.parse(res.text);
@@ -49,11 +50,31 @@ const Category = {
     products: (categoryId) => requests.post(`?type=productlist&cat_id=${categoryId}`)
 }
 
+const Product = {
+    all: () => requests.post('?type=productlist&cat_id=1'),
+}
+
 const Cart = {
     coupons: () => requests.post('?type=couponlist'),
     tax: () => requests.post('?type=taxlist')
 }
 
+const Order = {
+    all: () => requests.post(`?type=order_list&user_id=${userId}`),
+    addOrder: (orderDetails) => requests.post(`?type=addorder&user_id=${userId}&
+    total_amount=${orderDetails.total_amount}&
+    total_product=${orderDetails.total_product}&
+    prodata=${JSON.stringify(orderDetails.prodata)}&
+    address_id=${orderDetails.address_id}&
+    code_id=${orderDetails.code_id}&
+    promocode=${orderDetails.promocode}&
+    promo_discount=${orderDetails.promo_discount}&
+    sub_total=${orderDetails.sub_total}&
+    discount_price=${orderDetails.discount_price}&
+    promo_per=${orderDetails.promo_per}`),
+    codOrder: (orderId) => requests.post(`?type=codorder&order_id=${orderId}`),
+    onlineOrder: (orderId, txnid) => requests.post(`?type=paymentorder&order_id=${orderId}&txnid=${txnid}`)
+}
 
 const Address = {
     all: () => requests.post(`?type=addresslist&user_id=${userId}`, {}),
@@ -81,5 +102,8 @@ export default {
     Category,
     Address,
     Cart,
-    setUserId: _userId => { userId = _userId; }
+    setUserId: _userId => { userId = _userId; },
+    MEDIA_ROOT,
+    Product,
+    Order
 };

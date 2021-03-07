@@ -16,7 +16,7 @@ import { MenuModal } from "../modal/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
-import cart from "../../redux/reducers/cart";
+import agent from "../../agent";
 
 
 const item = [
@@ -62,7 +62,7 @@ export default function CategoryView({ route, navigation }) {
     const product = getProductById(id);
     let initialCartItem = {}
     if (product && product.price_weight) {
-      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id };
+      initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id, product: product };
     }
 
     if (!cartItems) return initialCartItem;
@@ -205,7 +205,9 @@ export default function CategoryView({ route, navigation }) {
                     <Ripple onPress={() => navigation.setParams({ "category": item })}>
                       <View style={{ marginVertical: 7, paddingHorizontal: 10, alignItems: 'center' }}>
                         <View style={{ alignItems: 'center', }}>
-                          <Image style={{ width: 48, height: 32 }} source={{ uri: item.image }} />
+                          <Image style={{ width: 48, height: 32 }} source={{
+                            uri: agent.MEDIA_ROOT + '/category/' + item.icon
+                          }} />
                         </View>
                         <Text caption hCenter style={styles.label}>{item.name}</Text>
                       </View>
