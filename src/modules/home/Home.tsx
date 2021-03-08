@@ -9,7 +9,7 @@ import { Button, IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 import { colors } from '../../styles';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import { ScrollView } from "react-native-gesture-handler";
 import { MenuModal } from "../modal/Menu";
 import { LoactionPermission } from "../modal/LoactionPermission";
@@ -124,7 +124,7 @@ export default function HomeView({ navigation }) {
 
       </RBSheet>
 
-      {menuModalVisible && <MenuModal setMenuModalVisible={setMenuModalVisible} />}
+      {menuModalVisible && <MenuModal setMenuModalVisible={setMenuModalVisible} navigation={navigation} />}
       {loactionPermission && <LoactionPermission setLoactionPermission={setLoactionPermission} />}
       {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} navigation={navigation} />}
       {reviewRate && <ReviewRate setReviewRate={setReviewRate} />}
@@ -216,6 +216,7 @@ export default function HomeView({ navigation }) {
                     </View>
                   </View>
                 ))}
+
               </View>
 
               <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
@@ -244,7 +245,7 @@ export default function HomeView({ navigation }) {
                             <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
                           </View>
 
-                          <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                          <View style={{ height:34, overflow:'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
 
                             {getCartItemById(item.pro_id).qty <= 0 && <Text onPress={() => {
                               setAddProduct({ ...addProduct, id: item.pro_id });

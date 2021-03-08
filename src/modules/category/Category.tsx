@@ -250,7 +250,7 @@ export default function CategoryView({ route, navigation }) {
                         </View>
                         <View style={{ width: 100 }}>
 
-                          <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                          <View style={{ height:34, overflow:'hidden', marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
                             {getCartItemById(product.pro_id).qty <= 0 && <Text onPress={() => {
                               setAddProduct({ ...addProduct, id: product.pro_id });
                               AssetsDrawer.current?.open();

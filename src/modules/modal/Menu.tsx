@@ -12,11 +12,22 @@ import { Text } from '../../components/StyledText';
 
 
 export const MenuModal = ({
-  setMenuModalVisible, 
+  setMenuModalVisible, navigation
 }: {
   setMenuModalVisible: (state: boolean) => void;
-}) => (
+  navigation: object;
+}) => {
   // const [modalVisible, setModalVisible] = useState(false);
+
+  const modalNavigate = (link) => {
+    setMenuModalVisible(false),
+    navigation.navigate(link)
+  }
+    
+  
+
+  return (
+
   <View>
     
     <Modal animationType="slide" transparent visible>
@@ -48,8 +59,9 @@ export const MenuModal = ({
             <ScrollView>
 
               <View>
+           
 
-                <ListItem bottomDivider >
+                <ListItem bottomDivider  onPress={()=> modalNavigate('My Account')}>
                   <Avatar size={20} source={require('../../../assets/images/icons/user.png')} />
                   <ListItem.Content>
                     <ListItem.Title>My Account</ListItem.Title>
@@ -58,7 +70,7 @@ export const MenuModal = ({
                   {/* <ListItem.Chevron /> */}
                 </ListItem>
 
-                <ListItem bottomDivider>
+                <ListItem bottomDivider onPress={()=> modalNavigate('Manage Address')}>
                   <Avatar size={20} source={require('../../../assets/images/icons/address.png')} />
                   <ListItem.Content>
                     <ListItem.Title>Manage Address</ListItem.Title>
@@ -66,7 +78,7 @@ export const MenuModal = ({
                   <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
-                <ListItem bottomDivider>
+                <ListItem bottomDivider onPress={()=> modalNavigate('Order List')}>
                   <Avatar size={20} source={require('../../../assets/images/icons/orders_2.png')} />
                   <ListItem.Content>
                     <ListItem.Title>Orders</ListItem.Title>
@@ -124,7 +136,7 @@ export const MenuModal = ({
 
     </Modal>
   </View>
-);
+)};
 
 const styles = StyleSheet.create({
   divider: {
