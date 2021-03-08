@@ -120,7 +120,7 @@ export const AddAddress = ({
                     />
                   </View>
 
-                  <View style={{ marginVertical: 2 }}>
+                  {/* <View style={{ marginVertical: 2 }}>
                     <FloatingInput
                       attrName="personalName"
                       title="City"
@@ -145,7 +145,7 @@ export const AddAddress = ({
                       value={address.country}
                       onChange={changeAddressField("country")}
                     />
-                  </View>
+                  </View> */}
 
                   <View style={{ marginVertical: 2 }}>
                     <FloatingInput
