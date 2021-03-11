@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import {ActivityIndicator, View, Text, Image } from 'react-native';
+import { ActivityIndicator, View, Text, Image } from 'react-native';
 import Login from './auth/Login';
 import OtpView from './auth/Otp';
 import CartView from './cart/Cart';
@@ -42,9 +42,9 @@ export default function AppView() {
   return (
     <>
       {inProgress > 0 && !showInitScreen &&
-          <View style={{height:'100%', flexDirection:'row',alignItems:'center', alignSelf:'center'}}>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </View>
+        <View style={{ height: '100%', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
         // <Image
         //   style={{ height: '100%' }}
         //   source={require('../../assets/images/mock_data/flash-screen.png')}

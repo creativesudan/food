@@ -18,7 +18,7 @@ import { ReviewRate } from "../modal/ReviewRate";
 import Slider from "./Slider";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCategories, fetchAllProducts } from "../../redux/actions/home";
+import { fetchCategories, fetchAllProducts, fetchSliderImages } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
 
@@ -58,6 +58,7 @@ export default function HomeView({ navigation }) {
   const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
   const allProducts = useSelector(state => state.home.allProducts || []);
   const cartItems = useSelector(state => state.cart.items);
+  const sliderImages = useSelector(state => state.home.sliderImages || []);
   const [addProduct, setAddProduct] = useState({});
 
   const getProductById = (id) => {
@@ -85,6 +86,7 @@ export default function HomeView({ navigation }) {
   useEffect(() => {
     dispatch(fetchCategories());
     if (!allProducts || allProducts.length == 0) dispatch(fetchAllProducts());
+    if (!sliderImages || sliderImages.length == 0) dispatch(fetchSliderImages());
   }, []);
 
   return (
@@ -188,7 +190,7 @@ export default function HomeView({ navigation }) {
 
             <MainContainer>
               <View style={styles.banner}>
-                <Slider />
+                <Slider images={sliderImages} />
                 {/* <Image style={{width: '100%', borderRadius: 5}}
             source={require('../../../assets/images/mock_data/banner_1.png')}
           /> */}
@@ -226,7 +228,7 @@ export default function HomeView({ navigation }) {
 
               <View style={{ marginLeft: -5, marginRight: -15 }}>
                 <ScrollView horizontal={true}>
-                  {allProducts.filter(item => item.showhome == "0").map(item => (
+                  {allProducts.filter(item => parseInt(item.showhome) == 1).map(item => (
                     <View style={{ marginBottom: 10, width: 140, marginHorizontal: 5 }}>
                       <Paper>
                         <Image style={{ width: '100%', height: 60, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
@@ -245,7 +247,7 @@ export default function HomeView({ navigation }) {
                             <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
                           </View>
 
-                          <View style={{ height:34, overflow:'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                          <View style={{ height: 34, overflow: 'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
 
                             {getCartItemById(item.pro_id).qty <= 0 && <Text onPress={() => {
                               setAddProduct({ ...addProduct, id: item.pro_id });

@@ -48,6 +48,10 @@ export default function AddressList() {
     }
   }, [deleteAddressConfirm]);
 
+  useEffect(() => {
+    if (!addresses || addresses.length == 0) dispatch(fetchAddressList());
+  }, []);
+
   const getAddressType = (id) => {
     if (id == 1) return "Work";
     if (id == 2) return "Home";

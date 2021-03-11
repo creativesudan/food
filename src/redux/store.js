@@ -10,11 +10,14 @@ import {
     CART_COUPON_APPLIED,
     CART_TAX_APPLIED,
     CART_PRODUCT_REMOVED,
-    CART_CLEARED
+    CART_CLEARED,
+    ADDRESS_SAVED,
+    ADDRESS_LOADED
 
 } from './actions/types';
 import { initAuth, fetchUser } from "../redux/actions/auth";
 import { fetchAddressList } from "../redux/actions/address";
+import { selectDeliveryAddress, removeDeliveryAddress } from "../redux/actions/app";
 import { evaluateCart } from "../redux/actions/cart";
 import rootReducer from './reducers/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,6 +64,13 @@ const appInitMiddleware = store => next => action => {
                     store.dispatch(fetchUser(userId));
                     agent.setUserId(userId);
                     store.dispatch(fetchAddressList());
+                    try {
+                        AsyncStorage.getItem('delivery_address')
+                            .then((address) => { if (address) store.dispatch(selectDeliveryAddress(JSON.parse(address))) })
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
                     store.dispatch({ type: APP_LOADED });
                 } else {
                     store.dispatch({ type: APP_LOADED })
@@ -114,12 +124,41 @@ const cartMiddleware = store => next => action => {
     }
 };
 
+const deliveryAddressMiddleware = store => next => action => {
+    if (action.type && !isPromise(action.payload) && (action.type == ADDRESS_SAVED)) {
+        const deliveryAddress = action.payload.response.data;
+        console.log(deliveryAddress);
+        if (deliveryAddress)
+            store.dispatch(selectDeliveryAddress({ id: deliveryAddress.address_id }));
+
+    }
+    else if (action.type && !isPromise(action.payload) && (action.type == ADDRESS_LOADED)) {
+        const addresses = action.payload.response.data || [];
+
+        if (!addresses || addresses.length == 0) {
+            store.dispatch(removeDeliveryAddress());
+        }
+        const existing = store.getState().app.address || {};
+        console.log(addresses);
+        console.log(existing);
+        const deliveryAddress = addresses.find(address => address.id == existing.id)
+
+        if (deliveryAddress) {
+            store.dispatch(selectDeliveryAddress(deliveryAddress));
+        }
+    }
+
+    next(action);
+
+};
+
+
 function isPromise(v) {
     return v && typeof v.then === 'function';
 }
 const store = createStore(
     rootReducer,
-    applyMiddleware(promiseMiddleware, appInitMiddleware, loginMiddleware, cartMiddleware)
+    applyMiddleware(promiseMiddleware, appInitMiddleware, loginMiddleware, cartMiddleware, deliveryAddressMiddleware)
 );
 
 

@@ -1,7 +1,8 @@
 import {
     CATEGORY_LOADED,
     PRODUCTS_LOADED,
-    ALL_PRODUCTS_LOADED
+    ALL_PRODUCTS_LOADED,
+    SLIDER_IMAGES_LOADED
 } from "../actions/types";
 
 
@@ -21,6 +22,11 @@ export default function (state = {}, action) {
             return {
                 ...state,
                 allProducts: action.payload.response.data
+            }
+        case SLIDER_IMAGES_LOADED:
+            return {
+                ...state,
+                sliderImages: action.payload.response.data
             }
         default:
             return state;
