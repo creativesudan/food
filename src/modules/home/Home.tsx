@@ -22,6 +22,8 @@ import { fetchCategories, fetchAllProducts, fetchSliderImages } from "../../redu
 import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
 
+import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
+
 
 const data = [
   { id: 'a', name: 'Snacks', image: require('../../../assets/images/server_icons/snack.png') },
@@ -45,7 +47,7 @@ const exclusive = [
 export default function HomeView({ navigation }) {
 
   const [menuModalVisible, setMenuModalVisible] = useState(false);
-  const [loactionPermission, setLoactionPermission] = useState(true);
+  const [loactionPermission, setLoactionPermission] = useState(false);
   const [searchModalVisible, setSearchModalVisible] = useState(false);
   const [reviewRate, setReviewRate] = useState(false);
 
@@ -60,6 +62,8 @@ export default function HomeView({ navigation }) {
   const cartItems = useSelector(state => state.cart.items);
   const sliderImages = useSelector(state => state.home.sliderImages || []);
   const [addProduct, setAddProduct] = useState({});
+
+
 
   const getProductById = (id) => {
     if (!allProducts || allProducts.length == 0) return {};
@@ -88,6 +92,15 @@ export default function HomeView({ navigation }) {
     if (!allProducts || allProducts.length == 0) dispatch(fetchAllProducts());
     if (!sliderImages || sliderImages.length == 0) dispatch(fetchSliderImages());
   }, []);
+
+  useEffect(() => {
+    Permissions.check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then(response => {
+      if (response !== RESULTS.GRANTED) {
+        setLoactionPermission(true);
+      }
+    });
+
+  }, [])
 
   return (
     <>
