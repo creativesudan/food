@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, StyleSheet, Image, Dimensions, SafeAreaView, TextInput } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
@@ -75,29 +75,33 @@ export default function PaymentView({ navigation }) {
     return orderDetails;
   }
 
+  useEffect(() => {
+    if (orderInProgress) order();
+    console.log("HELLLOOOOOOO222222");
+    console.log(orderInProgress);
+  }, [orderInProgress]);
+
   const order = () => {
     const orderDetails = prepareOrder();
     console.log(orderDetails);
-    if(orderInProgress) return;
-    setOrderInProgress(true);
 
     return agent.Order.addOrder(orderDetails).then(
       res => {
         if (res.response.status == "1") {
           console.log(res);
           const orderId = res.response.data.order_id;
-          if (paymentType == PAYMENT_TYPE_COD){
+          if (paymentType == PAYMENT_TYPE_COD) {
             dispatch(codOrder(orderId));
             navigation.navigate('Order Summary');
           }
           else if (paymentType == PAYMENT_TYPE_ONLINE) {
 
-            dispatch(onlineOrder(orderId,"TEST"));
+            dispatch(onlineOrder(orderId, "TEST"));
             navigation.navigate('Order Summary');
 
           }
-          setOrderInProgress(false);
-          
+
+
         } else {
           console.log("Error Placing Order!");
           setOrderInProgress(false);
@@ -302,7 +306,19 @@ export default function PaymentView({ navigation }) {
       <View style={styles.footerMenu}>
         <MainContainer>
           <Ripple onPress={() => {
-            if(!orderInProgress) order();
+
+            console.log("HELLLOOOOOOOOOOOO");
+            console.log(orderInProgress);
+            if (orderInProgress) {
+              return;
+            }
+
+
+
+            setOrderInProgress(true);
+
+
+
           }} style={{ borderRadius: 100, overflow: 'hidden' }} disabled={orderInProgress}>
             <View style={{ position: 'relative', backgroundColor: colors.secondary }}>
               <View style={{
@@ -312,10 +328,10 @@ export default function PaymentView({ navigation }) {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {(paymentType == PAYMENT_TYPE_ONLINE) ? (<><Text title style={{ marginRight: 10 }}>Pay</Text>
-                  <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text></>) : (<Text title style={{ marginRight: 10 }}>Place Order</Text>)}
+                    <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text h3 style={{ textAlign: 'right' }}>{cart.total}</Text></>) : (<Text title style={{ marginRight: 10 }}>Place Order</Text>)}
                 </View>
 
               </View>

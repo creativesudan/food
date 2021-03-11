@@ -54,6 +54,10 @@ const Product = {
     all: () => requests.post('?type=productlist&cat_id='),
 }
 
+const SliderImages = {
+    all: () => requests.post('?type=sliderlist'),
+}
+
 const Cart = {
     coupons: () => requests.post('?type=couponlist'),
     tax: () => requests.post('?type=taxlist')
@@ -106,5 +110,6 @@ export default {
     setUserId: _userId => { userId = _userId; },
     MEDIA_ROOT,
     Product,
-    Order
+    Order,
+    SliderImages
 };

@@ -56,6 +56,7 @@ export default function CartView({ navigation }) {
     hideDatePicker();
   };
   const AssetsDrawer = useRef<RBSheet>(null);
+  const allAddresses = useSelector(state => state.address.addresses);
 
   const deliveryAddress = useSelector(state => {
     if (!state.address.addresses) return null;
@@ -70,6 +71,7 @@ export default function CartView({ navigation }) {
   const dispatch = useDispatch();
   const [addProduct, setAddProduct] = useState({});
   const [coupon, setCoupon] = useState(cart.appliedCoupon ? cart.appliedCoupon.name : "");
+  const isFirstRun = useRef(true);
 
   const getProductById = (id) => {
     if (!products) return {};
@@ -103,6 +105,14 @@ export default function CartView({ navigation }) {
     if (!cart.coupons) dispatch(fetchCoupons());
     if (!cart.tax) dispatch(fetchTax());
   }, []);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    if (cartItems.length == 0 || cartItems.reduce((total, obj) => total + obj.qty, 0) == 0) navigation.navigate("Home");
+  }, [cartItems]);
 
   const applyCoupon = () => {
     if (!cart.coupons) return;
@@ -261,14 +271,16 @@ export default function CartView({ navigation }) {
                 </>}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: -5 }}>
-                  <View style={{ flex: 1 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Ripple onPress={() => navigation.navigate('Manage Address')} style={{ flexDirection: 'row', padding: 5, alignItems: 'center', }}>
-                        <Text style={{ marginRight: 5, color: colors.primary }}>Choose Address</Text>
-                        <Image style={{ marginTop: 3 }} source={require('../../../assets/images/icons/down.png')} />
-                      </Ripple>
+                  {allAddresses && allAddresses.length != 0 &&
+                    <View style={{ flex: 1 }}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Ripple onPress={() => navigation.navigate('Manage Address')} style={{ flexDirection: 'row', padding: 5, alignItems: 'center', }}>
+                          <Text style={{ marginRight: 5, color: colors.primary }}>Choose Address</Text>
+                          <Image style={{ marginTop: 3 }} source={require('../../../assets/images/icons/down.png')} />
+                        </Ripple>
+                      </View>
                     </View>
-                  </View>
+                  }
 
                   <Ripple style={{ flexDirection: 'row', padding: 5, alignItems: 'center', }}
                     onPress={() => {
@@ -341,7 +353,8 @@ export default function CartView({ navigation }) {
                                 onPress={() => {
                                   // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
 
-                                  updateCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) })
+                                  updateCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) });
+
                                 }}
                                 icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                               />

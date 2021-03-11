@@ -16,6 +16,7 @@ import { color } from "react-native-reanimated";
 
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "../../redux/actions/cart";
+import { clearOrderPlaced } from "../../redux/actions/order";
 
 
 
@@ -35,7 +36,10 @@ export default function OrderPlacedView({ navigation }) {
   }
 
   useEffect(() => {
-    dispatch(clearCart());
+    return () => {
+      dispatch(clearCart());
+      dispatch(clearOrderPlaced());
+    }
   }, []);
 
   return (

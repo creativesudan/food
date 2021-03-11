@@ -3,7 +3,8 @@ import {
     APP_LOADING,
     ASYNC_END,
     ASYNC_START,
-    ADDRESS_SELECTED
+    ADDRESS_SELECTED,
+    DELIVERY_ADDRESS_REMOVED
 } from "../actions/types";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,6 +35,11 @@ export default function (state = {}, action) {
             return {
                 ...state,
                 address: action.payload
+            }
+        case DELIVERY_ADDRESS_REMOVED:
+            return {
+                ...state,
+                address: null
             }
         default:
             return state;

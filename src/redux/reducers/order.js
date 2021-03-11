@@ -1,6 +1,7 @@
 import {
     ORDER_SUCCESS,
-    ORDERS_LOADED
+    ORDERS_LOADED,
+    ORDER_PLACED_CLEARED
 } from "../actions/types";
 
 
@@ -17,6 +18,11 @@ export default function (state = { orders: [], newOrder: {} }, action) {
             return {
                 ...state,
                 orders: action.payload.response.data
+            }
+        case ORDER_PLACED_CLEARED:
+            return {
+                ...state,
+                newOrder: {}
             }
 
         default:
