@@ -1,5 +1,5 @@
-import React , {useState} from 'react';
-import { StyleSheet, View, Modal, Image  } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Modal, Image } from 'react-native';
 import GetLocation from 'react-native-get-location'
 
 import { colors } from '../../styles';
@@ -8,6 +8,8 @@ import { Button } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 
+import { request, PERMISSIONS } from 'react-native-permissions';
+
 
 export const LoactionPermission = ({
   setLoactionPermission,
@@ -15,92 +17,74 @@ export const LoactionPermission = ({
   setLoactionPermission: (state: boolean) => void;
 }) => {
 
-  
-  const NewAddress = GetLocation.getCurrentPosition({
-    enableHighAccuracy: true,
-      timeout: 15000,
-  })
-  const [locationPick, setLocationPick] = useState("test")
+
+  const [locationPick, setLocationPick] = useState({})
 
   const requestLocation = () => {
-
-    
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-          timeout: 15000,
-      })
-      .then(location => {
-        setLocationPick(location)
-        // setLocationPick('new')
-          console.log(location + 'vinay');
-      })
-      .catch(error => {
-          const { code, message } = error;
-          console.warn(code, message);
-      })
-    }
+    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
+      console.log(result);
+      setLoactionPermission(false);
+    });
+  }
 
   return (
-  <Modal animationType="slide" transparent>
-    <View style={styles.overlay}>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <MainContainer>
-            <Paper>
-              <View style={styles.modalData}>
+    <Modal animationType="slide" transparent>
+      <View style={styles.overlay}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <MainContainer>
+              <Paper>
+                <View style={styles.modalData}>
 
-                <Text hCenter style={{paddingHorizontal: 10, marginBottom:20}} h3 >
-                  Location Permission
+                  <Text hCenter style={{ paddingHorizontal: 10, marginBottom: 20 }} h3 >
+                    Location Permission
                 </Text>
 
-                <View style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom:10}}>
-                  <Image style={{}}
-                    source={require('../../../assets/images/pages/location.png')}
-                  />
-                </View>
-                <Text caption hCenter>Please allow to use your location to show nearby restaurant on the map.</Text>
-
-                    <Text >
-                    {JSON.stringify(NewAddress,0,2)}
-                      {/* {locationPick} */}
-                        {/* {JSON.stringify(location, 0, 2)} */}
-                    </Text>
-                        
-
-                <View style={{flexDirection: 'row', marginTop:20, alignSelf: 'center', alignItems: 'center'}}>
-                  
-                <View style={{flex:1, marginHorizontal:5}}>
-                  <Button title="No Thanks" white lg 
-                      onPress={() => {
-                        setLoactionPermission(false);
-                      }}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
+                    <Image style={{}}
+                      source={require('../../../assets/images/pages/location.png')}
                     />
-                </View>
+                  </View>
+                  <Text caption hCenter>Please allow to use your location to show nearby restaurant on the map.</Text>
 
 
-                <View style={{flex:1, marginHorizontal:5}}>
-                  {/* <Button title="Enable" primary lg raised
+
+
+                  <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'center', alignItems: 'center' }}>
+
+                    <View style={{ flex: 1, marginHorizontal: 5 }}>
+                      <Button title="No Thanks" white lg
+                        onPress={() => {
+                          setLoactionPermission(false);
+                        }}
+                      />
+                    </View>
+
+
+                    <View style={{ flex: 1, marginHorizontal: 5 }}>
+                      {/* <Button title="Enable" primary lg raised
                     onPress={() => {
                       setLoactionPermission(false);
                     }}
                   /> */}
-                  <Button title="Enable" primary lg raised
-                    onPress={requestLocation}
-                  />
+                      <Button title="Enable" primary lg raised
+                        onPress={requestLocation}
+                      />
+                    </View>
+
+
+
+                  </View>
+
                 </View>
-
-
-
-                </View>
-
-              </View>
-            </Paper>
-          </MainContainer>
+              </Paper>
+            </MainContainer>
+          </View>
         </View>
       </View>
-    </View>
-  </Modal>
-  )};
+    </Modal>
+  )
+};
 
 const styles = StyleSheet.create({
   closeIcon: {
@@ -131,5 +115,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
   },
-  
+
 });
