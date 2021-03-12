@@ -51,6 +51,7 @@ export default function CategoryView({ route, navigation }) {
   const categories = useSelector(state => state.home.categories || []);
   const deliveryAddress = useSelector(state => state.app.address || {});
   const cartItems = useSelector(state => state.cart.items);
+  const cartCategoryItems = useSelector(state => state.cart.items.reduce((total, obj) => ((obj.product.cat_id == category.id) ? (total + obj.qty) : total), 0))
   const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
 
   const getProductById = (id) => {
@@ -77,6 +78,8 @@ export default function CategoryView({ route, navigation }) {
 
   useEffect(() => {
     dispatch(fetchProducts(category.id));
+    console.log(category);;
+    console.log(cartItems);
   }, [category]);
 
   return (
@@ -250,7 +253,7 @@ export default function CategoryView({ route, navigation }) {
                         </View>
                         <View style={{ width: 100 }}>
 
-                          <View style={{ height:34, overflow:'hidden', marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                          <View style={{ height: 34, overflow: 'hidden', marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
                             {getCartItemById(product.pro_id).qty <= 0 && <Text onPress={() => {
                               setAddProduct({ ...addProduct, id: product.pro_id });
                               AssetsDrawer.current?.open();
@@ -295,7 +298,7 @@ export default function CategoryView({ route, navigation }) {
       <View style={styles.footerMenu}>
         <View style={{ flexDirection: 'column', alignItems: 'center', marginBottom: 20, }}>
           <Button
-            title={cartItemsCount + " Items"}
+            title={cartCategoryItems + " Items"}
             primary lg raised
             iconRight
             onPress={() => navigation.navigate('Cart')}
