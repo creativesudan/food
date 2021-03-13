@@ -5,7 +5,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import MainContainer from '../../components/Containers/Main';
-import { SearchBar, Avatar, Icon, Badge, withBadge, ListItem, Divider, CheckBox } from 'react-native-elements';
+import { Avatar, Icon, Badge, withBadge, ListItem, Divider, CheckBox } from 'react-native-elements';
 import { Button, IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
@@ -17,6 +17,7 @@ import { EditAddress } from "../modal/EditAddress";
 import { useSelector, useDispatch } from "react-redux";
 import AddProduct from "../global/AddProduct";
 import { fetchCoupons, addCouponToCart, fetchTax } from "../../redux/actions/cart";
+import SearchBar from "../global/SearchBar";
 
 
 const item = [
@@ -188,35 +189,8 @@ export default function CartView({ navigation }) {
 
           </View>
 
-
-          <View style={{ marginVertical: 10 }}>
-            <Paper>
-              <SearchBar
-                placeholder="Search product (eg. rasgulla)"
-                lightTheme
-                // value={searchQuery}
-                containerStyle={{
-                  backgroundColor: 'transparent',
-                  padding: 0,
-                  borderBottomColor: 'transparent',
-                  borderTopColor: 'transparent',
-                }}
-                inputContainerStyle={{
-                  backgroundColor: colors.white,
-                  height: 38, padding: 0, margin: 0,
-
-                }}
-                inputStyle={{
-                  fontSize: 14,
-                  paddingLeft: 0,
-                  marginLeft: 5,
-                }}
-                leftIconContainerStyle={{
-                  paddingRight: 0,
-                }}
-              />
-            </Paper>
-          </View>
+          <SearchBar/>
+          
 
         </MainContainer>
 
@@ -226,11 +200,11 @@ export default function CartView({ navigation }) {
         <MainContainer>
 
 
-          <Text style={{ marginBottom: 5, marginTop: 15 }}>Delivery Address</Text>
+          <Text style={{ marginBottom: 5, marginTop: 15 }}>Delivery Address  </Text>
           <View style={{ backgroundColor: '#F3E6E6', padding: 10, marginBottom: 10, borderRadius: 5 }}>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, paddingLeft: 20 }}>
+              <View style={{ flex: 1, paddingLeft: deliveryAddress && 20 }}>
                 {deliveryAddress && <>
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
@@ -265,8 +239,8 @@ export default function CartView({ navigation }) {
 
                   </View>
 
-                  <Text>{deliveryAddress.house_no || ""} {deliveryAddress.address || ""} {deliveryAddress.landmark}</Text>
-                  <Text>{deliveryAddress.city || ""}, {deliveryAddress.state}-{deliveryAddress.pincode}</Text>
+                  <Text>{deliveryAddress.house_no || ""} {deliveryAddress.address || ""} {deliveryAddress.landmark}{deliveryAddress.city || ""} {deliveryAddress.state}</Text>
+                  <Text>Pin - {deliveryAddress.pincode}</Text>
                   <Text>{deliveryAddress.mobile}</Text>
                 </>}
 
@@ -499,7 +473,7 @@ export default function CartView({ navigation }) {
                 <Text p style={{ flex: 1 }}>See Breakup</Text>
                 <View style={{}}>
                   <Text p>Make Payment</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignSelf:'flex-end', alignItems: 'center' }}>
                     <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
                       source={require('../../../assets/images/icons/rupee.png')}
                     />

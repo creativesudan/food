@@ -1,15 +1,14 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, Image, Dimensions, SafeAreaView } from 'react-native';
+import React, { useState,  useRef, useEffect } from "react";
+import { View, StyleSheet, Image , TouchableOpacity} from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import MainContainer from '../../components/Containers/Main';
-import { SearchBar, Avatar, Icon, Divider, ListItem, CheckBox } from 'react-native-elements';
+import { Avatar, Icon, Divider, ListItem, CheckBox } from 'react-native-elements';
 import { Button, IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 import { colors } from '../../styles';
-import Carousel from 'react-native-snap-carousel';
 import { ScrollView } from "react-native-gesture-handler";
 import { MenuModal } from "../modal/Menu";
 
@@ -17,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
+import SearchBar from "../global/SearchBar";
 
 
 const item = [
@@ -133,10 +133,18 @@ export default function CategoryView({ route, navigation }) {
                 }
               />
             </View>
-            <View style={{ flex: 1, marginLeft: 10 }}>
-              <Text color={colors.white}>Deliver to :</Text>
-              <Text bold color={colors.white}>{deliveryAddress.name}</Text>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
+                <Text color={colors.white}>Deliver to :</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text bold color={colors.white}>{deliveryAddress.name || "Select Address"}</Text>
+                  <Image style={{ tintColor: colors.white, marginLeft: 5 }}
+                    source={require('../../../assets/images/icons/expand_more.png')}
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
+
 
             <Ripple style={{ padding: 10 }}
               onPress={() => navigation.navigate('Cart')}
@@ -156,34 +164,7 @@ export default function CategoryView({ route, navigation }) {
           </View>
 
 
-          <View style={{ marginVertical: 10 }}>
-            <Paper>
-              <SearchBar
-                placeholder="Search product (eg. rasgulla)"
-                lightTheme
-                // value={searchQuery}
-                containerStyle={{
-                  backgroundColor: 'transparent',
-                  padding: 0,
-                  borderBottomColor: 'transparent',
-                  borderTopColor: 'transparent',
-                }}
-                inputContainerStyle={{
-                  backgroundColor: colors.white,
-                  height: 38, padding: 0, margin: 0,
-
-                }}
-                inputStyle={{
-                  fontSize: 14,
-                  paddingLeft: 0,
-                  marginLeft: 5,
-                }}
-                leftIconContainerStyle={{
-                  paddingRight: 0,
-                }}
-              />
-            </Paper>
-          </View>
+          <SearchBar/>
 
         </MainContainer>
 

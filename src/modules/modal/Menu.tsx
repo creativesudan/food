@@ -1,8 +1,7 @@
-import React , {useState} from 'react';
-import Ripple from 'react-native-material-ripple';
+import React from 'react';
 import { StyleSheet, View, Modal,Image } from 'react-native';
-import { Avatar, Divider, SearchBar, Icon,ListItem  } from 'react-native-elements';
-import { Button, IconButton } from '../../components/StyledButton';
+import { Avatar, ListItem  } from 'react-native-elements';
+import { IconButton } from '../../components/StyledButton';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../../styles';
@@ -138,31 +137,6 @@ export const MenuModal = ({
   </View>
 )};
 
-const styles = StyleSheet.create({
-  divider: {
-    position: 'relative',
-    top: 8,
-  },
-  headTitle: {
-    color: colors.white,
-    marginBottom: 10,
-    marginTop: 16,
-  },
-  list: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    alignItems: 'center',
-  },
-  icon: {
-    marginRight: 12,
-  },
-  Avtar: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-  },
-});
 
 
 export default MenuModal;

@@ -4,7 +4,7 @@ import Ripple from 'react-native-material-ripple';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import MainContainer from '../../components/Containers/Main';
-import { SearchBar, Icon, Divider, ListItem, CheckBox } from 'react-native-elements';
+import { Icon, Divider, ListItem, CheckBox } from 'react-native-elements';
 import { Button, IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
@@ -23,6 +23,7 @@ import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
 
 import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
+import SearchBar from "../global/SearchBar";
 
 
 const data = [
@@ -179,21 +180,8 @@ export default function HomeView({ navigation }) {
 
               </View>
 
-
-              <View style={{ marginVertical: 10 }}>
-                <Ripple onPress={() => setSearchModalVisible(true)}>
-                  <View style={{ borderRadius: 8, height: 34, alignItems: 'center', paddingHorizontal: 12, flexDirection: 'row', backgroundColor: colors.white }}>
-                    <Icon
-                      type='evilicon'
-                      name='search'
-                      color='#F9C5C5'
-                    />
-                    <Text p style={{ margineLeft: 10 }}>Search product (eg. rasgulla)</Text>
-                  </View>
-                </Ripple>
-
-
-              </View>
+              
+              <SearchBar/>
 
             </MainContainer>
 
@@ -217,7 +205,7 @@ export default function HomeView({ navigation }) {
                       <View style={{ flexDirection: 'row', }}>
                         <Paper style={{ flex: 1 }}>
                           <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category', { "category": item })}>
-                            <View style={{ marginTop: 7, marginBottom: 12, alignItems: 'center' }}>
+                            <View style={{ marginTop: 16, marginBottom: 12, alignItems: 'center' }}>
                               <View style={{ width: 50, alignItems: 'center', }}><Image
                                 style={{ height: 54, width: 54 }}
                                 source={{
@@ -236,7 +224,7 @@ export default function HomeView({ navigation }) {
 
               <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
                 <Text style={{ flex: 1 }}>Bobby Excuslive</Text>
-                <Button title="View All" link white />
+                {allProducts && <Button title="View All" link white /> } 
               </View>
 
               <View style={{ marginLeft: -5, marginRight: -15 }}>
@@ -329,7 +317,7 @@ export default function HomeView({ navigation }) {
           <View style={styles.menuList}>
             <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: -50 }}>
               <IconButton
-                primary raised lgR
+                primary lgR
                 onPress={() => {
                   setMenuModalVisible(true);
                 }}
