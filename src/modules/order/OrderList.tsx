@@ -44,15 +44,15 @@ export default function OrderListView({ navigation }) {
       <ScrollView>
         <MainContainer>
           <View style={{ marginVertical: 20 }}>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text h4 bold style={{ flex: 1 }}>Current</Text>
-              
+            
+            
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom:-16  }}>
+              <Text h4 bold style={{ flex: 1}}>Current</Text>
             </View>
           {orders && orders.filter(order=>order.order_status=="1").map(order => {
               const deliveryAddress = addresses.find(add => add.id == order.address_id) || {};
               return (<>
-                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 20 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop:5 }}>
                   {/* <Text h4 bold style={{ flex: 1 }}>Past</Text> */}
                   <Text style={{ fontSize: 12, color: '#5D6275' }}>{order.datetime}</Text>
                 </View>
@@ -84,29 +84,16 @@ export default function OrderListView({ navigation }) {
                                 <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
                               </View>
                             </ListItem.Content>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                              <Image style={{ marginRight: 4 }}
+                                source={require('../../../assets/images/icons/rupee.png')}
+                              />
+                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
+                            </View>
 
                           </ListItem>)
                       })}
 
-
-                      <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
-                        {/* <ListItem.Content>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image style={{ width: 12, height: 12, }}
-                            source={require('../../../assets/images/icons/veg.png')}
-                          />
-                          <Text style={{ marginLeft: 10 }} >Low-Sugar Snacks X1</Text>
-                        </View>
-                      </ListItem.Content> */}
-
-                        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
-                          <Image style={{ marginRight: 4 }}
-                            source={require('../../../assets/images/icons/rupee.png')}
-                          />
-                          <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
-                        </View>
-
-                      </ListItem>
                     </View>
                   </Ripple>
 
@@ -130,14 +117,16 @@ export default function OrderListView({ navigation }) {
               
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom:-16 }}>
               <Text h4 bold style={{ flex: 1 }}>Past</Text>
 
             </View>
+
+
             {orders && orders.filter(order=>order.order_status!="1").map(order => {
               const deliveryAddress = addresses.find(add => add.id == order.address_id) || {};
               return (<>
-                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 20 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop:5 }}>
                   {/* <Text h4 bold style={{ flex: 1 }}>Past</Text> */}
                   <Text style={{ fontSize: 12, color: '#5D6275' }}>{order.datetime}</Text>
                 </View>
@@ -169,84 +158,31 @@ export default function OrderListView({ navigation }) {
                                 <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
                               </View>
                             </ListItem.Content>
+                            
+                            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                              <Image style={{ marginRight: 4 }}
+                                source={require('../../../assets/images/icons/rupee.png')}
+                              />
+                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
+                            </View>
 
-                          </ListItem>)
+                          </ListItem>
+                          )
                       })}
 
-
-                      <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
-                        {/* <ListItem.Content>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image style={{ width: 12, height: 12, }}
-                            source={require('../../../assets/images/icons/veg.png')}
-                          />
-                          <Text style={{ marginLeft: 10 }} >Low-Sugar Snacks X1</Text>
-                        </View>
-                      </ListItem.Content> */}
-
-                        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
-                          <Image style={{ marginRight: 4 }}
-                            source={require('../../../assets/images/icons/rupee.png')}
-                          />
-                          <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
-                        </View>
-
-                      </ListItem>
                     </View>
                   </Ripple>
                 </Paper>
+
+
+
+                
               </>)
             })}
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 20 }}>
-              <Text style={{ fontSize: 12, color: '#5D6275' }}>9 Sep, 2020, 07:44 PM</Text>
-            </View>
 
-            <Paper style={{ marginVertical: 5 }}>
-              <Ripple onPress={() => navigation.navigate('Order Detail')}>
-                <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
-                  <Text subtitle2 style={{ flex: 1 }}>ID : #70111-34676</Text>
-                  <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />
-                </View>
-
-                <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                  <View style={{ marginBottom: 5 }}>
-                    <Text caption>Address</Text>
-                    <Text>11th Ave, Gaur City 2, Ghaziabad</Text>
-                  </View>
-                  <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
-                    <ListItem.Content>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={{ width: 12, height: 12, }}
-                          source={require('../../../assets/images/icons/veg.png')}
-                        />
-                        <Text style={{ marginLeft: 10 }} >Nut Butter Dream Bars X2</Text>
-                      </View>
-                    </ListItem.Content>
-
-                  </ListItem>
-                  <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
-                    <ListItem.Content>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={{ width: 12, height: 12, }}
-                          source={require('../../../assets/images/icons/veg.png')}
-                        />
-                        <Text style={{ marginLeft: 10 }} >Low-Sugar Snacks X1</Text>
-                      </View>
-                    </ListItem.Content>
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Image style={{ marginRight: 4 }}
-                        source={require('../../../assets/images/icons/rupee.png')}
-                      />
-                      <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>620.00</Text>
-                    </View>
-                  </ListItem>
-                </View>
-              </Ripple>
-            </Paper>
-
+            
 
           </View>
         </MainContainer>
