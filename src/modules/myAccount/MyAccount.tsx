@@ -67,7 +67,7 @@ export default function AccountView({ navigation }) {
                     <ListItem.Content>
                       <ListItem.Title>Manage Address</ListItem.Title>
                     </ListItem.Content>
-                    <Image style={{ tintColor: '#5D6275' }} source={require('../../../assets/images/icons/right.png')} />
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
                   <ListItem bottomDivider onPress={() => navigation.navigate('Order List')}>
@@ -75,7 +75,7 @@ export default function AccountView({ navigation }) {
                     <ListItem.Content>
                       <ListItem.Title>Orders</ListItem.Title>
                     </ListItem.Content>
-                    <Image style={{ tintColor: '#5D6275' }} source={require('../../../assets/images/icons/right.png')} />
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
                   <ListItem bottomDivider>
@@ -83,7 +83,7 @@ export default function AccountView({ navigation }) {
                     <ListItem.Content>
                       <ListItem.Title>Offer</ListItem.Title>
                     </ListItem.Content>
-                    <Image style={{ tintColor: '#5D6275' }} source={require('../../../assets/images/icons/right.png')} />
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
                   <ListItem bottomDivider>
@@ -91,7 +91,7 @@ export default function AccountView({ navigation }) {
                     <ListItem.Content>
                       <ListItem.Title>Favorites</ListItem.Title>
                     </ListItem.Content>
-                    <Image style={{ tintColor: '#5D6275' }} source={require('../../../assets/images/icons/right.png')} />
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
                 </View>
@@ -120,8 +120,11 @@ export default function AccountView({ navigation }) {
   )
 }
 
-
 const styles = StyleSheet.create({
+  
+  rightIcon:{
+    tintColor:'#5D6275', width:10, height:10, opacity:0.4
+  },
   fakeBg: {
     backgroundColor: colors.primary,
     height: 150,

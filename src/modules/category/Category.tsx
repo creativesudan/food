@@ -201,6 +201,7 @@ export default function CategoryView({ route, navigation }) {
               )
             }
           })}
+          
 
         </ScrollView>
       </View>
@@ -271,6 +272,8 @@ export default function CategoryView({ route, navigation }) {
                 </Paper>
               </View>
             ))}
+
+            
           </View>
         </MainContainer>
       </ScrollView>

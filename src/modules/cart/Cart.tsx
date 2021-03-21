@@ -376,7 +376,7 @@ export default function CartView({ navigation }) {
             <View style={{ marginTop: 20 }}>
               <Text subtitle2 >Payment Details</Text>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text caption>Total MRP</Text>
                 </ListItem.Content>
@@ -388,7 +388,7 @@ export default function CartView({ navigation }) {
                 </View>
               </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text caption>Discount</Text>
                 </ListItem.Content>
@@ -400,7 +400,7 @@ export default function CartView({ navigation }) {
                 </View>
               </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text caption>Sub Total</Text>
                 </ListItem.Content>
@@ -412,14 +412,14 @@ export default function CartView({ navigation }) {
                 </View>
               </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text caption>Delivery</Text>
                 </ListItem.Content>
                 <Text color={colors.primary}>Free</Text>
               </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text caption>Coupon</Text>
                 </ListItem.Content>

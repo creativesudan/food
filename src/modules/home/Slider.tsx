@@ -28,13 +28,13 @@ export default class Slider extends React.Component {
   _renderItem({ item, index }) {
 
     return (
-      <View style={{
+      <View style={{ width:windowWidth-24,
         borderRadius: 11,
         overflow: 'hidden'
         // marginLeft: 25,
         // marginRight: 25,
       }}>
-        <Image resizeMode={'cover'} style={{ width: '100%', borderRadius: 11 }} source={{ uri: agent.MEDIA_ROOT + "/banner/" + item.image }}
+        <Image resizeMode={'cover'} style={{ width: '100%', height:110, borderRadius: 11 }} source={{ uri: agent.MEDIA_ROOT + "/banner/" + item.image }}
         />
       </View>
 

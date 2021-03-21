@@ -33,7 +33,7 @@ export const MenuModal = ({
 
          
       <View style={{ backgroundColor: colors.white, flexGrow: 1 }}>
-        <MainContainer>
+       
           
        
 
@@ -56,8 +56,8 @@ export const MenuModal = ({
               </View>
 
             <ScrollView>
-
-              <View>
+            <MainContainer>
+              <View style={{marginHorizontal:-10}}>
            
 
                 <ListItem bottomDivider  onPress={()=> modalNavigate('My Account')}>
@@ -65,7 +65,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>My Account</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon}  source={require('../../../assets/images/icons/right.png')} />
                   {/* <ListItem.Chevron /> */}
                 </ListItem>
 
@@ -74,7 +74,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Manage Address</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem bottomDivider onPress={()=> modalNavigate('Order List')}>
@@ -82,7 +82,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Orders</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem bottomDivider>
@@ -90,7 +90,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Rate US</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem bottomDivider>
@@ -98,7 +98,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Term and Condition</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem bottomDivider>
@@ -106,7 +106,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Offer</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem bottomDivider>
@@ -114,7 +114,7 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Favorites</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
 
                 <ListItem>
@@ -122,14 +122,14 @@ export const MenuModal = ({
                   <ListItem.Content>
                     <ListItem.Title>Call Us</ListItem.Title>
                   </ListItem.Content>
-                  <Image style={{tintColor:'#5D6275'}} source={require('../../../assets/images/icons/right.png')} />
+                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
                     
               </View>
+        </MainContainer>
 
             </ScrollView>
           </View>
-        </MainContainer>
       </View>
       <View style={{position: 'absolute', bottom:30, left:0, right:0}}><Text caption hCenter style={{marginTop:10}}>Ver. 0.2.2.10</Text></View>
 
@@ -138,5 +138,10 @@ export const MenuModal = ({
 )};
 
 
+const styles = StyleSheet.create({
+  rightIcon:{
+    tintColor:'#5D6275', width:10, height:10, opacity:0.4
+  }
+})
 
 export default MenuModal;

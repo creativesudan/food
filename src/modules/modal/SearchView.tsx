@@ -258,9 +258,9 @@ export const SearchView = ({
                               <Text color={colors.primary}>{product.price_weight[0].price} / {product.price_weight[0].weight}</Text>
                               <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{product.price_weight[0].mrp}</Text>
                             </View>
-                            <View style={{ width: 100 }}>
+                            <View style={{ width: 80 }}>
 
-                              <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+                              <View style={{ marginTop: 5, height:32, overflow:'hidden',  flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
                                 {getCartItemById(product.pro_id).qty <= 0 && <Text onPress={() => {
                                   setAddProduct({ ...addProduct, id: product.pro_id });
                                   AssetsDrawer.current?.open();
@@ -333,18 +333,22 @@ export const SearchView = ({
                       <View style={{ marginTop: 20 }}>
                         <Text label>Popular Categories</Text>
                         <Paper style={{ marginVertical: 10 }}>
-                          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <ScrollView horizontal={true} style={{marginHorizontal:5, marginVertical:10}}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {categories && categories.map(category => <Ripple style={styles.item} onPress={() => { setSearchModalVisible(false); navigation.navigate('Category', { "category": category }); }}>
+                              <View style={{flexDirection:'column', alignItems: 'center', alignSelf: 'center', marginHorizontal:5}}>
                               <Image
-                                // style={{width:16}}
+                                style={{width:28, height:28}}
                                 source={{
                                   uri: agent.MEDIA_ROOT + '/category/' + category.icon
                                 }}
                               />
                               <Text p>{category.name}</Text>
+                              </View>
                             </Ripple>)}
 
                           </View>
+                          </ScrollView>
                         </Paper>
                       </View>
 
