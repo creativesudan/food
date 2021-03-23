@@ -431,7 +431,7 @@ export default function CartView({ navigation }) {
                   <Image style={{ height: 10, marginRight: 4 }}
                     source={require('../../../assets/images/icons/rupee.png')}
                   />
-                  <Text>20</Text>
+                  <Text>{cart.totalTax}</Text>
                 </View>
               </ListItem>
 

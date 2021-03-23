@@ -147,7 +147,7 @@ export default function CategoryView({ route, navigation }) {
 
 
             <Ripple style={{ padding: 10 }}
-              onPress={() => navigation.navigate('Cart')}
+               onPress={ () => cartItemsCount != 0 && navigation.navigate('Cart')}
             >
               <Text style={{
                 position: 'absolute', zIndex: 1, right: 2, top: 2,
@@ -285,7 +285,7 @@ export default function CategoryView({ route, navigation }) {
             title={cartCategoryItems + " Items"}
             primary lg raised
             iconRight
-            onPress={() => navigation.navigate('Cart')}
+            onPress={ () => cartCategoryItems != 0 && navigation.navigate('Cart')}
             icon={
               <Image
                 style={{ tintColor: colors.white, marginTop: 4, marginLeft: 10 }}

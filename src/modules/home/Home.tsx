@@ -169,7 +169,7 @@ export default function HomeView({ navigation }) {
                 </View>
 
                 <Ripple style={{ padding: 10 }}
-                  onPress={() => navigation.navigate('Cart')}
+                  onPress={ () => cartItemsCount != 0 && navigation.navigate('Cart')}
                 >
                   <Text style={{
                     position: 'absolute', zIndex: 1, right: 2, top: 2,
