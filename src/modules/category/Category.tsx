@@ -1,5 +1,5 @@
-import React, { useState,  useRef, useEffect } from "react";
-import { View, StyleSheet, Image , TouchableOpacity} from 'react-native';
+import React, { useState, useRef, useEffect } from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -78,8 +78,6 @@ export default function CategoryView({ route, navigation }) {
 
   useEffect(() => {
     dispatch(fetchProducts(category.id));
-    console.log(category);;
-    console.log(cartItems);
   }, [category]);
 
   return (
@@ -164,7 +162,7 @@ export default function CategoryView({ route, navigation }) {
           </View>
 
 
-          <SearchBar/>
+          <SearchBar />
 
         </MainContainer>
 
