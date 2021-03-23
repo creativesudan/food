@@ -51,7 +51,7 @@ export default class FloatingInput extends Component<Props, State> {
     const { value } = this.props;
     this.position = new Animated.Value(value ? 1 : 0);
     this.state = {
-      isFieldActive: value !== '',
+      isFieldActive: value == '',
     };
   }
 
@@ -125,7 +125,7 @@ export default class FloatingInput extends Component<Props, State> {
         <Animated.Text
           style={[Styles.titleStyles, this._returnAnimatedTitleStyles()]}
         >
-          {this.props.title}
+          {this.props.title.trim()}
         </Animated.Text>
         <TextInput
           value={this.props.value}

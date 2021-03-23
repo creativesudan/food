@@ -6,7 +6,7 @@ import Ripple from 'react-native-material-ripple';
 
 import { colors } from '../../styles';
 import MainContainer from '../../components/Containers/Main';
-import { Button } from '../../components/StyledButton';
+import { Button,IconButton } from '../../components/StyledButton';
 import { Text } from '../../components/StyledText';
 import Paper from '../../components/Paper';
 
@@ -40,6 +40,14 @@ export const EditAccount = ({
             <MainContainer>
               <Paper>
                 <View style={styles.modalData}>
+
+                < View style={{ position: 'absolute', top: 10, zIndex: 1, right: 10 }}>
+                    <IconButton
+                        white noBorder mdR
+                        onPress={() => { setEditAccount(false);}}
+                        icon={ <Image style={{ width: 14 }} source={require('../../../assets/images/icons/close.png')} />}
+                    />
+                </View>
 
                   <Text hCenter style={{ paddingHorizontal: 10, marginBottom: 20 }} subtitle2 >
                     Edit Account
@@ -75,14 +83,6 @@ export const EditAccount = ({
 
 
                   <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'center', alignItems: 'center' }}>
-
-                    <View style={{ width: 100, marginHorizontal: 5 }}>
-                      <Button title="Cancel" grey lg
-                        onPress={() => {
-                          setEditAccount(false);
-                        }}
-                      />
-                    </View>
                     <View style={{ width: 100, marginHorizontal: 5 }}>
                       <Button title="Update" primary lg raised
                         onPress={async () => {

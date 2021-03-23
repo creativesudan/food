@@ -143,7 +143,7 @@ export default function OrderListView({ navigation }) {
                     <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                       <View style={{ marginBottom: 5 }}>
                         <Text caption>Address</Text>
-                        <Text>{deliveryAddress.house_no}, {deliveryAddress.address}, {deliveryAddress.city}</Text>
+                        <Text>{deliveryAddress.house_no.trim()}, {deliveryAddress.address.trim() && deliveryAddress.address.trim() + ','} {deliveryAddress.city.trim()}</Text>
                       </View>
 
                       {order.order_pro && order.order_pro.map(pro => {

@@ -239,9 +239,9 @@ export default function CartView({ navigation }) {
 
                   </View>
 
-                  <Text>{deliveryAddress.house_no || ""} {deliveryAddress.address || ""} {deliveryAddress.landmark}{deliveryAddress.city || ""} {deliveryAddress.state}</Text>
-                  <Text>Pin - {deliveryAddress.pincode}</Text>
-                  <Text>{deliveryAddress.mobile}</Text>
+                  <Text>{deliveryAddress.house_no.trim() || ""} {deliveryAddress.address.trim() || ""} {deliveryAddress.landmark.trim()}, {deliveryAddress.city.trim() || ""} {deliveryAddress.state.trim()},</Text>
+                  {deliveryAddress.pincode != '' && <Text>Pin - {deliveryAddress.pincode}</Text>}
+                  {deliveryAddress.mobile != '' && <Text>+91 {deliveryAddress.mobile}</Text>}
                 </>}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: -5 }}>
@@ -370,7 +370,11 @@ export default function CartView({ navigation }) {
                   value={coupon}
                   placeholder="Promo Code"
                 /></View>
-              <View style={{ width: 100 }}><Button title="Apply" md disable={coupon == ""} onPress={applyCoupon} /></View>
+                <View style={{ width: 100 }}>
+                  {coupon === "" ? <Button title="Apply" md disable /> :
+                  <Button title="Apply" md primary onPress={applyCoupon} />
+                  }                
+              </View>
             </View>
 
             <View style={{ marginTop: 20 }}>
@@ -421,13 +425,25 @@ export default function CartView({ navigation }) {
 
               <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
+                  <Text caption>Taxes</Text>
+                </ListItem.Content>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image style={{ height: 10, marginRight: 4 }}
+                    source={require('../../../assets/images/icons/rupee.png')}
+                  />
+                  <Text>20</Text>
+                </View>
+              </ListItem>
+
+              {cart.appliedCoupon && <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                <ListItem.Content>
                   <Text caption>Coupon</Text>
                 </ListItem.Content>
-                {cart.appliedCoupon && <Text >{cart.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
+                <Text >{cart.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
                   source={require('../../../assets/images/icons/rupee.png')}
-                />{cart.couponDiscount})</Text>}
-              </ListItem>
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+                />{cart.couponDiscount})</Text>
+              </ListItem>}
+              {/* <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text subtitle2>Total Tax</Text>
                   {cart.tax && cart.tax.map(t => <Text caption>{t.name} : {t.percantage} %</Text>)}
@@ -438,7 +454,7 @@ export default function CartView({ navigation }) {
                   />
                   <Text subtitle2>{cart.totalTax}</Text>
                 </View>
-              </ListItem>
+              </ListItem> */}
               <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
                 <ListItem.Content>
                   <Text subtitle2>Total Amount</Text>

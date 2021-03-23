@@ -79,7 +79,7 @@ export default function AddressList() {
                 </View>
                 <View>
                   <Text p color={colors.primary}>{getAddressType(address.address_type)}</Text>
-                  <Text bold>{address.name || " "}</Text>
+                  <Text bold>{address.name.trim() || " "}</Text>
                 </View>
               </Ripple>
               {address.default == "1" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Default" />}
@@ -87,9 +87,9 @@ export default function AddressList() {
 
             <View style={{ marginTop: 6, marginLeft: 32, flexDirection: 'row', alignItems: 'flex-end' }}>
               <View style={{ flex: 1 }}>
-                <Text p style={{ marginVertical: 1 }}>{address.house_no || ""} {address.address || ""} {address.landmark}</Text>
-                <Text p style={{ marginVertical: 1 }}>{address.city || ""}, {address.state}-{address.pincode}</Text>
-                <Text p style={{ marginVertical: 1 }}>{address.mobile}</Text>
+                <Text p style={{ marginVertical: 1 }}>{address.house_no.trim() || ""} {address.address.trim() || ""} {address.landmark.trim()}</Text>
+                <Text p style={{ marginVertical: 1 }}>{address.city.trim() || ""}, {address.state.trim()}, {address.pincode.trim()}</Text>
+                <Text p style={{ marginVertical: 1 }}>+91 {address.mobile.trim()}</Text>
               </View>
 
               <View style={{ flexDirection: 'row', marginHorizontal: -3 }}>

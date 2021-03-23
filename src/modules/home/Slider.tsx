@@ -30,7 +30,7 @@ export default class Slider extends React.Component {
     return (
       <View style={{ width:windowWidth-24,
         borderRadius: 11,
-        overflow: 'hidden'
+        overflow: 'hidden',
         // marginLeft: 25,
         // marginRight: 25,
       }}>
