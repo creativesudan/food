@@ -56,7 +56,7 @@ export default function OrderDetailView({ navigation, route }) {
                   <ListItem.Content>
                     <Text caption>Delivery to :</Text>
                   </ListItem.Content>
-                  <Text>{deliveryAddress.house_no.trim()}, {deliveryAddress.address.trim()}, {deliveryAddress.city.trim()}</Text>
+                  <Text>{deliveryAddress.house_no && deliveryAddress.house_no.trim()}, {deliveryAddress.address && deliveryAddress.address.trim() + ','} {deliveryAddress.city && deliveryAddress.city.trim()}</Text>
                 </ListItem>
                 <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
                   <ListItem.Content>
@@ -102,83 +102,83 @@ export default function OrderDetailView({ navigation, route }) {
 
             <View style={{ marginVertical: 5 }}>
               <View style={{ paddingHorizontal: 10 }}>
-  
+
                 <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Total MRP</Text>
-                </ListItem.Content>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 10, marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text>{order.subTotal}</Text>
-                </View>
-              </ListItem>
+                  <ListItem.Content>
+                    <Text caption>Total MRP</Text>
+                  </ListItem.Content>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text>{order.sub_total}</Text>
+                  </View>
+                </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Discount</Text>
-                </ListItem.Content>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 10, marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text>{order.discount_price}</Text>
-                </View>
-              </ListItem>
+                <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                  <ListItem.Content>
+                    <Text caption>Discount</Text>
+                  </ListItem.Content>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text>{order.discount_price}</Text>
+                  </View>
+                </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Sub Total</Text>
-                </ListItem.Content>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 10, marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text>{order.sub_total}</Text>
-                </View>
-              </ListItem>
+                <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                  <ListItem.Content>
+                    <Text caption>Sub Total</Text>
+                  </ListItem.Content>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text>{parseInt(order.sub_total) - parseInt(order.discount_price)}</Text>
+                  </View>
+                </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Delivery</Text>
-                </ListItem.Content>
-                <Text color={colors.primary}>Free</Text>
-              </ListItem>
+                <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                  <ListItem.Content>
+                    <Text caption>Delivery</Text>
+                  </ListItem.Content>
+                  <Text color={colors.primary}>Free</Text>
+                </ListItem>
 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Taxes</Text>
-                </ListItem.Content>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 10, marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text>20</Text>
-                </View>
-              </ListItem>
+                <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                  <ListItem.Content>
+                    <Text caption>Taxes</Text>
+                  </ListItem.Content>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text>{order.promo_per}</Text>
+                  </View>
+                </ListItem>
 
-              {order.appliedCoupon && 
-              <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text caption>Coupon</Text>
-                </ListItem.Content>
-                <Text >{order.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
-                  source={require('../../../assets/images/icons/rupee.png')}
-                />{order.couponDiscount})</Text>
-              </ListItem>}
-    
-              <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
-                <ListItem.Content>
-                  <Text bold>Total Amount</Text>
-                </ListItem.Content>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image style={{ height: 10, marginRight: 4 }}
-                    source={require('../../../assets/images/icons/rupee.png')}
-                  />
-                  <Text>{order.total_amount}</Text>
-                </View>
-              </ListItem>
+                {order.appliedCoupon &&
+                  <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                    <ListItem.Content>
+                      <Text caption>Coupon</Text>
+                    </ListItem.Content>
+                    <Text >{order.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />{order.couponDiscount})</Text>
+                  </ListItem>}
+
+                <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
+                  <ListItem.Content>
+                    <Text bold>Total Amount</Text>
+                  </ListItem.Content>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />
+                    <Text>{order.total_amount}</Text>
+                  </View>
+                </ListItem>
 
               </View>
             </View>

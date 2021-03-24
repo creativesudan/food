@@ -44,32 +44,32 @@ export default function OrderListView({ navigation }) {
       <ScrollView>
         <MainContainer>
           <View style={{ marginVertical: 20 }}>
-            
-            
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom:-16  }}>
-              <Text h4 bold style={{ flex: 1}}>Current</Text>
+
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: -16 }}>
+              {orders && orders.filter(order => order.order_status == "1").length != 0 && <Text h4 bold style={{ flex: 1 }}>Current</Text>}
             </View>
-          {orders && orders.filter(order=>order.order_status=="1").map(order => {
+            {orders && orders.filter(order => order.order_status == "1").map(order => {
               const deliveryAddress = addresses.find(add => add.id == order.address_id) || {};
               return (<>
-                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop:5 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 5 }}>
                   {/* <Text h4 bold style={{ flex: 1 }}>Past</Text> */}
                   <Text style={{ fontSize: 12, color: '#5D6275' }}>{order.datetime}</Text>
                 </View>
 
                 <Paper style={{ marginVertical: 5 }}>
-                  <Ripple onPress={() => navigation.navigate('Order Detail', {order, deliveryAddress})}>
+                  <Ripple onPress={() => navigation.navigate('Order Detail', { order, deliveryAddress })}>
                     <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
                       <Text subtitle2 style={{ flex: 1 }}>ID : {order.order_id}</Text>
-                      {order.order_status=="2" && <Badge badgeStyle={{ backgroundColor: '#63D8A5' }} value="Delivered" />}
-                      {order.order_status=="1" && <Badge badgeStyle={{ backgroundColor: '#5D6275' }} value="Processing" />}
-                      {order.order_status=="3" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />}
+                      {order.order_status == "2" && <Badge badgeStyle={{ backgroundColor: '#63D8A5' }} value="Delivered" />}
+                      {order.order_status == "1" && <Badge badgeStyle={{ backgroundColor: '#5D6275' }} value="Processing" />}
+                      {order.order_status == "3" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />}
                     </View>
 
                     <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                       <View style={{ marginBottom: 5 }}>
                         <Text caption>Address</Text>
-                        <Text>{deliveryAddress.house_no.trim()}, {deliveryAddress.address.trim() && deliveryAddress.address.trim() + ','} {deliveryAddress.city.trim()}</Text>
+                        <Text>{deliveryAddress.house_no && deliveryAddress.house_no.trim()}, {deliveryAddress.address && deliveryAddress.address.trim() + ','} {deliveryAddress.city && deliveryAddress.city.trim()}</Text>
                       </View>
 
                       {order.order_pro && order.order_pro.map(pro => {
@@ -98,52 +98,52 @@ export default function OrderListView({ navigation }) {
                   </Ripple>
 
                   <Divider style={{ marginTop: 6, borderWidth: 0.5, borderColor: '#F9C5C5', borderRadius: 20, borderStyle: 'dashed' }} />
-              <Button title="Cancel Order " flat md white noBorder
-                icon={
-                  <Image
-                    style={{ tintColor: colors.primary, marginRight: 10, width: 10 }}
-                    source={require('../../../assets/images/icons/close.png')}
+                  <Button title="Cancel Order " flat md white noBorder
+                    icon={
+                      <Image
+                        style={{ tintColor: colors.primary, marginRight: 10, width: 10 }}
+                        source={require('../../../assets/images/icons/close.png')}
+                      />
+                    }
+                    onPress={async () => {
+                      await dispatch(cancelOrder(order.order_id));
+                      dispatch(fetchOrders());
+                    }}
                   />
-                }
-                onPress={async()=>{
-                  await dispatch(cancelOrder(order.order_id));
-                  dispatch(fetchOrders());
-                }}
-              />
                 </Paper>
               </>)
             })}
 
-              
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom:-16 }}>
-              <Text h4 bold style={{ flex: 1 }}>Past</Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: -16 }}>
+              {orders && orders.filter(order => order.order_status != "1") && <Text h4 bold style={{ flex: 1 }}>Past</Text>}
 
             </View>
 
 
-            {orders && orders.filter(order=>order.order_status!="1").map(order => {
+            {orders && orders.filter(order => order.order_status != "1").map(order => {
               const deliveryAddress = addresses.find(add => add.id == order.address_id) || {};
               return (<>
-                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop:5 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 5 }}>
                   {/* <Text h4 bold style={{ flex: 1 }}>Past</Text> */}
                   <Text style={{ fontSize: 12, color: '#5D6275' }}>{order.datetime}</Text>
                 </View>
 
                 <Paper style={{ marginVertical: 5 }}>
-                  <Ripple onPress={() => navigation.navigate('Order Detail', {order, deliveryAddress})}>
+                  <Ripple onPress={() => navigation.navigate('Order Detail', { order, deliveryAddress })}>
                     <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
                       <Text subtitle2 style={{ flex: 1 }}>ID : {order.order_id}</Text>
-                      {order.order_status=="2" && <Badge badgeStyle={{ backgroundColor: '#63D8A5' }} value="Delivered" />}
-                      {order.order_status=="1" && <Badge badgeStyle={{ backgroundColor: '#5D6275' }} value="Processing" />}
-                      {order.order_status=="3" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />}
+                      {order.order_status == "2" && <Badge badgeStyle={{ backgroundColor: '#63D8A5' }} value="Delivered" />}
+                      {order.order_status == "1" && <Badge badgeStyle={{ backgroundColor: '#5D6275' }} value="Processing" />}
+                      {order.order_status == "3" && <Badge badgeStyle={{ backgroundColor: colors.primary }} value="Cancelled" />}
                     </View>
 
                     <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                       <View style={{ marginBottom: 5 }}>
                         <Text caption>Address</Text>
-                        <Text>{deliveryAddress.house_no.trim()}, {deliveryAddress.address.trim() && deliveryAddress.address.trim() + ','} {deliveryAddress.city.trim()}</Text>
+                        <Text>{deliveryAddress.house_no && deliveryAddress.house_no.trim()}, {deliveryAddress.address && deliveryAddress.address.trim() + ','} {deliveryAddress.city && deliveryAddress.city.trim()}</Text>
                       </View>
 
                       {order.order_pro && order.order_pro.map(pro => {
@@ -158,7 +158,7 @@ export default function OrderListView({ navigation }) {
                                 <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
                               </View>
                             </ListItem.Content>
-                            
+
                             <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
                               <Image style={{ marginRight: 4 }}
                                 source={require('../../../assets/images/icons/rupee.png')}
@@ -167,7 +167,7 @@ export default function OrderListView({ navigation }) {
                             </View>
 
                           </ListItem>
-                          )
+                        )
                       })}
 
                     </View>
@@ -176,13 +176,13 @@ export default function OrderListView({ navigation }) {
 
 
 
-                
+
               </>)
             })}
 
 
 
-            
+
 
           </View>
         </MainContainer>

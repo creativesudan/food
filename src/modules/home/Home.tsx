@@ -91,7 +91,7 @@ export default function HomeView({ navigation }) {
   useEffect(() => {
     dispatch(fetchCategories());
     if (!allProducts || allProducts.length == 0) dispatch(fetchAllProducts());
-    if (!sliderImages || sliderImages.length == 0) dispatch(fetchSliderImages());
+    if (sliderImages.length == 0) dispatch(fetchSliderImages());
   }, []);
 
   useEffect(() => {
@@ -144,11 +144,11 @@ export default function HomeView({ navigation }) {
       {loactionPermission && <LoactionPermission setLoactionPermission={setLoactionPermission} />}
       {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} navigation={navigation} />}
       {reviewRate && <ReviewRate setReviewRate={setReviewRate} />}
-      
-      
 
 
-            <View style={{ flexDirection: 'column', flexGrow: 1, backgroundColor: colors.bodyBase }}>
+
+
+      <View style={{ flexDirection: 'column', flexGrow: 1, backgroundColor: colors.bodyBase }}>
 
         <View style={{ backgroundColor: colors.bodyBase }}>
           <View style={styles.header}>
@@ -169,7 +169,7 @@ export default function HomeView({ navigation }) {
                 </View>
 
                 <Ripple style={{ padding: 10 }}
-                  onPress={ () => cartItemsCount != 0 && navigation.navigate('Cart')}
+                  onPress={() => cartItemsCount != 0 && navigation.navigate('Cart')}
                 >
                   <Text style={{
                     position: 'absolute', zIndex: 1, right: 2, top: 2,
@@ -185,128 +185,20 @@ export default function HomeView({ navigation }) {
 
               </View>
 
-              
-              <SearchBar/>
+
+              <SearchBar />
 
             </MainContainer>
 
           </View>
-          <View />             
-            </View>
-            
-            {/* inner body start here*/}
-            <View style={{flexGrow:1, backgroundColor: '#fff'}}>
-              
-                <View style={{ backgroundColor: '#888', flexDirection: 'column', flex:1}}>
-                  <ScrollView style={{ backgroundColor: colors.bodyBase, flexGrow:1}}>
-                    
-                  
-
-
-
-
-
-
-
-
-
-                  <View style={{height:55, marginBottom:-55, backgroundColor: colors.primary}}/>
-                  <MainContainer>
-
-<View style={styles.banner}>
-  <Slider images={sliderImages} />
-</View>
-
-
-        <View style={styles.flexContainer}>
-          {categories.map(item => (
-            <View style={styles.flexList}>
-              <View style={{ width: '100%' }}>
-                <View style={{ flexDirection: 'row', }}>
-                  <Paper style={{ flex: 1 }}>
-                    <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category', { "category": item })}>
-                      <View style={{ marginTop: 16, marginBottom: 12, alignItems: 'center' }}>
-                        <View style={{ width: 50, alignItems: 'center', }}><Image
-                          style={{ height: 54, width: 54 }}
-                          source={{
-                            uri: agent.MEDIA_ROOT + '/category/' + item.icon
-                          }} /></View>
-                        <Text caption hCenter style={styles.label}>{item.name}</Text>
-                      </View>
-                    </Ripple>
-                  </Paper>
-                </View>
-              </View>
-            </View>
-          ))}
+          <View />
         </View>
 
-<View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
-  <Text style={{ flex: 1 }}>Bobby Exclusive</Text>
-  {allProducts && <Button title="View All" link white /> } 
-</View>
+        {/* inner body start here*/}
+        <View style={{ flexGrow: 1, backgroundColor: '#fff' }}>
 
-<View style={{ marginLeft: -5, marginRight: -15 }}>
-  <ScrollView horizontal={true}>
-    {allProducts.filter(item => parseInt(item.showhome) == 1).map(item => (
-      <View style={{ marginBottom: 10, width: 140, marginHorizontal: 5 }}>
-        <Paper>
-          <Image style={{ width: '100%', height: 60, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-            source={{
-              uri: item.image,
-            }}
-          />
-
-          <View style={{ padding: 10 }}>
-            <Text>{item.name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image style={{ height: 10, marginRight: 4 }}
-                source={require('../../../assets/images/icons/rupee.png')}
-              />
-              <Text p color={colors.primary}>{item.price_weight.length != 0 ? item.price_weight[0].price : "NA"} / {item.price_weight.length != 0 ? item.price_weight[0].weight : "NA"}</Text>
-              <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
-            </View>
-
-            <View style={{ height: 34, overflow: 'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
-
-              {getCartItemById(item.pro_id).qty <= 0 && <Text onPress={() => {
-                setAddProduct({ ...addProduct, id: item.pro_id });
-                AssetsDrawer.current?.open();
-              }} hCenter style={{ flex: 1, fontSize: 14 }}>Add</Text>}
-              {(getCartItemById(item.pro_id).qty > 0) && <>
-                <IconButton
-                  white noBorder mdR
-                  onPress={() => {
-                    const cartItem = getCartItemById(item.pro_id);
-                    updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
-                  }}
-                  icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
-                />
-
-                <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(item.pro_id).qty <= 0 ? 0 : getCartItemById(item.pro_id).qty}</Text>
-                <IconButton
-                  white noBorder mdR
-                  onPress={() => {
-                    setAddProduct({ ...addProduct, id: item.pro_id });
-                    AssetsDrawer.current?.open();
-                  }}
-                  icon={
-                    <Image source={require('../../../assets/images/icons/plus.png')} />
-                  }
-                />
-              </>}
-            </View>
-
-          </View>
-        </Paper>
-      </View>
-    ))}
-  </ScrollView>
-</View>
-
-
-
-</MainContainer>
+          <View style={{ backgroundColor: '#888', flexDirection: 'column', flex: 1 }}>
+            <ScrollView style={{ backgroundColor: colors.bodyBase, flexGrow: 1 }}>
 
 
 
@@ -314,13 +206,121 @@ export default function HomeView({ navigation }) {
 
 
 
+
+
+
+
+              <View style={{ height: 55, marginBottom: -55, backgroundColor: colors.primary }} />
+              <MainContainer>
+
+                <View style={styles.banner}>
+                  <Slider images={sliderImages} key={sliderImages} />
+                </View>
+
+
+                <View style={styles.flexContainer}>
+                  {categories.map(item => (
+                    <View style={styles.flexList}>
+                      <View style={{ width: '100%' }}>
+                        <View style={{ flexDirection: 'row', }}>
+                          <Paper style={{ flex: 1 }}>
+                            <Ripple style={{ width: '100%' }} onPress={() => navigation.navigate('Category', { "category": item })}>
+                              <View style={{ marginTop: 16, marginBottom: 12, alignItems: 'center' }}>
+                                <View style={{ width: 50, alignItems: 'center', }}><Image
+                                  style={{ height: 54, width: 54 }}
+                                  source={{
+                                    uri: agent.MEDIA_ROOT + '/category/' + item.icon
+                                  }} /></View>
+                                <Text caption hCenter style={styles.label}>{item.name}</Text>
+                              </View>
+                            </Ripple>
+                          </Paper>
+                        </View>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+
+                {allProducts.filter(item => parseInt(item.showhome) == 1).length > 4 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
+                  <Text style={{ flex: 1 }}>Bobby Exclusive</Text>
+                  <Button title="View All" link white />
+                </View>}
+
+                <View style={{ marginLeft: -5, marginRight: -15 }}>
+                  <ScrollView horizontal={true}>
+                    {allProducts.filter(item => parseInt(item.showhome) == 1).map(item => (
+                      <View style={{ marginBottom: 10, width: 140, marginHorizontal: 5 }}>
+                        <Paper>
+                          <Image style={{ width: '100%', height: 60, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+                            source={{
+                              uri: item.image,
+                            }}
+                          />
+
+                          <View style={{ padding: 10 }}>
+                            <Text>{item.name}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Image style={{ height: 10, marginRight: 4 }}
+                                source={require('../../../assets/images/icons/rupee.png')}
+                              />
+                              <Text p color={colors.primary}>{item.price_weight.length != 0 ? item.price_weight[0].price : "NA"} / {item.price_weight.length != 0 ? item.price_weight[0].weight : "NA"}</Text>
+                              <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
+                            </View>
+
+                            <View style={{ height: 34, overflow: 'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
+
+                              {getCartItemById(item.pro_id).qty <= 0 && <Text onPress={() => {
+                                setAddProduct({ ...addProduct, id: item.pro_id });
+                                AssetsDrawer.current?.open();
+                              }} hCenter style={{ flex: 1, fontSize: 14 }}>Add</Text>}
+                              {(getCartItemById(item.pro_id).qty > 0) && <>
+                                <IconButton
+                                  white noBorder mdR
+                                  onPress={() => {
+                                    const cartItem = getCartItemById(item.pro_id);
+                                    updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                  }}
+                                  icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                                />
+
+                                <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(item.pro_id).qty <= 0 ? 0 : getCartItemById(item.pro_id).qty}</Text>
+                                <IconButton
+                                  white noBorder mdR
+                                  onPress={() => {
+                                    setAddProduct({ ...addProduct, id: item.pro_id });
+                                    AssetsDrawer.current?.open();
+                                  }}
+                                  icon={
+                                    <Image source={require('../../../assets/images/icons/plus.png')} />
+                                  }
+                                />
+                              </>}
+                            </View>
+
+                          </View>
+                        </Paper>
+                      </View>
+                    ))}
                   </ScrollView>
                 </View>
-                
-            </View>
-            {/* inner body end here*/}
-            
-            
+
+
+
+              </MainContainer>
+
+
+
+
+
+
+
+            </ScrollView>
+          </View>
+
+        </View>
+        {/* inner body end here*/}
+
+
         {/* footer start here */}
         <Paper>
 
@@ -374,13 +374,13 @@ export default function HomeView({ navigation }) {
               </Ripple>
             </View>
           </View>
-          </Paper>
+        </Paper>
         {/* footer end here */}
 
-      </View>      
-      
-      
-      
+      </View>
+
+
+
 
     </>
   )
