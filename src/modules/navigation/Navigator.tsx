@@ -20,6 +20,7 @@ import PaymentView from '../cart/Payment';
 import OrderPlacedView from '../cart/OrderPlaced';
 
 import { useSelector } from "react-redux";
+import ProductListView from '../category/ProductList';
 
 
 export type StackParamList = {
@@ -182,6 +183,24 @@ function Navigator() {
             />
 
             <Stack.Screen
+              name="ProductList"
+              component={ProductListView}
+              options={{
+
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: colors.white,
+                },
+                headerTintColor: '#5D6275',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  fontSize: 14,
+                },
+                title: 'Category',
+              }}
+            />
+
+            <Stack.Screen
               name="My Account"
               component={AccountView}
               options={{
@@ -250,34 +269,34 @@ function Navigator() {
             />
           </Stack.Navigator >
         ) : (
-            <Stack.Navigator initialRouteName="Login"
-              screenOptions={{
-                headerStyle: {
-                  backgroundColor: colors.white,
-                },
-              }}>
+          <Stack.Navigator initialRouteName="Login"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: colors.white,
+              },
+            }}>
 
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                  headerShown: false
-                }}
-              />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false
+              }}
+            />
 
-              <Stack.Screen
-                name="Otp"
-                component={OtpView}
-                options={{
-                  headerShown: false,
-                  title: 'Manage Address',
-                }}
-              />
+            <Stack.Screen
+              name="Otp"
+              component={OtpView}
+              options={{
+                headerShown: false,
+                title: 'Manage Address',
+              }}
+            />
 
 
 
-            </Stack.Navigator>
-          )}
+          </Stack.Navigator>
+        )}
     </>
   );
 }
