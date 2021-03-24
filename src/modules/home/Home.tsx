@@ -64,6 +64,7 @@ export default function HomeView({ navigation }) {
   const sliderImages = useSelector(state => state.home.sliderImages || []);
   const [addProduct, setAddProduct] = useState({});
 
+  const exclusiveProducts = allProducts.filter(item => parseInt(item.showhome) == 1);
 
 
   const getProductById = (id) => {
@@ -241,14 +242,14 @@ export default function HomeView({ navigation }) {
                   ))}
                 </View>
 
-                {allProducts.filter(item => parseInt(item.showhome) == 1).length > 4 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
+                {exclusiveProducts.length > 4 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
                   <Text style={{ flex: 1 }}>Bobby Exclusive</Text>
-                  <Button title="View All" link white />
+                  <Button title="View All" link white onPress={() => navigation.navigate('ProductList', { products: exclusiveProducts })} />
                 </View>}
 
                 <View style={{ marginLeft: -5, marginRight: -15 }}>
                   <ScrollView horizontal={true}>
-                    {allProducts.filter(item => parseInt(item.showhome) == 1).map(item => (
+                    {exclusiveProducts.map(item => (
                       <View style={{ marginBottom: 10, width: 140, marginHorizontal: 5 }}>
                         <Paper>
                           <Image style={{ width: '100%', height: 60, borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
