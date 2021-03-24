@@ -58,10 +58,10 @@ export default function CartView({ navigation }) {
   };
   const AssetsDrawer = useRef<RBSheet>(null);
   const allAddresses = useSelector(state => state.address.addresses);
-
+  const addresses = useSelector(state => state.address.addresses || []);
   const deliveryAddress = useSelector(state => {
-    if (!state.address.addresses) return null;
-    return state.address.addresses.find(address => {
+    if (addresses.length == 0) return null;
+    return addresses.find(address => {
       if (state.app.address) return address.id == state.app.address.id;
       return false;
     })
@@ -73,6 +73,7 @@ export default function CartView({ navigation }) {
   const [addProduct, setAddProduct] = useState({});
   const [coupon, setCoupon] = useState(cart.appliedCoupon ? cart.appliedCoupon.name : "");
   const isFirstRun = useRef(true);
+  const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
 
   const getProductById = (id) => {
     if (!products) return {};
@@ -102,9 +103,11 @@ export default function CartView({ navigation }) {
     else return "Other";
   }
 
+
   useEffect(() => {
     if (!cart.coupons) dispatch(fetchCoupons());
     if (!cart.tax) dispatch(fetchTax());
+    if (!addresses || addresses.length == 0) dispatch(fetchAddressList());
   }, []);
 
   useEffect(() => {
@@ -179,7 +182,7 @@ export default function CartView({ navigation }) {
             </View>
             <View style={{ flex: 1, marginLeft: 10 }}>
               <Text h4 color={colors.white}>My Cart</Text>
-              <Text p color={colors.white}>2 items</Text>
+              <Text p color={colors.white}>{cartItemsCount} items</Text>
             </View>
 
             <View>
@@ -189,8 +192,8 @@ export default function CartView({ navigation }) {
 
           </View>
 
-          <SearchBar/>
-          
+          <SearchBar />
+
 
         </MainContainer>
 
@@ -370,10 +373,10 @@ export default function CartView({ navigation }) {
                   value={coupon}
                   placeholder="Promo Code"
                 /></View>
-                <View style={{ width: 100 }}>
-                  {coupon === "" ? <Button title="Apply" md disable /> :
+              <View style={{ width: 100 }}>
+                {coupon === "" ? <Button title="Apply" md disable /> :
                   <Button title="Apply" md primary onPress={applyCoupon} />
-                  }                
+                }
               </View>
             </View>
 
@@ -489,7 +492,7 @@ export default function CartView({ navigation }) {
                 <Text p style={{ flex: 1 }}>See Breakup</Text>
                 <View style={{}}>
                   <Text p>Make Payment</Text>
-                  <View style={{ flexDirection: 'row', alignSelf:'flex-end', alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                     <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
                       source={require('../../../assets/images/icons/rupee.png')}
                     />
