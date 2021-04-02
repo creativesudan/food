@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, Image, View, SafeAreaView, Dimensions } from 'react-native';
+import { Text, Image, View, SafeAreaView, Dimensions } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
 import agent from "../../agent";
@@ -26,17 +26,17 @@ export default class Slider extends React.Component {
   }
 
   _renderItem({ item, index }) {
-
     return (
-      <View style={{ width:windowWidth-24,
+      <View style={{
+        width: windowWidth - 24,
         borderRadius: 11,
         overflow: 'hidden',
       }}>
-        <Image resizeMode={'cover'} style={{ width: '100%', height:110, borderRadius: 11 }} 
-        // source={require('../../../assets/images/mock_data/banner_1.png')}
-        source={{ uri: agent.MEDIA_ROOT + "/banner/" + item.image }}
+        <Image resizeMode={'cover'} style={{ width: '100%', height: 110, borderRadius: 11 }}
+          // source={require('../../../assets/images/mock_data/banner_1.png')}
+          source={{ uri: agent.MEDIA_ROOT + "/banner/" + item.image }}
         />
-        
+
       </View>
 
     )

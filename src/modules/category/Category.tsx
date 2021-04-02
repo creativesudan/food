@@ -1,5 +1,5 @@
-import React, { useState,  useRef, useEffect } from "react";
-import { View, StyleSheet, Image , TouchableOpacity} from 'react-native';
+import React, { useState, useRef, useEffect } from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -78,8 +78,7 @@ export default function CategoryView({ route, navigation }) {
 
   useEffect(() => {
     dispatch(fetchProducts(category.id));
-    console.log(category);;
-    console.log(cartItems);
+
   }, [category]);
 
   return (
@@ -147,7 +146,7 @@ export default function CategoryView({ route, navigation }) {
 
 
             <Ripple style={{ padding: 10 }}
-               onPress={ () => cartItemsCount != 0 && navigation.navigate('Cart')}
+              onPress={() => cartItemsCount != 0 && navigation.navigate('Cart')}
             >
               <Text style={{
                 position: 'absolute', zIndex: 1, right: 2, top: 2,
@@ -164,7 +163,7 @@ export default function CategoryView({ route, navigation }) {
           </View>
 
 
-          <SearchBar/>
+          <SearchBar />
 
         </MainContainer>
 
@@ -201,7 +200,7 @@ export default function CategoryView({ route, navigation }) {
               )
             }
           })}
-          
+
 
         </ScrollView>
       </View>
@@ -273,7 +272,7 @@ export default function CategoryView({ route, navigation }) {
               </View>
             ))}
 
-            
+
           </View>
         </MainContainer>
       </ScrollView>
@@ -285,7 +284,7 @@ export default function CategoryView({ route, navigation }) {
             title={cartCategoryItems + " Items"}
             primary lg raised
             iconRight
-            onPress={ () => cartCategoryItems != 0 && navigation.navigate('Cart')}
+            onPress={() => cartCategoryItems != 0 && navigation.navigate('Cart')}
             icon={
               <Image
                 style={{ tintColor: colors.white, marginTop: 4, marginLeft: 10 }}
