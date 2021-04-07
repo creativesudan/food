@@ -133,7 +133,8 @@ export default function CategoryView({ route, navigation }) {
               />
             </View>
             <View style={{ flex: 1 }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
+              <Text h1 color={colors.white}>{category.name}</Text>
+              {/* <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
                 <Text color={colors.white}>Deliver to :</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text bold color={colors.white}>{deliveryAddress.name || "Select Address"}</Text>
@@ -141,7 +142,7 @@ export default function CategoryView({ route, navigation }) {
                     source={require('../../../assets/images/icons/expand_more.png')}
                   />
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
 

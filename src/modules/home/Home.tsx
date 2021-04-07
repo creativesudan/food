@@ -158,7 +158,8 @@ export default function HomeView({ navigation }) {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                 <View style={{ flex: 1 }}>
-                  <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
+                  <Text h1 color={colors.white}>Bobby Sweets</Text>
+                  {/* <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
                     <Text color={colors.white}>Deliver to :</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text bold color={colors.white}>{deliveryAddress.name || "Select Address"}</Text>
@@ -166,7 +167,7 @@ export default function HomeView({ navigation }) {
                         source={require('../../../assets/images/icons/expand_more.png')}
                       />
                     </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
 
                 <Ripple style={{ padding: 10 }}

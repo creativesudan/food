@@ -50,12 +50,15 @@ export default function AppView() {
         //   source={require('../../assets/images/mock_data/flash-screen.png')}
         // />
       }
+      
       {showInitScreen ?
-
+      <>
+      <Text>{showInitScreen}</Text>
         <Image
           style={{ height: '100%' }}
           source={require('../../assets/images/mock_data/flash-screen.png')}
         />
+      </>
         : <Navigator />}
     </>
   )
