@@ -90,7 +90,7 @@ const Address = {
         &address=${address.address || ""}&landmark=${address.landmark || ""}
         &country=${address.country || ""}&state=${address.state || ""}
         &city=${address.city || ""}&pincode=${address.pincode || ""}
-        &mobile=${address.mobile || ""}`, {}),
+        &mobile=${address.mobile || ""}&default=${address.default}`, {}),
     update: (address) =>
         requests.post(`?type=updateaddress&default=${address.default}
         &address_id=${address.id}&address_type=${address.address_type}
@@ -98,7 +98,7 @@ const Address = {
         &address=${address.address || ""}&landmark=${address.landmark || ""}
         &country=${address.country || ""}&state=${address.state || ""}
         &city=${address.city || ""}&pincode=${address.pincode || ""}
-        &mobile=${address.mobile || ""}`, {}),
+        &mobile=${address.mobile || ""}&default=${address.default}`, {}),
     delete: (address_id) =>
         requests.post(`?type=deleteaddress&address_id=${address_id}`, {})
 }

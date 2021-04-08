@@ -61,7 +61,7 @@ export default function ProductListView({ route, navigation }) {
         const product = getProductById(id);
         let initialCartItem = {}
         if (product && product.price_weight) {
-            initialCartItem = { qty: 0, variant: product.price_weight[0] || {}, id: id, product: product };
+            initialCartItem = { qty: 0, variant: product.price_weight.length > 0 ? product.price_weight[0] : {}, id: id, product: product };
         }
 
         if (!cartItems) return initialCartItem;
@@ -193,8 +193,8 @@ export default function ProductListView({ route, navigation }) {
                                                     <Image style={{ height: 10, marginRight: 4 }}
                                                         source={require('../../../assets/images/icons/rupee.png')}
                                                     />
-                                                    <Text color={colors.primary}>{product.price_weight[0].price} / {product.price_weight[0].weight}</Text>
-                                                    <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{product.price_weight[0].mrp}</Text>
+                                                    <Text color={colors.primary}>{product.price_weight.length > 0 ? product.price_weight[0].price : " / "}{product.price_weight.length > 0 ? product.price_weight[0].weight : ""}</Text>
+                                                    <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{product.price_weight.length > 0 ? product.price_weight[0].mrp : ""}</Text>
                                                 </View>
                                                 <View style={{ width: 100 }}>
 

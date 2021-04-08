@@ -17,6 +17,7 @@ import {
 } from './actions/types';
 import { initAuth, fetchUser } from "../redux/actions/auth";
 import { fetchAddressList } from "../redux/actions/address";
+import lazyLoad from "../redux/actions/lazyLoad";
 import { selectDeliveryAddress, removeDeliveryAddress } from "../redux/actions/app";
 import { evaluateCart } from "../redux/actions/cart";
 import rootReducer from './reducers/index';
@@ -26,13 +27,13 @@ import agent from "../agent";
 const promiseMiddleware = store => next => action => {
     console.log(action)
     if (isPromise(action.payload)) {
-        store.dispatch({ type: ASYNC_START, subtype: action.type });
+        if (!action.lazyLoad) store.dispatch({ type: ASYNC_START, subtype: action.type });
 
         action.payload.then(
             res => {
                 console.log('RESULT', res);
                 action.payload = res;
-                store.dispatch({ type: ASYNC_END, promise: action.payload });
+                if (!action.lazyLoad) store.dispatch({ type: ASYNC_END, promise: action.payload });
                 store.dispatch(action);
             },
             error => {
@@ -41,7 +42,7 @@ const promiseMiddleware = store => next => action => {
                 action.error = true;
                 action.payload = error.response.body;
                 console.log(error.response.body);
-                store.dispatch({ type: ASYNC_END, promise: action.payload });
+                if (!action.lazyLoad) store.dispatch({ type: ASYNC_END, promise: action.payload });
                 store.dispatch(action);
             }
         );
@@ -63,7 +64,7 @@ const appInitMiddleware = store => next => action => {
                     store.dispatch(initAuth(userId));
                     store.dispatch(fetchUser(userId));
                     agent.setUserId(userId);
-                    store.dispatch(fetchAddressList());
+                    store.dispatch(lazyLoad(fetchAddressList()));
                     try {
                         AsyncStorage.getItem('delivery_address')
                             .then((address) => { if (address) store.dispatch(selectDeliveryAddress(JSON.parse(address))) })
@@ -139,13 +140,18 @@ const deliveryAddressMiddleware = store => next => action => {
             store.dispatch(removeDeliveryAddress());
         }
         const existing = store.getState().app.address || {};
-        console.log(addresses);
-        console.log(existing);
         const deliveryAddress = addresses.find(address => address.id == existing.id)
 
         if (deliveryAddress) {
             store.dispatch(selectDeliveryAddress(deliveryAddress));
         }
+        else {
+            const default_address = addresses.find(address => parseInt(address.default) == 1);
+            if (default_address) {
+                store.dispatch(selectDeliveryAddress(default_address));
+            }
+        }
+
     }
 
     next(action);

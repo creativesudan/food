@@ -16,6 +16,8 @@ import FormGroup from '../../components/FormGroup';
 import { useDispatch, useSelector } from "react-redux";
 import { saveAddress } from "../../redux/actions/address";
 
+import { CheckBox } from "react-native";
+
 
 export const AddAddress = ({
   setAddAddress,
@@ -25,7 +27,7 @@ export const AddAddress = ({
 
 
   // const navigation = useNavigation();
-  const [address, setAddress] = useState({ address_type: 2 });
+  const [address, setAddress] = useState({ address_type: 2, default: 0 });
   const dispatch = useDispatch();
   const changeAddressType = (typeId) => () => {
     setAddress({ ...address, "address_type": typeId });
@@ -33,6 +35,10 @@ export const AddAddress = ({
 
   const changeAddressField = (key) => (val) => {
     setAddress({ ...address, [key]: val });
+  }
+
+  const changeDefaultAddressField = (val) => {
+    setAddress({ ...address, "default": val ? 1 : 0 });
   }
 
   return (
@@ -62,14 +68,14 @@ export const AddAddress = ({
 
 
                   <Ripple style={{ borderRadius: 100, overflow: 'hidden' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, backgroundColor: "#FFF6F6", }}>
+                    {/* <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 15, backgroundColor: "#FFF6F6", }}>
                       <Image
                         style={{ tintColor: colors.primary, }}
                         source={require('../../../assets/images/icons/location.png')}
                       />
                       <Text style={{ marginLeft: 10 }}>11th Ave, Gaur City 2, Ghaziabad</Text>
 
-                    </View>
+                    </View> */}
                   </Ripple>
 
                   <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', alignSelf: 'center' }}>
@@ -120,7 +126,7 @@ export const AddAddress = ({
                     />
                   </View>
 
-                  {/* <View style={{ marginVertical: 2 }}>
+                  <View style={{ marginVertical: 2 }}>
                     <FloatingInput
                       attrName="personalName"
                       title="City"
@@ -129,7 +135,7 @@ export const AddAddress = ({
                     />
                   </View>
 
-                  <View style={{ marginVertical: 2 }}>
+                  {/*<View style={{ marginVertical: 2 }}>
                     <FloatingInput
                       attrName="personalName"
                       title="State"
@@ -162,6 +168,13 @@ export const AddAddress = ({
                       title="Mobile"
                       value={address.mobile}
                       onChange={changeAddressField("mobile")}
+                    />
+                  </View>
+                  <View style={{ marginVertical: 2 }}>
+                    <Text>Default Address</Text>
+                    <CheckBox
+                      value={address.default == 1 ? true : false}
+                      onValueChange={changeDefaultAddressField}
                     />
                   </View>
 

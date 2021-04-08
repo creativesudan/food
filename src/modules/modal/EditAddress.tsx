@@ -16,6 +16,8 @@ import FormGroup from '../../components/FormGroup';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAddress } from "../../redux/actions/address";
 
+import { CheckBox } from "react-native";
+
 
 export const EditAddress = ({
   setEditAddress, editAddress
@@ -23,8 +25,6 @@ export const EditAddress = ({
   setEditAddress: (state: object) => void;
   editAddress: object
 }) => {
-
-  console.log(editAddress);
   const [address, setAddress] = useState({ ...editAddress });
   const dispatch = useDispatch();
   const changeAddressType = (typeId) => () => {
@@ -33,6 +33,11 @@ export const EditAddress = ({
 
   const changeAddressField = (key) => (val) => {
     setAddress({ ...address, [key]: val });
+  }
+
+  const changeDefaultAddressField = (val) => {
+    console.log(address.default);
+    setAddress({ ...address, "default": val ? 1 : 0 });
   }
   // const navigation = useNavigation();
 
@@ -125,6 +130,15 @@ export const EditAddress = ({
                   <View style={{ marginVertical: 2 }}>
                     <FloatingInput
                       attrName="personalName"
+                      title="City"
+                      value={address.city}
+                      onChange={changeAddressField("city")}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <FloatingInput
+                      attrName="personalName"
                       title="Pin"
                       value={address.pincode}
                       onChange={changeAddressField("pincode")}
@@ -137,6 +151,14 @@ export const EditAddress = ({
                       title="Mobile"
                       value={address.mobile}
                       onChange={changeAddressField("mobile")}
+                    />
+                  </View>
+
+                  <View style={{ marginVertical: 2 }}>
+                    <Text>Default Address</Text>
+                    <CheckBox
+                      value={parseInt(address.default) == 1 ? true : false}
+                      onValueChange={changeDefaultAddressField}
                     />
                   </View>
 

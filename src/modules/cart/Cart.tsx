@@ -17,7 +17,10 @@ import { EditAddress } from "../modal/EditAddress";
 import { useSelector, useDispatch } from "react-redux";
 import AddProduct from "../global/AddProduct";
 import { fetchCoupons, addCouponToCart, fetchTax } from "../../redux/actions/cart";
+import { fetchAddressList } from "../../redux/actions/address";
 import SearchBar from "../global/SearchBar";
+
+import lazyLoad from "../../redux/actions/lazyLoad";
 
 
 const item = [
@@ -105,9 +108,9 @@ export default function CartView({ navigation }) {
 
 
   useEffect(() => {
-    if (!cart.coupons) dispatch(fetchCoupons());
-    if (!cart.tax) dispatch(fetchTax());
-    if (!addresses || addresses.length == 0) dispatch(fetchAddressList());
+    if (!cart.coupons) dispatch(lazyLoad(fetchCoupons()));
+    if (!cart.tax) dispatch(lazyLoad(fetchTax()));
+    if (!addresses || addresses.length == 0) dispatch(lazyLoad(fetchAddressList()));
   }, []);
 
   useEffect(() => {
