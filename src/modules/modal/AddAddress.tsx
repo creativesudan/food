@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Modal, Image } from 'react-native';
-import { Icon, Divider, Avatar } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { CheckBox } from 'react-native-elements';;
 import Ripple from 'react-native-material-ripple';
 
 import { colors } from '../../styles';
@@ -15,8 +14,8 @@ import FormGroup from '../../components/FormGroup';
 
 import { useDispatch, useSelector } from "react-redux";
 import { saveAddress } from "../../redux/actions/address";
+import { color } from 'react-native-reanimated';
 
-import { CheckBox } from "react-native";
 
 
 export const AddAddress = ({
@@ -171,11 +170,15 @@ export const AddAddress = ({
                     />
                   </View>
                   <View style={{ marginVertical: 2 }}>
-                    <Text>Default Address</Text>
-                    <CheckBox
-                      value={address.default == 1 ? true : false}
-                      onValueChange={changeDefaultAddressField}
-                    />
+                      <CheckBox
+                        checked={address.default == 1 ? true : false}
+                        checkedIcon='check-square'                        
+                        onPress={() => (!changeDefaultAddressField)}
+                        checkedColor={colors.primary}
+                        title='Default Address'
+                        containerStyle={{marginLeft:0, width:'100%', paddingLeft:0, backgroundColor:'transparent',borderWidth:0}}
+                      />
+                    
                   </View>
 
                   <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'center', alignItems: 'center' }}>
