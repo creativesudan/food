@@ -14,7 +14,7 @@ import { MenuModal } from "../modal/Menu";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
-import AddProduct from "../global/AddProduct";
+import AddLastProduct from "../global/AddLastProduct";
 import agent from "../../agent";
 import SearchBar from "../global/SearchBar";
 
@@ -113,7 +113,7 @@ export default function CategoryView({ route, navigation }) {
             }
           />
         </View>
-        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
+        <AddLastProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 

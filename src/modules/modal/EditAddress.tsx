@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Modal, Image } from 'react-native';
-import { Icon, Divider, Avatar } from 'react-native-elements';
+import { Icon, Divider, Avatar,CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import Ripple from 'react-native-material-ripple';
 
@@ -16,7 +16,6 @@ import FormGroup from '../../components/FormGroup';
 import { useDispatch, useSelector } from "react-redux";
 import { updateAddress } from "../../redux/actions/address";
 
-import { CheckBox } from "react-native";
 
 
 export const EditAddress = ({
@@ -40,6 +39,7 @@ export const EditAddress = ({
     setAddress({ ...address, "default": val ? 1 : 0 });
   }
   // const navigation = useNavigation();
+ const [defaultAddress, setDefaultAddress] = useState(false);
 
   return (
     <Modal animationType="slide" transparent>
@@ -155,11 +155,14 @@ export const EditAddress = ({
                   </View>
 
                   <View style={{ marginVertical: 2 }}>
-                    <Text>Default Address</Text>
                     <CheckBox
-                      value={parseInt(address.default) == 1 ? true : false}
-                      onValueChange={changeDefaultAddressField}
-                    />
+                        checked={defaultAddress}
+                        checkedIcon='check-square'               
+                        onPress={() => setDefaultAddress(!defaultAddress)}
+                        checkedColor={colors.primary}
+                        title='Default Address'
+                        containerStyle={{marginLeft:0, width:'100%', paddingLeft:0, backgroundColor:'transparent',borderWidth:0}}
+                      />
                   </View>
 
                   <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'center', alignItems: 'center' }}>

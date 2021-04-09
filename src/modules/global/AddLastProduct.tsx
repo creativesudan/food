@@ -1,0 +1,75 @@
+import React, { useState } from "react";
+import { View, Image} from 'react-native';
+import MainContainer from '../../components/Containers/Main';
+import {Divider, ListItem, CheckBox } from 'react-native-elements';
+import { Button, IconButton } from '../../components/StyledButton';
+import { Text } from '../../components/StyledText';
+import { colors } from '../../styles';
+
+
+export default function AddLastProduct({
+    AssetsDrawer, product, setProduct, InitialCartItem
+}: {
+    AssetsDrawer: (state: boolean) => void;
+    product: object;
+    setProduct: (cartItem: object) => void;
+    InitialCartItem: object;
+}) {
+
+    const [cartItem, setCartItem] = useState(InitialCartItem);
+    console.log(product);
+
+    return (
+
+        <MainContainer>
+            <Text h3>Repeat last used customization?</Text>
+            <Divider style={{ marginVertical: 10 }} />
+
+           
+                <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 10, backgroundColor: 'transparent' }}>
+                    <ListItem.Content>
+                        <Text >Veg Seekh Salad</Text>
+                        {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image style={{ height: 10, marginRight: 4 }}
+                                source={require('../../../assets/images/icons/rupee.png')}
+                            />
+                            <Text>{item.price}</Text>
+                        </View> */}
+                    </ListItem.Content>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Image style={{ height: 10, marginRight: 4 }}
+                            source={require('../../../assets/images/icons/rupee.png')}
+                        />
+                        <Text>156.00</Text>
+                    </View>
+
+                </ListItem>
+           
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15, marginTop:50 }}>
+
+                <View style={{ flex: 1,  }}>
+                    <Button title="Add New" md primary secondary
+                        onPress={() => {
+                            AssetsDrawer.current?.close();
+                            if (cartItem.qty == 0) cartItem.qty = 1;
+                            setProduct(cartItem);
+                        }}
+                    />
+                </View>
+
+                <View style={{ flex: 1, paddingLeft: 10 }}>
+                    <Button title="Repeat Last" md primary
+                        onPress={() => {
+                            AssetsDrawer.current?.close();
+                            if (cartItem.qty == 0) cartItem.qty = 1;
+                            setProduct(cartItem);
+                        }}
+                    />
+                </View>
+            </View>
+
+        </MainContainer>
+
+    );
+}

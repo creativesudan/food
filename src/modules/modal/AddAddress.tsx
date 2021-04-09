@@ -36,9 +36,7 @@ export const AddAddress = ({
     setAddress({ ...address, [key]: val });
   }
 
-  const changeDefaultAddressField = (val) => {
-    setAddress({ ...address, "default": val ? 1 : 0 });
-  }
+ const [defaultAddress, setDefaultAddress] = useState(false);
 
   return (
     <Modal animationType="slide" transparent>
@@ -171,9 +169,9 @@ export const AddAddress = ({
                   </View>
                   <View style={{ marginVertical: 2 }}>
                       <CheckBox
-                        checked={address.default == 1 ? true : false}
-                        checkedIcon='check-square'                        
-                        onPress={() => (!changeDefaultAddressField)}
+                        checked={defaultAddress}
+                        checkedIcon='check-square'               
+                        onPress={() => setDefaultAddress(!defaultAddress)}
                         checkedColor={colors.primary}
                         title='Default Address'
                         containerStyle={{marginLeft:0, width:'100%', paddingLeft:0, backgroundColor:'transparent',borderWidth:0}}
