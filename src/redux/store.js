@@ -10,6 +10,7 @@ import {
     CART_COUPON_APPLIED,
     CART_TAX_APPLIED,
     CART_PRODUCT_REMOVED,
+    CART_PRODUCT_ADDED,
     CART_CLEARED,
     ADDRESS_SAVED,
     ADDRESS_LOADED
@@ -109,9 +110,12 @@ const loginMiddleware = store => next => action => {
 const cartMiddleware = store => next => action => {
     if (action.type && !isPromise(action.payload) && (action.type == CART_COUPON_APPLIED ||
         action.type == CART_PRODUCT_REMOVED ||
-        action.type == CART_PRODUCT_UPDATED ||
+        action.type == CART_PRODUCT_ADDED ||
         action.type == CART_TAX_APPLIED ||
         action.type == CART_CLEARED)) {
+
+        console.log(store.getState().cart);
+
         next(action);
 
         const cart = store.getState().cart;

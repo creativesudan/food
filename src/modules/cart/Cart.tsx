@@ -16,7 +16,7 @@ import { AddAddress } from "../modal/AddAddress";
 import { EditAddress } from "../modal/EditAddress";
 import { useSelector, useDispatch } from "react-redux";
 import AddProduct from "../global/AddProduct";
-import { fetchCoupons, addCouponToCart, fetchTax } from "../../redux/actions/cart";
+import { fetchCoupons, addCouponToCart, fetchTax, removeFromCart } from "../../redux/actions/cart";
 import { fetchAddressList } from "../../redux/actions/address";
 import SearchBar from "../global/SearchBar";
 
@@ -83,7 +83,7 @@ export default function CartView({ navigation }) {
     return products.find(item => item.pro_id == id) || {};
   }
 
-  const getCartItemById = (id) => {
+  const getCartItemById = (id, variant) => {
     const product = getProductById(id);
     let initialCartItem = {}
     if (product && product.price_weight) {
@@ -91,15 +91,18 @@ export default function CartView({ navigation }) {
     }
 
     if (!cartItems) return initialCartItem;
-    const items = cartItems.find(item => item.id == id) || initialCartItem;
+    const items = cartItems.find(item => item.id == id && item.variant.weight == variant.weight) || initialCartItem;
 
-    return items;
+    return { ...items };
   }
 
   const updateCart = (item) => {
-    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+    dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
   }
 
+  const removeCart = (item) => {
+    dispatch(removeFromCart(item))
+  }
   const getAddressType = (id) => {
     if (id == 1) return "Work";
     if (id == 2) return "Home";
@@ -161,7 +164,7 @@ export default function CartView({ navigation }) {
             }
           />
         </View>
-        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
+        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id, addProduct.variant)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 
@@ -333,7 +336,7 @@ export default function CartView({ navigation }) {
                                 onPress={() => {
                                   // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
 
-                                  updateCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) });
+                                  removeCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) });
 
                                 }}
                                 icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
@@ -343,7 +346,7 @@ export default function CartView({ navigation }) {
                               <IconButton
                                 white noBorder mdR
                                 onPress={() => {
-                                  setAddProduct({ ...addProduct, id: item.id });
+                                  setAddProduct({ ...addProduct, id: item.id, variant: item.variant });
                                   AssetsDrawer.current?.open()
                                 }}
                                 icon={

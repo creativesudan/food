@@ -14,7 +14,8 @@ import { MenuModal } from "../modal/Menu";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/actions/home";
-import AddLastProduct from "../global/AddLastProduct";
+import { removeFromCart } from "../../redux/actions/cart";
+import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
 import SearchBar from "../global/SearchBar";
 
@@ -53,6 +54,7 @@ export default function CategoryView({ route, navigation }) {
   const cartItems = useSelector(state => state.cart.items);
   const cartCategoryItems = useSelector(state => state.cart.items.reduce((total, obj) => ((obj.product.cat_id == category.id) ? (total + obj.qty) : total), 0))
   const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
+  const cart = useSelector(state => state.cart);
 
   const getProductById = (id) => {
     if (!products) return {};
@@ -69,11 +71,15 @@ export default function CategoryView({ route, navigation }) {
     if (!cartItems) return initialCartItem;
     const items = cartItems.find(item => item.id == id) || initialCartItem;
 
-    return items;
+    return { ...items };
   }
 
   const updateCart = (item) => {
-    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+    dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
+  }
+
+  const removeCart = (item) => {
+    dispatch(removeFromCart(item))
   }
 
   useEffect(() => {
@@ -113,7 +119,7 @@ export default function CategoryView({ route, navigation }) {
             }
           />
         </View>
-        <AddLastProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
+        <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
 
@@ -246,12 +252,12 @@ export default function CategoryView({ route, navigation }) {
                                 onPress={() => {
                                   // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
                                   const cartItem = getCartItemById(product.pro_id);
-                                  updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                  removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                 }}
                                 icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                               />
 
-                              <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(product.pro_id).qty <= 0 ? 0 : getCartItemById(product.pro_id).qty}</Text>
+                              <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(product.pro_id)}</Text>
                               <IconButton
                                 white noBorder mdR
                                 onPress={() => {

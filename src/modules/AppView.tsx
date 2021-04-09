@@ -20,6 +20,7 @@ import { fetchUser, initAuth } from "../redux/actions/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchAddressList, deleteAddress } from "../redux/actions/address";
 import { colors } from '../styles';
+import lazyLoad from "../redux/actions/lazyLoad";
 
 export default function AppView() {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function AppView() {
   }, []);
 
   useEffect(() => {
-    if (!addressesSynced) dispatch(fetchAddressList())
+    if (!addressesSynced) dispatch(lazyLoad(fetchAddressList()));
   }, [addressesSynced]);
 
 
@@ -50,14 +51,14 @@ export default function AppView() {
         //   source={require('../../assets/images/mock_data/flash-screen.png')}
         // />
       }
-      
+
       {showInitScreen ?
-      <>
-        <Image
-          style={{ height: '100%' }}
-          source={require('../../assets/images/mock_data/flash-screen.png')}
-        />
-      </>
+        <>
+          <Image
+            style={{ height: '100%' }}
+            source={require('../../assets/images/mock_data/flash-screen.png')}
+          />
+        </>
         : <Navigator />}
     </>
   )

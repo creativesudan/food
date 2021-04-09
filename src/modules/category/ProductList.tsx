@@ -17,6 +17,7 @@ import { fetchProducts } from "../../redux/actions/home";
 import AddProduct from "../global/AddProduct";
 import agent from "../../agent";
 import SearchBar from "../global/SearchBar";
+import { removeFromCart } from "../../redux/actions/cart";
 
 
 const item = [
@@ -50,6 +51,7 @@ export default function ProductListView({ route, navigation }) {
     const categories = useSelector(state => state.home.categories || []);
     const deliveryAddress = useSelector(state => state.app.address || {});
     const cartItems = useSelector(state => state.cart.items);
+    const cart = useSelector(state => state.cart);
     const cartItemsCount = useSelector(state => state.cart.items.reduce((total, obj) => total + obj.qty, 0));
 
     const getProductById = (id) => {
@@ -67,11 +69,15 @@ export default function ProductListView({ route, navigation }) {
         if (!cartItems) return initialCartItem;
         const items = cartItems.find(item => item.id == id) || initialCartItem;
 
-        return items;
+        return { ...items };
     }
 
     const updateCart = (item) => {
-        dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+        dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
+    }
+
+    const removeCart = (item) => {
+        dispatch(removeFromCart(item))
     }
 
     useEffect(() => {
@@ -193,7 +199,7 @@ export default function ProductListView({ route, navigation }) {
                                                     <Image style={{ height: 10, marginRight: 4 }}
                                                         source={require('../../../assets/images/icons/rupee.png')}
                                                     />
-                                                    <Text color={colors.primary}>{product.price_weight.length > 0 ? product.price_weight[0].price : " / "}{product.price_weight.length > 0 ? product.price_weight[0].weight : ""}</Text>
+                                                    <Text color={colors.primary}>{product.price_weight.length > 0 ? product.price_weight[0].price + " / " : ""}{product.price_weight.length > 0 ? product.price_weight[0].weight : ""}</Text>
                                                     <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{product.price_weight.length > 0 ? product.price_weight[0].mrp : ""}</Text>
                                                 </View>
                                                 <View style={{ width: 100 }}>
@@ -209,12 +215,12 @@ export default function ProductListView({ route, navigation }) {
                                                                 onPress={() => {
                                                                     // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
                                                                     const cartItem = getCartItemById(product.pro_id);
-                                                                    updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                                                    removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                                                 }}
                                                                 icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                                                             />
 
-                                                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(product.pro_id).qty <= 0 ? 0 : getCartItemById(product.pro_id).qty}</Text>
+                                                            <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(product.pro_id)}</Text>
                                                             <IconButton
                                                                 white noBorder mdR
                                                                 onPress={() => {

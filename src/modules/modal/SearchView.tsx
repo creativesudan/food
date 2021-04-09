@@ -16,6 +16,8 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import AddProduct from "../global/AddProduct";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { removeFromCart } from "../../redux/actions/cart";
+
 
 
 
@@ -36,6 +38,7 @@ export const SearchView = ({
   const [addProduct, setAddProduct] = useState({});
   const [pastSearches, setPastSearches] = useState([]);
   const AssetsDrawer = useRef<RBSheet>(null);
+  const cart = useSelector(state => state.cart);
   const SEARCH_LEN = 2;
   const getProductById = (id) => {
     if (!allProducts || allProducts.length == 0) return {};
@@ -52,11 +55,15 @@ export const SearchView = ({
     if (!cartItems) return initialCartItem;
     const items = cartItems.find(item => item.id == id) || initialCartItem;
 
-    return items;
+    return { ...items };
   }
 
   const updateCart = (item) => {
-    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+    dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
+  }
+
+  const removeCart = (item) => {
+    dispatch(removeFromCart(item))
   }
 
   const search = (keyword) => {
@@ -271,12 +278,12 @@ export const SearchView = ({
                                     onPress={() => {
                                       // setAddProduct({ ...addProduct, qty: (addProduct.qty <= 0 ? 0 : addProduct.qty - 1) });
                                       const cartItem = getCartItemById(product.pro_id);
-                                      updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                      removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                     }}
                                     icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                                   />
 
-                                  <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(product.pro_id).qty <= 0 ? 0 : getCartItemById(product.pro_id).qty}</Text>
+                                  <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(product.pro_id)}</Text>
                                   <IconButton
                                     white noBorder mdR
                                     onPress={() => {

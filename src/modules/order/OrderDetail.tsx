@@ -30,7 +30,7 @@ export default function OrderDetailView({ navigation, route }) {
   }
 
   const updateCart = (item) => {
-    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+    dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
   }
 
 

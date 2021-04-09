@@ -24,6 +24,8 @@ import agent from "../../agent";
 
 import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
 import SearchBar from "../global/SearchBar";
+import { removeFromCart } from "../../redux/actions/cart";
+import cart from "../../redux/reducers/cart";
 
 
 const data = [
@@ -63,6 +65,7 @@ export default function HomeView({ navigation }) {
   const cartItems = useSelector(state => state.cart.items);
   const sliderImages = useSelector(state => state.home.sliderImages || []);
   const [addProduct, setAddProduct] = useState({});
+  const cart = useSelector(state => state.cart);
 
   const exclusiveProducts = allProducts.filter(item => parseInt(item.showhome) == 1);
 
@@ -82,11 +85,15 @@ export default function HomeView({ navigation }) {
     if (!cartItems) return initialCartItem;
     const items = cartItems.find(item => item.id == id) || initialCartItem;
 
-    return items;
+    return { ...items };
   }
 
   const updateCart = (item) => {
-    dispatch({ type: "CART_PRODUCT_UPDATED", payload: item })
+    dispatch({ type: "CART_PRODUCT_ADDED", payload: item })
+  }
+
+  const removeCart = (item) => {
+    dispatch(removeFromCart(item))
   }
 
   useEffect(() => {
@@ -280,12 +287,12 @@ export default function HomeView({ navigation }) {
                                   white noBorder mdR
                                   onPress={() => {
                                     const cartItem = getCartItemById(item.pro_id);
-                                    updateCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
+                                    removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                   }}
                                   icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
                                 />
 
-                                <Text hCenter style={{ flex: 1, fontSize: 14 }}>{getCartItemById(item.pro_id).qty <= 0 ? 0 : getCartItemById(item.pro_id).qty}</Text>
+                                <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(item.pro_id)}</Text>
                                 <IconButton
                                   white noBorder mdR
                                   onPress={() => {
