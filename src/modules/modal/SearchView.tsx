@@ -17,17 +17,26 @@ import AddProduct from "../global/AddProduct";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { removeFromCart } from "../../redux/actions/cart";
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
 export const SearchView = ({
-  setSearchModalVisible, navigation
+  
+  setSearchModalVisible
 }: {
   setSearchModalVisible: (state: boolean) => void;
   navigation: object;
 
 }) => {
+  const navigation = useNavigation();
+  const modalNavigate = (link) => {
+    setSearchModalVisible(false),
+    navigation.navigate(link)
+  }
+
+
   const [searchVal, setSearch] = useState("");
   const dispatch = useDispatch();
   const [results, setResults] = useState({ count: 0 });
@@ -178,15 +187,14 @@ export const SearchView = ({
         <AddProduct product={getProductById(addProduct.id)} setProduct={updateCart} InitialCartItem={getCartItemById(addProduct.id)} AssetsDrawer={AssetsDrawer} />
 
       </RBSheet>
-
+      
+      
       <Modal animationType="slide" transparent visible>
 
 
         <View style={{ backgroundColor: '#FFFCFC', flexGrow: 1 }}>
           <ScrollView>
-
-
-
+      
             {/* search bar end */}
             <View style={{ flexGrow: 1, }}>
               <View style={{
