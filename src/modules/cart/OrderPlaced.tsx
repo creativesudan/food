@@ -121,7 +121,6 @@ export default function OrderPlacedView({ navigation }) {
               <View style={{ padding: 10 }}>
                 {orderDetails.order_pro && orderDetails.order_pro[0].map(pro => {
                   const product = getProductById(pro.pro_id);
-                  console.log(pro);
                   return (
                     <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
                       <ListItem.Content>
@@ -129,7 +128,7 @@ export default function OrderPlacedView({ navigation }) {
                           <Image style={{ width: 12, height: 12, }}
                             source={require('../../../assets/images/icons/veg.png')}
                           />
-                          <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
+                          <Text style={{ marginLeft: 10 }} >{product.name} ({pro.weight}) X {pro.qty}</Text>
                         </View>
                       </ListItem.Content>
                       <Text color={colors.primary}>Rs. {pro.total_amount} </Text>
@@ -154,14 +153,7 @@ export default function OrderPlacedView({ navigation }) {
                   <Text>Rs. {orderDetails.discount_price}</Text>
                 </ListItem>
 
-                {orderDetails.promocode != "" &&
-                  <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
-                    <ListItem.Content>
-                      <Text caption>Coupon Discount</Text>
-                    </ListItem.Content>
-                    <Text>Rs. {orderDetails.promo_discount}</Text>
-                  </ListItem>
-                }
+
 
                 <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
                   <ListItem.Content>
@@ -169,6 +161,17 @@ export default function OrderPlacedView({ navigation }) {
                   </ListItem.Content>
                   <Text>Rs. {orderDetails.promo_per}</Text>
                 </ListItem>
+
+                {orderDetails.promocode !== "" &&
+                  <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
+                    <ListItem.Content>
+                      <Text caption>Coupon Discount</Text>
+                    </ListItem.Content>
+                    <Text >{orderDetails.promocode} ( - <Image style={{ height: 10, marginRight: 4 }}
+                      source={require('../../../assets/images/icons/rupee.png')}
+                    />{orderDetails.promo_discount})</Text>
+                  </ListItem>
+                }
 
                 <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
                   <ListItem.Content>

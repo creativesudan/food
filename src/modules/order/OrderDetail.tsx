@@ -84,7 +84,7 @@ export default function OrderDetailView({ navigation, route }) {
                           <Image style={{ width: 12, height: 12, }}
                             source={require('../../../assets/images/icons/veg.png')}
                           />
-                          <Text style={{ marginLeft: 10 }} >{product.name} x {pro.qty}</Text>
+                          <Text style={{ marginLeft: 10 }} >{product.name} ({pro.weight}) x {pro.qty}</Text>
                         </View>
                       </ListItem.Content>
 
@@ -92,7 +92,7 @@ export default function OrderDetailView({ navigation, route }) {
                         <Image style={{ marginRight: 4 }}
                           source={require('../../../assets/images/icons/rupee.png')}
                         />
-                        <Text style={{ marginLeft: 2 }} color={colors.primary}>{pro.price} / {pro.weight}</Text>
+                        <Text style={{ marginLeft: 2 }} color={colors.primary}>{pro.total_amount}</Text>
                       </View>
                     </ListItem>)
                 })}
@@ -158,14 +158,14 @@ export default function OrderDetailView({ navigation, route }) {
                   </View>
                 </ListItem>
 
-                {order.appliedCoupon &&
+                {order.promocode !== "" &&
                   <ListItem bottomDivider containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>
                     <ListItem.Content>
                       <Text caption>Coupon</Text>
                     </ListItem.Content>
-                    <Text >{order.appliedCoupon.name} ( - <Image style={{ height: 10, marginRight: 4 }}
+                    <Text >{order.promocode} ( - <Image style={{ height: 10, marginRight: 4 }}
                       source={require('../../../assets/images/icons/rupee.png')}
-                    />{order.couponDiscount})</Text>
+                    />{order.promo_discount})</Text>
                   </ListItem>}
 
                 <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 5, backgroundColor: 'transparent' }}>

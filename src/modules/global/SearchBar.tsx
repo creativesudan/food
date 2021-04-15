@@ -1,5 +1,5 @@
-import React, { useState} from "react";
-import { View, StyleSheet} from 'react-native';
+import React, { useState } from "react";
+import { View, StyleSheet } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { Icon } from 'react-native-elements';
 import { Text } from '../../components/StyledText';
@@ -15,9 +15,9 @@ export default function SearchBar(navigation) {
 
   return (
     <>
-     
-     {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} navigation={navigation} />}
-     <View style={{ marginBottom: 10, marginTop:5 }}>
+
+      {searchModalVisible && <SearchView setSearchModalVisible={setSearchModalVisible} navigation={navigation} />}
+      <View style={{ marginBottom: 10, marginTop: 5 }}>
         <Ripple onPress={() => setSearchModalVisible(true)}>
           <View style={{ borderRadius: 8, height: 34, alignItems: 'center', paddingHorizontal: 12, flexDirection: 'row', backgroundColor: colors.white }}>
             <Icon

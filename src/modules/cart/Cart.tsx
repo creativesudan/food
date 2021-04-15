@@ -112,7 +112,7 @@ export default function CartView({ navigation }) {
 
   useEffect(() => {
     if (!cart.coupons) dispatch(lazyLoad(fetchCoupons()));
-    if (!cart.tax) dispatch(lazyLoad(fetchTax()));
+    if (!cart.tax) dispatch(fetchTax());
     if (!addresses || addresses.length == 0) dispatch(lazyLoad(fetchAddressList()));
   }, []);
 

@@ -51,7 +51,7 @@ export default function OrderListView({ navigation }) {
             </View>
             {orders && orders.filter(order => order.order_status == "1").map(order => {
               const deliveryAddress = addresses.find(add => add.id == order.address_id) || {};
-              return (<>
+              return (<View key={order.order_id}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', marginTop: 5 }}>
                   {/* <Text h4 bold style={{ flex: 1 }}>Past</Text> */}
                   <Text style={{ fontSize: 12, color: '#5D6275' }}>{order.datetime}</Text>
@@ -75,20 +75,20 @@ export default function OrderListView({ navigation }) {
                       {order.order_pro && order.order_pro.map(pro => {
                         const product = getProductById(pro.pro_id);
                         return (
-                          <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }}>
+                          <ListItem containerStyle={{ paddingHorizontal: 0, paddingVertical: 4, backgroundColor: 'transparent' }} key={pro.pro_id}>
                             <ListItem.Content>
                               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Image style={{ width: 12, height: 12, }}
                                   source={require('../../../assets/images/icons/veg.png')}
                                 />
-                                <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
+                                <Text style={{ marginLeft: 10 }} >{product.name} ({pro.weight}) X {pro.qty}</Text>
                               </View>
                             </ListItem.Content>
                             <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
                               <Image style={{ marginRight: 4 }}
                                 source={require('../../../assets/images/icons/rupee.png')}
                               />
-                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
+                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{pro.total_amount}</Text>
                             </View>
 
                           </ListItem>)
@@ -111,7 +111,7 @@ export default function OrderListView({ navigation }) {
                     }}
                   />
                 </Paper>
-              </>)
+              </View>)
             })}
 
 
@@ -155,7 +155,7 @@ export default function OrderListView({ navigation }) {
                                 <Image style={{ width: 12, height: 12, }}
                                   source={require('../../../assets/images/icons/veg.png')}
                                 />
-                                <Text style={{ marginLeft: 10 }} >{product.name} X {pro.qty}</Text>
+                                <Text style={{ marginLeft: 10 }} >{product.name} ({pro.weight}) X {pro.qty}</Text>
                               </View>
                             </ListItem.Content>
 
@@ -163,7 +163,7 @@ export default function OrderListView({ navigation }) {
                               <Image style={{ marginRight: 4 }}
                                 source={require('../../../assets/images/icons/rupee.png')}
                               />
-                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{order.total_amount}</Text>
+                              <Text style={{ marginLeft: 2 }} h4 bold color={'#404355'}>{pro.total_amount}</Text>
                             </View>
 
                           </ListItem>

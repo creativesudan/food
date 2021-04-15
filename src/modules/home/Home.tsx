@@ -250,9 +250,9 @@ export default function HomeView({ navigation }) {
                   ))}
                 </View>
 
-                {exclusiveProducts.length > 4 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
+                {exclusiveProducts.length > 0 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
                   <Text style={{ flex: 1 }}>Bobby Exclusive</Text>
-                  <Button title="View All" link white onPress={() => navigation.navigate('ProductList', { products: exclusiveProducts })} />
+                  {exclusiveProducts.length > 4 && <Button title="View All" link white onPress={() => navigation.navigate('ProductList', { products: exclusiveProducts })} />}
                 </View>}
 
                 <View style={{ marginLeft: -5, marginRight: -15 }}>
