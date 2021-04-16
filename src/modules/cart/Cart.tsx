@@ -259,7 +259,7 @@ export default function CartView({ navigation }) {
                       <View style={{ flexDirection: 'row' }}>
                         <Ripple onPress={() => navigation.navigate('Manage Address')} style={{ flexDirection: 'row', padding: 5, alignItems: 'center', }}>
                           <Text style={{ marginRight: 5, color: colors.primary }}>Choose Address</Text>
-                          <Image style={{ marginTop: 3 }} source={require('../../../assets/images/icons/down.png')} />
+                          <Image style={{ marginTop: 3, tintColor:colors.primary }} source={require('../../../assets/images/icons/down.png')} />
                         </Ripple>
                       </View>
                     </View>
@@ -271,7 +271,7 @@ export default function CartView({ navigation }) {
                     }}
                   >
                     <Text style={{ marginRight: 10, color: colors.primary }}>Add</Text>
-                    <Image style={{ width: 12, height: 12, }}
+                    <Image style={{ width: 12, height: 12, tintColor:colors.primary }}
                       source={require('../../../assets/images/icons/plus.png')}
                     />
                   </Ripple>
@@ -339,7 +339,7 @@ export default function CartView({ navigation }) {
                                   removeCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) });
 
                                 }}
-                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor:colors.primary}} />}
                               />
 
                               <Text hCenter style={{ flex: 1, fontSize: 14 }}>{item.qty <= 0 ? 'Add' : item.qty}</Text>
@@ -350,7 +350,7 @@ export default function CartView({ navigation }) {
                                   AssetsDrawer.current?.open()
                                 }}
                                 icon={
-                                  <Image source={require('../../../assets/images/icons/plus.png')} />
+                                  <Image source={require('../../../assets/images/icons/plus.png')} style={{ tintColor:colors.primary}}/>
                                 }
                               />
                             </View>
@@ -495,9 +495,9 @@ export default function CartView({ navigation }) {
               <View style={{
                 height: 50, flexDirection: 'row', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20, backgroundColor: colors.secondary,
               }}>
-                <Text p style={{ flex: 1 }}>See Breakup</Text>
+                <Text p style={{ flex: 1 }}>Make Payment</Text>
                 <View style={{}}>
-                  <Text p>Make Payment</Text>
+                  {/* <Text p>Make Payment</Text> */}
                   <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
                     <Image style={{ height: 14, width: 10, tintColor: '#404355', marginRight: 4 }}
                       source={require('../../../assets/images/icons/rupee.png')}

@@ -1,6 +1,6 @@
 const colors = {
-  primary: '#C62829',
-  primaryLight: '#F68081',
+  primary: '#F74C31',
+  primaryLight: '#FFA698',
 
   secondary: '#FBD490',
   secondary1: '#e5f8f4',

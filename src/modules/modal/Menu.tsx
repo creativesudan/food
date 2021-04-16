@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Modal,Image } from 'react-native';
+import { StyleSheet, View, Modal,Image,Linking } from 'react-native';
 import { Avatar, ListItem  } from 'react-native-elements';
 import { IconButton } from '../../components/StyledButton';
+import Ripple from 'react-native-material-ripple';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../../styles';
@@ -84,7 +85,8 @@ export const MenuModal = ({
                   </ListItem.Content>
                   <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
-
+                
+                <Ripple onPress={()=>{Linking.openURL("market://details?id=googoo.android.btgps");} } >
                 <ListItem bottomDivider>
                   <Avatar size={20} source={require('../../../assets/images/icons/star.png')} />
                   <ListItem.Content>
@@ -92,15 +94,19 @@ export const MenuModal = ({
                   </ListItem.Content>
                   <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
+                </Ripple>
 
-                <ListItem bottomDivider>
-                  <Avatar size={20} source={require('../../../assets/images/icons/paper.png')} />
-                  <ListItem.Content>
-                    <ListItem.Title>Term and Condition</ListItem.Title>
-                  </ListItem.Content>
-                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
-                </ListItem>
+                <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/tnc.php');}}>
+                  <ListItem onPress={()=>{Linking.openURL('https://www.ramawholesale.in/tnc.php');}} bottomDivider>
+                    <Avatar size={20} source={require('../../../assets/images/icons/paper.png')} />
+                    <ListItem.Content>
+                      <ListItem.Title>Term and Condition</ListItem.Title>
+                    </ListItem.Content>
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
+                  </ListItem>
+                </Ripple>
 
+                <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/offers.php');}}>
                 <ListItem bottomDivider>
                   <Avatar size={20} source={require('../../../assets/images/icons/discount.png')} />
                   <ListItem.Content>
@@ -108,15 +114,19 @@ export const MenuModal = ({
                   </ListItem.Content>
                   <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
+                </Ripple>
 
-                <ListItem bottomDivider>
-                  <Avatar size={20} source={require('../../../assets/images/icons/heart.png')} />
-                  <ListItem.Content>
-                    <ListItem.Title>Favorites</ListItem.Title>
-                  </ListItem.Content>
-                  <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
-                </ListItem>
+                <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/about.php');}}>
+                  <ListItem bottomDivider>
+                    <Avatar size={20} source={require('../../../assets/images/icons/heart.png')} />
+                    <ListItem.Content>
+                      <ListItem.Title>Favorites</ListItem.Title>
+                    </ListItem.Content>
+                    <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
+                  </ListItem>
+                </Ripple>
 
+                <Ripple onPress={()=>{Linking.openURL('tel:8777111223');}} >
                 <ListItem>
                   <Avatar size={20} source={require('../../../assets/images/icons/call.png')} avatarStyle={{tintColor: '#5D6275'}}/>
                   <ListItem.Content>
@@ -124,6 +134,7 @@ export const MenuModal = ({
                   </ListItem.Content>
                   <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                 </ListItem>
+                </Ripple>
                     
               </View>
         </MainContainer>

@@ -122,7 +122,7 @@ export default function PaymentView({ navigation }) {
       <ScrollView>
         <MainContainer>
           <View style={{ marginBottom: 80 }}>
-            <View style={{ marginVertical: 12 }}>
+            {/* <View style={{ marginVertical: 12 }}>
               <Text style={{ marginBottom: 5, }}>Select your method of payment</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image
@@ -131,9 +131,9 @@ export default function PaymentView({ navigation }) {
                 />
                 <Text caption style={{ marginLeft: 5 }}>100% Secure Payment</Text>
               </View>
-            </View>
+            </View> */}
 
-            <Paper>
+            {/* <Paper>
               <View style={{ paddingHorizontal: 10, marginVertical: 16, }}>
                 <View style={{ flexDirection: 'row', }}>
                   <View style={{ marginRight: 10 }}>
@@ -174,9 +174,9 @@ export default function PaymentView({ navigation }) {
 
                 </View>
               </View>
-            </Paper>
+            </Paper> */}
 
-            <View style={{ marginVertical: 10 }}>
+            {/* <View style={{ marginVertical: 10 }}>
               <Paper>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 12, paddingHorizontal: 10 }}>
                   <Text style={{ flex: 1 }}>Add Debit / Credit</Text>
@@ -188,7 +188,7 @@ export default function PaymentView({ navigation }) {
                   </View>
                 </View>
               </Paper>
-            </View>
+            </View> */}
 
             <Ripple style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginTop: 10 }} onPress={() => setPaymentType(PAYMENT_TYPE_COD)}>
               <View style={{ flexDirection: 'row', alignItems: 'center', width: 22, height: 22, borderWidth: 1, borderColor: '#F9C5C5', borderRadius: 100 }} >
@@ -197,14 +197,14 @@ export default function PaymentView({ navigation }) {
               <Text style={{ marginLeft: 10 }}>Cash On Delivery</Text>
             </Ripple>
 
-            <Ripple style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginTop: 10 }} onPress={() => setPaymentType(PAYMENT_TYPE_ONLINE)}>
+            {/* <Ripple style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10, marginTop: 10 }} onPress={() => setPaymentType(PAYMENT_TYPE_ONLINE)}>
               <View style={{ flexDirection: 'row', alignItems: 'center', width: 22, height: 22, borderWidth: 1, borderColor: '#F9C5C5', borderRadius: 100 }}>
                 <View style={{ marginLeft: 6, flexDirection: 'row', width: 8, height: 8, backgroundColor: paymentType == PAYMENT_TYPE_ONLINE ? colors.primary : colors.white, borderRadius: 10 }}></View>
               </View>
               <Text style={{ marginLeft: 10 }}>Online Payment</Text>
-            </Ripple>
+            </Ripple> */}
 
-            <View style={{ marginVertical: 5 }}>
+            {/* <View style={{ marginVertical: 5 }}>
               <Text>Wallet</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: -12 }}>
                 <Ripple style={{ paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
@@ -225,9 +225,9 @@ export default function PaymentView({ navigation }) {
                   </View>
                 </Ripple>
               </View>
-            </View>
+            </View> */}
 
-            <Divider style={{ marginVertical: 5 }} />
+            {/* <Divider style={{ marginVertical: 5 }} />
 
             <View style={{ marginVertical: 5 }}>
               <Text >UPI</Text>
@@ -259,9 +259,9 @@ export default function PaymentView({ navigation }) {
                   </View>
                 </Ripple>
               </View>
-            </View>
+            </View> */}
 
-            <View style={{ marginVertical: 5 }}>
+            {/* <View style={{ marginVertical: 5 }}>
               <Text>Net Banking</Text>
 
               <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: -20, marginTop: 15 }}>
@@ -294,7 +294,7 @@ export default function PaymentView({ navigation }) {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
               <Text h5 style={{ flex: 1 }}>More Banks</Text>
               <Image source={require('../../../assets/images/icons/down.png')} />
-            </View>
+            </View> */}
 
           </View>
         </MainContainer>

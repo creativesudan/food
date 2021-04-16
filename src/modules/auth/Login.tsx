@@ -33,18 +33,18 @@ export default function Login({ navigation }) {
 
           <MainContainer>
             <View style={styles.content}>
-              <Text h1>Delivering Tasty Sweets </Text>
+              <Text h1>Delivering The Best </Text>
               <Text subtitle1 style={{ marginTop: 5 }}>for you in minutes</Text>
-              <Text caption style={{ marginTop: 15, }}>Order your favourite food from your app</Text>
+              <Text caption style={{ marginTop: 15, }}>Order your favourite item from your app</Text>
             </View>
 
             <View style={styles.NumberArea}>
-              <View style={{ width: 60, paddingHorizontal: 10 }}>
+              <View style={{ width: 60, paddingLeft: 10 }}>
                 <Text style={{ fontSize: 24, color: colors.primary }}>+91</Text>
               </View>
               <View style={{ flex: 1, position: 'relative' }} >
                 <View style={{ position: 'absolute', top: -16, left: -10, backgroundColor: colors.white, paddingHorizontal: 10 }}>
-                  <Text style={{ fontSize: 12 }}>Enter your mobile number to sign in</Text>
+                  <Text style={{ fontSize: 12 }}>Enter your mobile number</Text>
                 </View>
                 <View>
 
@@ -105,9 +105,12 @@ const styles = StyleSheet.create({
     left: -100,
   },
   banner: {
-    marginTop: 110
+    marginTop: 110,
+    alignItems:'center',
   },
   content: {
+    flex:1,
+    flexDirection:'column',
     alignItems: 'center',
     marginTop: 70,
     marginBottom: 50

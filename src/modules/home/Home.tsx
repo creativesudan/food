@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image,Linking, TouchableOpacity } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -165,7 +165,7 @@ export default function HomeView({ navigation }) {
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                 <View style={{ flex: 1 }}>
-                  <Text h1 color={colors.white}>Bobby Sweets</Text>
+                  <Text h1 color={colors.white}>Rama Wholesale</Text>
                   {/* <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
                     <Text color={colors.white}>Deliver to :</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -250,8 +250,8 @@ export default function HomeView({ navigation }) {
                   ))}
                 </View>
 
-                {exclusiveProducts.length > 0 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
-                  <Text style={{ flex: 1 }}>Bobby Exclusive</Text>
+                  {exclusiveProducts.length > 0 && <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, marginRight: -10 }}>
+                  <Text style={{ flex: 1 }}>Special Products</Text>
                   {exclusiveProducts.length > 4 && <Button title="View All" link white onPress={() => navigation.navigate('ProductList', { products: exclusiveProducts })} />}
                 </View>}
 
@@ -273,7 +273,12 @@ export default function HomeView({ navigation }) {
                                 source={require('../../../assets/images/icons/rupee.png')}
                               />
                               <Text p color={colors.primary}>{item.price_weight.length != 0 ? item.price_weight[0].price : "NA"} / {item.price_weight.length != 0 ? item.price_weight[0].weight : "NA"}</Text>
-                              <Text p style={{ marginLeft: 5, textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
+                              <View style={{ marginLeft: 10, flexDirection:'row', alignItems:'center'}}>
+                                <Image style={{ height: 10, marginRight: 2, marginTop:2, tintColor:'#000' }}
+                                  source={require('../../../assets/images/icons/rupee.png')}
+                                />
+                                <Text p style={{textDecorationLine: 'line-through' }}>{item.price_weight.length != 0 ? item.price_weight[0].mrp : "NA"} </Text>
+                              </View>
                             </View>
 
                             <View style={{ height: 34, overflow: 'hidden', marginTop: 10, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
@@ -289,7 +294,7 @@ export default function HomeView({ navigation }) {
                                     const cartItem = getCartItemById(item.pro_id);
                                     removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                   }}
-                                  icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                                  icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor:colors.primary}} />}
                                 />
 
                                 <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(item.pro_id)}</Text>
@@ -300,7 +305,7 @@ export default function HomeView({ navigation }) {
                                     AssetsDrawer.current?.open();
                                   }}
                                   icon={
-                                    <Image source={require('../../../assets/images/icons/plus.png')} />
+                                    <Image source={require('../../../assets/images/icons/plus.png')}  style={{ tintColor:colors.primary}}/>
                                   }
                                 />
                               </>}
@@ -367,7 +372,7 @@ export default function HomeView({ navigation }) {
             </View>
 
             <View style={styles.menuList}>
-              <Ripple>
+              <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/offers.php');} }>
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: 10 }}>
                   <Image source={require('../../../assets/images/icons/offer.png')} />
                   <Text hCenter style={{ fontSize: 12 }}>Offers</Text>
@@ -375,7 +380,7 @@ export default function HomeView({ navigation }) {
               </Ripple>
             </View>
             <View style={styles.menuList}>
-              <Ripple>
+              <Ripple onPress={()=>{Linking.openURL('tel:8777111223');} }>
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: 10 }}>
                   <Image source={require('../../../assets/images/icons/call.png')} />
                   <Text hCenter style={{ fontSize: 12 }}>Call</Text>

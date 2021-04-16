@@ -137,7 +137,8 @@ export default function ProductListView({ route, navigation }) {
                             />
                         </View>
                         <View style={{ flex: 1 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
+                            <Text h1 color={colors.white}>Special Products</Text>
+                            {/* <TouchableOpacity onPress={() => navigation.navigate('Delivery Location')}>
                                 <Text color={colors.white}>Deliver to :</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text bold color={colors.white}>{deliveryAddress.name || "Select Address"}</Text>
@@ -145,7 +146,8 @@ export default function ProductListView({ route, navigation }) {
                                         source={require('../../../assets/images/icons/expand_more.png')}
                                     />
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+
                         </View>
 
 
@@ -186,7 +188,7 @@ export default function ProductListView({ route, navigation }) {
                                         <Image style={{ width: 78, height: 78, borderRadius: 5 }}
                                             source={{ uri: product.image }}
                                         />
-                                        <View style={{ flex: 1, paddingLeft: 16 }}>
+                                        <View style={{ flex: 1, paddingLeft: 10 }}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <Image style={{ width: 12, height: 12, }}
                                                     source={require('../../../assets/images/icons/veg.png')}
@@ -217,7 +219,7 @@ export default function ProductListView({ route, navigation }) {
                                                                     const cartItem = getCartItemById(product.pro_id);
                                                                     removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                                                 }}
-                                                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                                                                icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor:colors.primary}} />}
                                                             />
 
                                                             <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(product.pro_id)}</Text>
@@ -228,7 +230,7 @@ export default function ProductListView({ route, navigation }) {
                                                                     AssetsDrawer.current?.open();
                                                                 }}
                                                                 icon={
-                                                                    <Image source={require('../../../assets/images/icons/plus.png')} />
+                                                                    <Image source={require('../../../assets/images/icons/plus.png')} style={{ tintColor:colors.primary}} />
                                                                 }
                                                             />
                                                         </>}

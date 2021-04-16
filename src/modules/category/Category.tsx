@@ -223,7 +223,7 @@ export default function CategoryView({ route, navigation }) {
                     <Image style={{ width: 78, height: 78, borderRadius: 5 }}
                       source={{ uri: product.image }}
                     />
-                    <View style={{ flex: 1, paddingLeft: 16 }}>
+                    <View style={{ flex: 1, paddingLeft: 10 }}>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image style={{ width: 12, height: 12, }}
                           source={require('../../../assets/images/icons/veg.png')}
@@ -233,12 +233,18 @@ export default function CategoryView({ route, navigation }) {
 
                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                          <Image style={{ height: 10, marginRight: 4 }}
+                          <Image style={{ height: 10, marginRight: 2 }}
                             source={require('../../../assets/images/icons/rupee.png')}
                           />
-                          <Text color={colors.primary}>{product.price_weight.length > 0 ? product.price_weight[0].price + " / " : ""}{product.price_weight.length > 0 ? product.price_weight[0].weight : ""}</Text>
-                          <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{product.price_weight.length > 0 ? product.price_weight[0].mrp : ""}</Text>
+                          <Text color={colors.primary}>{product.price_weight.length > 0 ? product.price_weight[0].price + "/" : ""}{product.price_weight.length > 0 ? product.price_weight[0].weight : ""}</Text>
+                          <View style={{ marginLeft: 6, flexDirection:'row', alignItems:'center'}}>
+                            <Image style={{ height: 10, marginRight: 2, marginTop:2, tintColor:'#000' }}
+                              source={require('../../../assets/images/icons/rupee.png')}
+                            />
+                            <Text style={{ textDecorationLine: 'line-through' }}>{product.price_weight.length > 0 ? product.price_weight[0].mrp : ""}</Text>
+                          </View>
                         </View>
+                        
                         <View style={{ width: 100 }}>
 
                           <View style={{ height: 34, overflow: 'hidden', marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>
@@ -254,7 +260,7 @@ export default function CategoryView({ route, navigation }) {
                                   const cartItem = getCartItemById(product.pro_id);
                                   removeCart({ ...cartItem, qty: (cartItem.qty <= 0 ? 0 : cartItem.qty - 1) })
                                 }}
-                                icon={<Image source={require('../../../assets/images/icons/minus.png')} />}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor:colors.primary}} />}
                               />
 
                               <Text hCenter style={{ flex: 1, fontSize: 14 }}>{cart.countByProduct(product.pro_id)}</Text>
@@ -265,7 +271,7 @@ export default function CategoryView({ route, navigation }) {
                                   AssetsDrawer.current?.open();
                                 }}
                                 icon={
-                                  <Image source={require('../../../assets/images/icons/plus.png')} />
+                                  <Image source={require('../../../assets/images/icons/plus.png')}  style={{ tintColor:colors.primary}}/>
                                 }
                               />
                             </>}
