@@ -119,9 +119,10 @@ const cartMiddleware = store => next => action => {
         next(action);
 
         const cart = store.getState().cart;
+        const categories = store.getState().home.categories;
         console.log(cart);
 
-        store.dispatch(evaluateCart(cart));
+        store.dispatch(evaluateCart(cart, categories));
 
     }
     else {

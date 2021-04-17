@@ -259,7 +259,7 @@ export default function CartView({ navigation }) {
                       <View style={{ flexDirection: 'row' }}>
                         <Ripple onPress={() => navigation.navigate('Manage Address')} style={{ flexDirection: 'row', padding: 5, alignItems: 'center', }}>
                           <Text style={{ marginRight: 5, color: colors.primary }}>Choose Address</Text>
-                          <Image style={{ marginTop: 3, tintColor:colors.primary }} source={require('../../../assets/images/icons/down.png')} />
+                          <Image style={{ marginTop: 3, tintColor: colors.primary }} source={require('../../../assets/images/icons/down.png')} />
                         </Ripple>
                       </View>
                     </View>
@@ -271,7 +271,7 @@ export default function CartView({ navigation }) {
                     }}
                   >
                     <Text style={{ marginRight: 10, color: colors.primary }}>Add</Text>
-                    <Image style={{ width: 12, height: 12, tintColor:colors.primary }}
+                    <Image style={{ width: 12, height: 12, tintColor: colors.primary }}
                       source={require('../../../assets/images/icons/plus.png')}
                     />
                   </Ripple>
@@ -311,7 +311,7 @@ export default function CartView({ navigation }) {
                   <Paper>
                     <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
                       <Image style={{ width: 78, height: 78, borderRadius: 5 }}
-                        source={require('../../../assets/images/mock_data/banner_1.png')}
+                        source={{ uri: item.product.image }}
                       />
                       <View style={{ flex: 1, paddingLeft: 16 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -339,7 +339,7 @@ export default function CartView({ navigation }) {
                                   removeCart({ ...item, qty: (item.qty <= 0 ? 0 : item.qty - 1) });
 
                                 }}
-                                icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor:colors.primary}} />}
+                                icon={<Image source={require('../../../assets/images/icons/minus.png')} style={{ tintColor: colors.primary }} />}
                               />
 
                               <Text hCenter style={{ flex: 1, fontSize: 14 }}>{item.qty <= 0 ? 'Add' : item.qty}</Text>
@@ -350,7 +350,7 @@ export default function CartView({ navigation }) {
                                   AssetsDrawer.current?.open()
                                 }}
                                 icon={
-                                  <Image source={require('../../../assets/images/icons/plus.png')} style={{ tintColor:colors.primary}}/>
+                                  <Image source={require('../../../assets/images/icons/plus.png')} style={{ tintColor: colors.primary }} />
                                 }
                               />
                             </View>

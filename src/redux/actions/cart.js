@@ -53,11 +53,31 @@ export const clearCart = () => {
     }
 }
 
-export const evaluateCart = (cart) => {
+const getCategoryTax = (id, categories, tax_slabs) => {
+    const category = categories.find(category => category.id == id);
+    if (category.tax in tax_slabs) {
+        console.log("Tax for " + category.name);
+        return parseInt(tax_slabs[category.tax]);
+    } else {
+        return 0;
+    }
+}
+export const evaluateCart = (cart, categories) => {
     let mrpTotal = cart.items.reduce((total, obj) => parseInt(obj.variant.mrp) * parseInt(obj.qty) + total, 0);
     let priceTotal = cart.items.reduce((total, obj) => parseInt(obj.variant.price) * parseInt(obj.qty) + total, 0);
-    let discount = mrpTotal - priceTotal;
     let totalTax = 0;
+    if (cart.tax) {
+        let tax_slabs = {};
+        cart.tax.filter(t => parseInt(t.status) == 1).map(t => { tax_slabs[t.id] = t.percantage });
+        cart.items.map(item => {
+            const tax = getCategoryTax(item.product.cat_id, categories, tax_slabs);
+            console.log(tax);
+            totalTax += item.variant.price * (tax / 100);
+        })
+    }
+
+    let discount = mrpTotal - priceTotal;
+
     let couponDiscount = 0;
     if (cart.appliedCoupon) {
         if (parseInt(cart.appliedCoupon.type) == 1)
@@ -65,11 +85,11 @@ export const evaluateCart = (cart) => {
         if (parseInt(cart.appliedCoupon.type) == 0)
             couponDiscount = parseInt(cart.appliedCoupon.value);
     }
-    if (cart.tax) {
-        cart.tax.map(t => {
-            totalTax = totalTax + priceTotal * (parseInt(t.percantage) / 100);
-        });
-    }
+    // if (cart.tax) {
+    //     cart.tax.map(t => {
+    //         totalTax = totalTax + priceTotal * (parseInt(t.percantage) / 100);
+    //     });
+    // }
     if (priceTotal < 0) priceTotal = 0;
     return {
         type: CART_EVALUATED,
