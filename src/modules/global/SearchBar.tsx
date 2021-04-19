@@ -25,7 +25,7 @@ export default function SearchBar(navigation) {
               name='search'
               color='#F9C5C5'
             />
-            <Text p style={{ margineLeft: 10 }}>Search product (eg. rasgulla)</Text>
+            <Text p style={{ margineLeft: 10 }}>Search products</Text>
           </View>
         </Ripple>
       </View>

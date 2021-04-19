@@ -193,7 +193,7 @@ export default function CartView({ navigation }) {
 
             <View>
               <Text p bold style={{ textAlign: 'right' }} color={colors.white}>Free Delivery</Text>
-              <Text p color={colors.white}>with min order 400</Text>
+              {/* <Text p color={colors.white}>with min order 400</Text> */}
             </View>
 
           </View>
@@ -323,11 +323,14 @@ export default function CartView({ navigation }) {
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                            <Image style={{ height: 10, marginRight: 4 }}
+                            <Image style={{ height: 10, marginRight: 2 }}
                               source={require('../../../assets/images/icons/rupee.png')}
                             />
                             <Text color={colors.primary}>{item.variant.price} / {item.variant.weight}</Text>
-                            <Text style={{ marginLeft: 10, textDecorationLine: 'line-through' }}>{item.variant.mrp}</Text>
+                            <Image style={{ height: 10, marginLeft:6, marginRight: 2, tintColor:colors.dark }}
+                              source={require('../../../assets/images/icons/rupee.png')}
+                            />
+                            <Text style={{ textDecorationLine: 'line-through' }}>{item.variant.mrp}</Text>
                           </View>
                           <View style={{ width: 100 }}>
                             <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.primary, borderRadius: 100 }}>

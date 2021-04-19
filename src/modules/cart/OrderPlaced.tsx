@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { View, StyleSheet, Image, Dimensions, SafeAreaView, TextInput } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, SafeAreaView, TextInput,Linking } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import MainContainer from '../../components/Containers/Main';
@@ -83,7 +83,7 @@ export default function OrderPlacedView({ navigation }) {
               <Text color={colors.veryDark} h1 hCenter>Order Placed</Text>
               <View style={{ flexDirection: 'row', alignSelf: 'center', alignItems: 'center' }}>
                 <View style={{ flex: 1 }}><Divider /></View>
-                <Text style={{ marginHorizontal: 10 }} hCenter>Estimate Time Deliver 30min</Text>
+                <Text style={{ marginHorizontal: 10 }} hCenter>Estimate Time Deliver 48 Hrs</Text>
                 <View style={{ flex: 1 }}><Divider /></View>
               </View>
               <Text color={colors.primary} hCenter style={{ marginTop: 12 }}>Id : {orderDetails.order_id}</Text>
@@ -192,7 +192,7 @@ export default function OrderPlacedView({ navigation }) {
       <View style={styles.footerMenu}>
         <MainContainer>
           <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', marginHorizontal: -10 }}>
-            <View style={{ flex: 1, marginHorizontal: 10 }}><Button title="Contact" lg secondary raised /></View>
+            <View style={{ flex: 1, marginHorizontal: 10 }}><Button title="Contact" lg secondary raised   onPress={()=>{Linking.openURL('https://www.ramawholesale.in/contact.php');}}/></View>
             <View style={{ flex: 1, marginHorizontal: 10 }}><Button onPress={() => navigation.navigate('Home')} title="Continue" raised lg primary /></View>
           </View>
         </MainContainer>

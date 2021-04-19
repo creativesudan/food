@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { View, StyleSheet, Image, Dimensions, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, SafeAreaView,Linking } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 import MainContainer from '../../components/Containers/Main';
@@ -78,7 +78,7 @@ export default function AccountView({ navigation }) {
                     <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
-                  <ListItem bottomDivider>
+                  <ListItem bottomDivider onPress={()=>{Linking.openURL('https://www.ramawholesale.in/offers.php');}}>
                     <Avatar size={20} source={require('../../../assets/images/icons/discount.png')} />
                     <ListItem.Content>
                       <ListItem.Title>Offer</ListItem.Title>
@@ -86,10 +86,10 @@ export default function AccountView({ navigation }) {
                     <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
 
-                  <ListItem bottomDivider>
-                    <Avatar size={20} source={require('../../../assets/images/icons/heart.png')} />
+                  <ListItem bottomDivider  onPress={()=>{Linking.openURL('https://www.ramawholesale.in/contact.php');}}>
+                    <Avatar size={20} source={require('../../../assets/images/icons/call.png')} avatarStyle={{tintColor:colors.grey1}} />
                     <ListItem.Content>
-                      <ListItem.Title>Favorites</ListItem.Title>
+                      <ListItem.Title>Contact Us</ListItem.Title>
                     </ListItem.Content>
                     <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>

@@ -118,15 +118,15 @@ export const MenuModal = ({
 
                 <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/about.php');}}>
                   <ListItem bottomDivider>
-                    <Avatar size={20} source={require('../../../assets/images/icons/heart.png')} />
+                    <Avatar size={20} title="A" titleStyle={{color:colors.grey2, fontSize:24}}/>
                     <ListItem.Content>
-                      <ListItem.Title>Favorites</ListItem.Title>
+                      <ListItem.Title>About us</ListItem.Title>
                     </ListItem.Content>
                     <Image style={styles.rightIcon} source={require('../../../assets/images/icons/right.png')} />
                   </ListItem>
                 </Ripple>
 
-                <Ripple onPress={()=>{Linking.openURL('tel:8777111223');}} >
+                <Ripple   onPress={()=>{Linking.openURL('https://www.ramawholesale.in/contact.php');}} >
                 <ListItem>
                   <Avatar size={20} source={require('../../../assets/images/icons/call.png')} avatarStyle={{tintColor: '#5D6275'}}/>
                   <ListItem.Content>

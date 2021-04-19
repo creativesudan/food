@@ -343,7 +343,7 @@ export default function HomeView({ navigation }) {
               <Ripple onPress={() => navigation.navigate('My Account')}>
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: 10 }}>
                   <Image source={require('../../../assets/images/icons/account.png')} />
-                  <Text hCenter style={{ fontSize: 12 }}>My Account</Text>
+                  <Text hCenter style={{ fontSize: 12 }}>Account</Text>
                 </View>
               </Ripple>
             </View>
