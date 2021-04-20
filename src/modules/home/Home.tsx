@@ -380,7 +380,7 @@ export default function HomeView({ navigation }) {
               </Ripple>
             </View>
             <View style={styles.menuList}>
-              <Ripple onPress={()=>{Linking.openURL('tel:8777111223');} }>
+              <Ripple onPress={()=>{Linking.openURL('https://www.ramawholesale.in/contact.php');} }>
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: 10 }}>
                   <Image source={require('../../../assets/images/icons/call.png')} />
                   <Text hCenter style={{ fontSize: 12 }}>Call</Text>
