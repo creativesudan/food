@@ -135,7 +135,7 @@ export default function OrderDetailView({ navigation, route }) {
                     <Image style={{ height: 10, marginRight: 4 }}
                       source={require('../../../assets/images/icons/rupee.png')}
                     />
-                    <Text>{parseInt(order.sub_total) - parseInt(order.discount_price)}</Text>
+                    <Text>{parseFloat(order.sub_total) - parseFloat(order.discount_price)}</Text>
                   </View>
                 </ListItem>
 

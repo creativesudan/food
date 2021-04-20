@@ -65,8 +65,8 @@ export default function PaymentView({ navigation }) {
         pro_id: item.id,
         qty: item.qty,
         price: item.variant.price,
-        discount: parseInt(item.variant.mrp) - parseInt(item.variant.price),
-        total_amount: parseInt(item.variant.mrp) * parseInt(item.qty),
+        discount: parseFloat(item.variant.mrp) - parseFloat(item.variant.price),
+        total_amount: parseFloat(item.variant.mrp) * parseInt(item.qty),
         food_type: parseInt(item.product.type) == 1 ? "Veg" : "Non-Veg",
         weight: item.variant.weight
       });

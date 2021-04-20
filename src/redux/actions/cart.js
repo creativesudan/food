@@ -63,8 +63,8 @@ const getCategoryTax = (id, categories, tax_slabs) => {
     }
 }
 export const evaluateCart = (cart, categories) => {
-    let mrpTotal = cart.items.reduce((total, obj) => parseInt(obj.variant.mrp) * parseInt(obj.qty) + total, 0);
-    let priceTotal = cart.items.reduce((total, obj) => parseInt(obj.variant.price) * parseInt(obj.qty) + total, 0);
+    let mrpTotal = cart.items.reduce((total, obj) => parseFloat(obj.variant.mrp) * parseInt(obj.qty) + total, 0);
+    let priceTotal = cart.items.reduce((total, obj) => parseFloat(obj.variant.price) * parseInt(obj.qty) + total, 0);
     let totalTax = 0;
     if (cart.tax) {
         let tax_slabs = {};
@@ -72,7 +72,7 @@ export const evaluateCart = (cart, categories) => {
         cart.items.map(item => {
             const tax = getCategoryTax(item.product.cat_id, categories, tax_slabs);
             console.log(tax);
-            totalTax += item.variant.price * (tax / 100);
+            totalTax += item.variant.price * item.qty * (tax / 100);
         })
     }
 
@@ -81,9 +81,9 @@ export const evaluateCart = (cart, categories) => {
     let couponDiscount = 0;
     if (cart.appliedCoupon) {
         if (parseInt(cart.appliedCoupon.type) == 1)
-            couponDiscount = priceTotal * (parseInt(cart.appliedCoupon.value) / 100);
+            couponDiscount = priceTotal * (parseFloat(cart.appliedCoupon.value) / 100);
         if (parseInt(cart.appliedCoupon.type) == 0)
-            couponDiscount = parseInt(cart.appliedCoupon.value);
+            couponDiscount = parseFloat(cart.appliedCoupon.value);
     }
     // if (cart.tax) {
     //     cart.tax.map(t => {
@@ -91,6 +91,9 @@ export const evaluateCart = (cart, categories) => {
     //     });
     // }
     if (priceTotal < 0) priceTotal = 0;
+
+    let total = priceTotal + totalTax - couponDiscount;
+    if (total < 0) total = 0;
     return {
         type: CART_EVALUATED,
         payload: {
@@ -99,7 +102,7 @@ export const evaluateCart = (cart, categories) => {
             discount: discount,
             couponDiscount: couponDiscount,
             totalTax: totalTax,
-            total: priceTotal + totalTax - couponDiscount
+            total: total
         }
     }
 }

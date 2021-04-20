@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
 
           <MainContainer>
             <View style={styles.content}>
-              <Text h1>Delivering The Best </Text>
+              <Text h1 numberOfLines={1} adjustsFontSizeToFit>Delivering The Best </Text>
               <Text subtitle1 style={{ marginTop: 5 }}>for you in minutes</Text>
               <Text caption style={{ marginTop: 15, }}>Order your favourite item from your app</Text>
             </View>
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
   },
   banner: {
     marginTop: 110,
-    alignItems:'center',
+    alignItems: 'center',
   },
   content: {
-    flex:1,
-    flexDirection:'column',
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     marginTop: 70,
     marginBottom: 50
