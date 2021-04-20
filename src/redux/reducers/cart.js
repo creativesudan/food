@@ -28,7 +28,17 @@ export default function (state = initialCart, action) {
             newItems = [...oldItems];
 
             if (newItem.qty == 0) {
-                newItems = state.items.filter(item => (item.id !== newItem.id && item.variant.weight !== newItem.vaiant.weight));
+                console.log(newItem)
+                newItems = state.items.filter(item => {
+                    if (item.id !== newItem.id && item.variant.weight !== newItem.variant.weight) {
+                        return true;
+                    }
+                    if (item.id === newItem.id && item.variant.weight !== newItem.variant.weight) {
+                        return true;
+                    }
+                    return false;
+
+                });
             }
             else {
                 newItems = oldItems.map(item => {
