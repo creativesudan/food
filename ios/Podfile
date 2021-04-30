@@ -10,6 +10,8 @@ target 'foodapp' do
 
   pod 'ReactNativeGetLocation', :path => '../node_modules/react-native-get-location'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'foodappTests' do
     inherit! :complete
     # Pods for testing
