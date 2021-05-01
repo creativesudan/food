@@ -22,6 +22,8 @@ import { fetchAddressList, deleteAddress } from "../redux/actions/address";
 import { colors } from '../styles';
 import lazyLoad from "../redux/actions/lazyLoad";
 
+import SplashScreen from 'react-native-splash-screen'
+
 export default function AppView() {
   const dispatch = useDispatch();
   const authenticated = useSelector(state => state.auth.isAuthenticated || false);
@@ -32,6 +34,9 @@ export default function AppView() {
   const addressesSynced = useSelector(state => state.address.addressesSynced || false);
 
   useEffect(() => {
+    setTimeout(function () {
+      SplashScreen.hide()
+    }, 1500);
     dispatch({ type: "APP_LOADING" })
   }, []);
 
@@ -51,15 +56,8 @@ export default function AppView() {
         //   source={require('../../assets/images/mock_data/flash-screen.png')}
         // />
       }
+      {!showInitScreen && <Navigator />}
 
-      {showInitScreen ?
-        <>
-          <Image
-            style={{ height: '100%' }}
-            source={require('../../assets/images/mock_data/flash-screen.png')}
-          />
-        </>
-        : <Navigator />}
     </>
   )
 }

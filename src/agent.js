@@ -5,8 +5,8 @@ import { add } from 'react-native-reanimated';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = 'http://bsadmin.techpex.com/api/';
-const MEDIA_ROOT = 'http://bsadmin.techpex.com/masterbabysweet/uploads';
+const API_ROOT = 'https://ramawholesale.in/app/api/';
+const MEDIA_ROOT = 'https://ramawholesale.in/app/masterbabysweet/uploads';
 
 const encode = encodeURIComponent;
 const responseBody = res => JSON.parse(res.text);
