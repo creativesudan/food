@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.foodapp"
+        applicationId "com.rama_wholesale"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

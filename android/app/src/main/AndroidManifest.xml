@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.foodapp">
+  package="com.rama_wholesale">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Define ACCESS_FINE_LOCATION if you will use enableHighAccuracy=true  -->

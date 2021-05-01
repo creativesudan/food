@@ -1,4 +1,4 @@
-package com.foodapp;
+package com.rama_wholesale;
 
 import android.os.Bundle; // here 
 import com.facebook.react.ReactActivity;
@@ -14,6 +14,6 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     SplashScreen.show(this);  // here 
-    return "foodapp";
+    return "rama_wholesale";
   }
 }
